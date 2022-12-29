@@ -1,11 +1,9 @@
 package com.siendy.noshnotes.ui.screens
 
-import android.inputmethodservice.Keyboard.Row
-import android.provider.ContactsContract.Profile
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
@@ -20,16 +18,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import com.siendy.noshnotes.R
-import com.siendy.noshnotes.ui.navigation.Routes.PLACES_LIST
-import com.siendy.noshnotes.ui.navigation.Routes.PLACES_MAP
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
@@ -58,15 +51,19 @@ fun MainScreen() {
         Column(
           modifier = Modifier.fillMaxHeight()
         ) {
-          Text(text = "helloooooo")
+          Column(
+            modifier = Modifier.fillMaxWidth().weight(1f)
+          ) {
+            Text(text = "helloooooo")
 
-          HorizontalPager(
-            count = pages.size,
-            state = pagerState,
-          ) { page ->
-            when (page) {
-              0 -> PlacesList()
-              1 -> PlacesMap()
+            HorizontalPager(
+              count = pages.size,
+              state = pagerState
+            ) { page ->
+              when (page) {
+                0 -> PlacesList()
+                1 -> PlacesMap()
+              }
             }
           }
 
@@ -78,8 +75,7 @@ fun MainScreen() {
               TabRowDefaults.Indicator(
                 Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
               )
-            },
-            modifier = Modifier.align
+            }
           ) {
             // Add tabs for all of our pages
             pages.forEachIndexed { index, title ->
@@ -96,13 +92,6 @@ fun MainScreen() {
           }
         }
       }
-
-
     }
   )
-    
-
-
-
-
 }
