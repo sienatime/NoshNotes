@@ -7,16 +7,38 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.siendy.noshnotes.ui.navigation.Routes.AUTOCOMPLETE_REQUEST_CODE
+import com.siendy.noshnotes.ui.place.PlaceActivity
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+  private val viewModel: MainViewModel by viewModels()
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     initializeGooglePlaces()
+
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewModel.uiState.collect { uiState ->
+          if (uiState.placeFromAutocomplete != null) {
+            startActivity(
+              Intent(this@MainActivity, PlaceActivity::class.java).apply {
+                this.putExtra("PLACE", uiState.placeFromAutocomplete)
+              }
+            )
+          }
+        }
+      }
+    }
 
     setContent {
       MainScreen()
@@ -38,8 +60,7 @@ class MainActivity : ComponentActivity() {
       when (resultCode) {
         Activity.RESULT_OK -> {
           data?.let {
-            val place = Autocomplete.getPlaceFromIntent(data)
-            Log.i("MainActivity", "Place: ${place.name}, ${place.id}")
+            viewModel.getPlaceFromAutocomplete(it)
           }
         }
         AutocompleteActivity.RESULT_ERROR -> {

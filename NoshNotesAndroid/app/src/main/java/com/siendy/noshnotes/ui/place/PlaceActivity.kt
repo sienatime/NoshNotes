@@ -10,11 +10,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.ui.theme.NoshNotesTheme
 
 class PlaceActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    val place: Place? = intent.extras?.getParcelable<Place>("PLACE")
+
     setContent {
       NoshNotesTheme {
         // A surface container using the 'background' color from the theme

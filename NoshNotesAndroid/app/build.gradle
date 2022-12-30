@@ -2,7 +2,8 @@ plugins {
   id 'com.android.application'
   id 'org.jetbrains.kotlin.android'
   id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
-//  id 'org.jmailen.kotlinter'
+  id 'org.jetbrains.kotlin.plugin.parcelize'
+  id 'org.jmailen.kotlinter'
 }
 
 android {

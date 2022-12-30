@@ -27,23 +27,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
-import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.siendy.noshnotes.R
-import com.siendy.noshnotes.ui.navigation.Routes.AUTOCOMPLETE_REQUEST_CODE
 import com.siendy.noshnotes.ui.theme.NoshNotesTheme
 
 @Composable
 @Preview
-fun MainScreen() {
+fun MainScreen(
+  mainViewModel: MainViewModel = viewModel()
+) {
   val navController = rememberNavController()
   val context = LocalContext.current
 
@@ -59,14 +57,9 @@ fun MainScreen() {
       floatingActionButton = {
         FloatingActionButton(
           onClick = {
-            // Set the fields to specify which types of place data to
-            // return after the user has made a selection.
-            val fields = listOf(Place.Field.ID, Place.Field.NAME)
-
-            // Start the autocomplete intent.
-            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
-              .build(context)
-            startActivityForResult(context as Activity, intent, AUTOCOMPLETE_REQUEST_CODE, null)
+            (context as? Activity)?.let {
+              mainViewModel.openPlacesAutocomplete(it)
+            }
           }
         ) {
           Icon(Filled.Add, stringResource(id = R.string.add_place))
