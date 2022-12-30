@@ -1,8 +1,9 @@
-package com.siendy.noshnotes.ui.navigation
+package com.siendy.noshnotes.ui.main
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.siendy.noshnotes.R
+import com.siendy.noshnotes.ui.navigation.Routes
 
 sealed class TabDestination(
   val route: String,

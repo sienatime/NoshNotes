@@ -12,8 +12,22 @@
       android:supportsRtl="true"
       android:theme="@style/Theme.NoshNotes"
       tools:targetApi="31">
+
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="${MAPS_API_KEY}" />
+
     <activity
-        android:name=".MainActivity"
+        android:name=".PlaceActivity"
+        android:exported="false"
+        android:label="@string/title_activity_place"
+        android:theme="@style/Theme.NoshNotes" >
+      <meta-data
+          android:name="android.app.lib_name"
+          android:value="" />
+    </activity>
+    <activity
+        android:name=".ui.main.MainActivity"
         android:exported="true"
         android:label="@string/app_name"
         android:theme="@style/Theme.NoshNotes">
@@ -26,10 +40,6 @@
       <meta-data
           android:name="android.app.lib_name"
           android:value="" />
-
-      <meta-data
-          android:name="com.google.android.geo.API_KEY"
-          android:value="${MAPS_API_KEY}" />
 
     </activity>
   </application>

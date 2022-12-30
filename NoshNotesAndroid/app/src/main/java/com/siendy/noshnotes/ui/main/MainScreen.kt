@@ -1,7 +1,8 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.siendy.noshnotes.ui.screens
+package com.siendy.noshnotes.ui.main
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons.Filled
@@ -18,6 +19,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -25,20 +27,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.siendy.noshnotes.R
-import com.siendy.noshnotes.ui.navigation.TabDestination
+import com.siendy.noshnotes.ui.navigation.Routes.AUTOCOMPLETE_REQUEST_CODE
 import com.siendy.noshnotes.ui.theme.NoshNotesTheme
 
 @Composable
 @Preview
 fun MainScreen() {
   val navController = rememberNavController()
+  val context = LocalContext.current
 
   NoshNotesTheme {
     Scaffold(
@@ -51,7 +58,16 @@ fun MainScreen() {
       floatingActionButtonPosition = FabPosition.End,
       floatingActionButton = {
         FloatingActionButton(
-          onClick = {}
+          onClick = {
+            // Set the fields to specify which types of place data to
+            // return after the user has made a selection.
+            val fields = listOf(Place.Field.ID, Place.Field.NAME)
+
+            // Start the autocomplete intent.
+            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+              .build(context)
+            startActivityForResult(context as Activity, intent, AUTOCOMPLETE_REQUEST_CODE, null)
+          }
         ) {
           Icon(Filled.Add, stringResource(id = R.string.add_place))
         }
