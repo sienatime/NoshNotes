@@ -3,14 +3,18 @@ package com.siendy.noshnotes.ui.main
 import android.app.Activity
 import android.content.Intent
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.libraries.places.widget.Autocomplete
+import com.siendy.noshnotes.TagsRepository
 import com.siendy.noshnotes.data.models.Place
+import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.domain.ConvertPlaceUseCase
 import com.siendy.noshnotes.domain.OpenPlacesAutocompleteUseCase
 import com.siendy.noshnotes.ui.navigation.NavigationEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class MainViewModel(
   private val openPlacesAutocompleteUseCase: OpenPlacesAutocompleteUseCase = OpenPlacesAutocompleteUseCase(),
@@ -19,6 +23,25 @@ class MainViewModel(
 
   private val _uiState = MutableStateFlow(MainUiState())
   val uiState: StateFlow<MainUiState> = _uiState
+
+  init {
+    viewModelScope.launch {
+      TagsRepository().getTags().collect {
+        when {
+          it.isSuccess -> {
+            it.getOrNull()?.let { tags ->
+              _uiState.update { currentUiState ->
+                currentUiState.copy(tags = tags)
+              }
+            }
+          }
+          it.isFailure -> {
+            it.exceptionOrNull()?.printStackTrace()
+          }
+        }
+      }
+    }
+  }
 
   fun openPlacesAutocomplete(activity: Activity) {
     openPlacesAutocompleteUseCase(activity)
@@ -35,5 +58,6 @@ class MainViewModel(
 
 data class MainUiState(
   val places: List<Place> = listOf(),
+  val tags: List<Tag> = listOf(),
   val navigationEvent: NavigationEvent? = null
 )

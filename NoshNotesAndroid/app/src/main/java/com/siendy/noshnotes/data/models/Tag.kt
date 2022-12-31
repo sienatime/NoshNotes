@@ -4,5 +4,6 @@ data class Tag(
   val id: String,
   val name: String,
   val icon: String,
-  val color: String
+  val backgroundColor: String,
+  val textColor: String,
 )
