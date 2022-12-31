@@ -2,7 +2,6 @@ package com.siendy.noshnotes.ui.main
 
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -12,16 +11,13 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.siendy.noshnotes.R
-import com.siendy.noshnotes.data.Constants
 import com.siendy.noshnotes.ui.navigation.NavigationEvent
 import com.siendy.noshnotes.ui.navigation.Routes.AUTOCOMPLETE_REQUEST_CODE
 import com.siendy.noshnotes.ui.navigation.Routes.PLACE_KEY
 import com.siendy.noshnotes.ui.place.PlaceActivity
-import com.siendy.noshnotes.utils.getApplicationInfoCompat
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -29,8 +25,6 @@ class MainActivity : ComponentActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
-    initializeGooglePlaces()
 
     observeUiState()
 
@@ -57,15 +51,6 @@ class MainActivity : ComponentActivity() {
         this.putExtra(PLACE_KEY, place)
       }
     )
-  }
-
-  private fun initializeGooglePlaces() {
-    val appInfo = applicationContext.packageManager.getApplicationInfoCompat(packageName, PackageManager.GET_META_DATA)
-    val metadata = appInfo.metaData
-
-    metadata.getString(Constants.GOOGLE_PLACES_METADATA_KEY)?.let { apiKey ->
-      Places.initialize(applicationContext, apiKey)
-    }
   }
 
   // probably can't do anything about this deprecation unless I implement the autocomplete
