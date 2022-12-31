@@ -3,7 +3,9 @@
 package com.siendy.noshnotes.ui.main
 
 import android.app.Activity
+import android.content.Context
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.Add
@@ -54,28 +56,42 @@ fun MainScreen(
       },
       bottomBar = { BottomNavigationBar(navController) },
       floatingActionButtonPosition = FabPosition.End,
-      floatingActionButton = {
-        FloatingActionButton(
-          onClick = {
-            (context as? Activity)?.let {
-              mainViewModel.openPlacesAutocomplete(it)
-            }
-          }
-        ) {
-          Icon(Filled.Add, stringResource(id = R.string.add_place))
-        }
-      },
+      floatingActionButton = { AddPlaceFAB(context, mainViewModel) },
       content = { padding ->
-        Box(modifier = Modifier.padding(padding)) {
-          BottomBarNavigation(navController = navController)
-        }
+        MainContent(padding, navController)
       }
     )
   }
 }
 
 @Composable
-fun BottomBarNavigation(navController: NavHostController) {
+fun MainContent(
+  padding: PaddingValues,
+  navController: NavHostController
+) {
+  Box(modifier = Modifier.padding(padding)) {
+    BottomBarNavigationHost(navController = navController)
+  }
+}
+
+@Composable
+fun AddPlaceFAB(
+  context: Context,
+  mainViewModel: MainViewModel
+) {
+  FloatingActionButton(
+    onClick = {
+      (context as? Activity)?.let {
+        mainViewModel.openPlacesAutocomplete(it)
+      }
+    }
+  ) {
+    Icon(Filled.Add, stringResource(id = R.string.add_place))
+  }
+}
+
+@Composable
+fun BottomBarNavigationHost(navController: NavHostController) {
   NavHost(navController, startDestination = TabDestination.PlacesList.route) {
     composable(TabDestination.PlacesList.route) {
       PlacesList()

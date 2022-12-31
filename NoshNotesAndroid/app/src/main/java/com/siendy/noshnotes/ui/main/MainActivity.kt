@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -14,8 +15,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.siendy.noshnotes.R
+import com.siendy.noshnotes.data.Constants
+import com.siendy.noshnotes.ui.navigation.NavigationEvent
 import com.siendy.noshnotes.ui.navigation.Routes.AUTOCOMPLETE_REQUEST_CODE
+import com.siendy.noshnotes.ui.navigation.Routes.PLACE_KEY
 import com.siendy.noshnotes.ui.place.PlaceActivity
+import com.siendy.noshnotes.utils.getApplicationInfoCompat
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -26,34 +32,44 @@ class MainActivity : ComponentActivity() {
 
     initializeGooglePlaces()
 
-    lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        viewModel.uiState.collect { uiState ->
-          if (uiState.placeFromAutocomplete != null) {
-            startActivity(
-              Intent(this@MainActivity, PlaceActivity::class.java).apply {
-                this.putExtra("PLACE", uiState.placeFromAutocomplete)
-              }
-            )
-          }
-        }
-      }
-    }
+    observeUiState()
 
     setContent {
       MainScreen()
     }
   }
 
+  private fun observeUiState() {
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewModel.uiState.collect { uiState ->
+          if (uiState.navigationEvent != null && uiState.navigationEvent is NavigationEvent.Place) {
+            openPlace(uiState.navigationEvent.place)
+          }
+        }
+      }
+    }
+  }
+
+  private fun openPlace(place: com.siendy.noshnotes.data.models.Place) {
+    startActivity(
+      Intent(this@MainActivity, PlaceActivity::class.java).apply {
+        this.putExtra(PLACE_KEY, place)
+      }
+    )
+  }
+
   private fun initializeGooglePlaces() {
-    val appInfo = applicationContext.packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+    val appInfo = applicationContext.packageManager.getApplicationInfoCompat(packageName, PackageManager.GET_META_DATA)
     val metadata = appInfo.metaData
 
-    metadata.getString("com.google.android.geo.API_KEY")?.let { apiKey ->
+    metadata.getString(Constants.GOOGLE_PLACES_METADATA_KEY)?.let { apiKey ->
       Places.initialize(applicationContext, apiKey)
     }
   }
 
+  // probably can't do anything about this deprecation unless I implement the autocomplete
+  // activity myself
   @Deprecated("Deprecated in Java")
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
@@ -64,14 +80,13 @@ class MainActivity : ComponentActivity() {
           }
         }
         AutocompleteActivity.RESULT_ERROR -> {
-          // TODO: Handle the error.
           data?.let {
             val status = Autocomplete.getStatusFromIntent(data)
-            Log.i("MainActivity", status.statusMessage ?: "")
+            Log.i("MainActivity", "Failed to get autocompleted place: ${status.statusMessage}")
           }
-        }
-        Activity.RESULT_CANCELED -> {
-          // The user canceled the operation.
+          Toast
+            .makeText(this, R.string.autocomplete_place_error, Toast.LENGTH_SHORT)
+            .show()
         }
       }
       return

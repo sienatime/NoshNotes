@@ -5,4 +5,6 @@ object Routes {
   const val PLACES_MAP = "places_map"
 
   const val AUTOCOMPLETE_REQUEST_CODE = 1
+
+  const val PLACE_KEY = "place"
 }

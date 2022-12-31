@@ -7,6 +7,7 @@ import com.google.android.libraries.places.widget.Autocomplete
 import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.domain.ConvertPlaceUseCase
 import com.siendy.noshnotes.domain.OpenPlacesAutocompleteUseCase
+import com.siendy.noshnotes.ui.navigation.NavigationEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -27,12 +28,12 @@ class MainViewModel(
     val googlePlace = Autocomplete.getPlaceFromIntent(intent)
     val place = convertPlaceUseCase(googlePlace)
     _uiState.update { currentUiState ->
-      currentUiState.copy(placeFromAutocomplete = place)
+      currentUiState.copy(navigationEvent = NavigationEvent.Place(place))
     }
   }
 }
 
 data class MainUiState(
   val places: List<Place> = listOf(),
-  val placeFromAutocomplete: Place? = null
+  val navigationEvent: NavigationEvent? = null
 )

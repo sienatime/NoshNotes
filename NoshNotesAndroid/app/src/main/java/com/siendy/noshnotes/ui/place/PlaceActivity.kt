@@ -11,13 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.siendy.noshnotes.data.models.Place
+import com.siendy.noshnotes.ui.navigation.Routes.PLACE_KEY
 import com.siendy.noshnotes.ui.theme.NoshNotesTheme
+import com.siendy.noshnotes.utils.parcelable
 
 class PlaceActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    val place: Place? = intent.extras?.getParcelable<Place>("PLACE")
+    val place: Place? = intent.parcelable(PLACE_KEY)
 
     setContent {
       NoshNotesTheme {

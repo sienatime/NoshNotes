@@ -22,7 +22,7 @@ class ConvertPlaceUseCase {
       priceLevel = googlePlace.priceLevel?.let {
         val priceLevels = PriceLevel.values()
         if (it < priceLevels.size - 1) {
-          PriceLevel.values()[it]
+          priceLevels[it]
         } else {
           null
         }
