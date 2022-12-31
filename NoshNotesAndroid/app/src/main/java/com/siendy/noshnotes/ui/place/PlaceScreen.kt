@@ -1,6 +1,7 @@
 package com.siendy.noshnotes.ui.place
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -57,43 +58,61 @@ fun PlaceScreen(place: Place) {
         )
       },
       content = { padding ->
-        Column(
-          modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(
-              start = 16.dp,
-              end = 16.dp,
-              top = 24.dp + padding.calculateTopPadding(),
-              bottom = 24.dp + padding.calculateBottomPadding()
-            )
-        ) {
-          Text(
-            text = place.name.orEmpty(),
-            style = MaterialTheme.typography.headlineLarge
-          )
-          place.rating.rating?.let {
-            Row(
-              verticalAlignment = Alignment.CenterVertically,
-            ) {
-              Text(
-                text = "${place.rating.rating}",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(
-                  end = 4.dp
-                )
-              )
-              RatingBar(place.rating.rating)
-              Text(
-                text = stringResource(id = R.string.total_reviews, place.rating.total ?: 0),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(
-                  start = 4.dp
-                )
-              )
-            }
-          }
-        }
+        PlaceContent(padding, place)
       }
+    )
+  }
+}
+
+@Composable
+fun PlaceContent(
+  padding: PaddingValues,
+  place: Place
+) {
+  Column(
+    modifier = Modifier
+      .verticalScroll(rememberScrollState())
+      .padding(
+        start = 16.dp,
+        end = 16.dp,
+        top = 24.dp + padding.calculateTopPadding(),
+        bottom = 24.dp + padding.calculateBottomPadding()
+      )
+  ) {
+    PlaceName(place.name)
+    place.rating.rating?.let {
+      PlaceRating(it, place.rating.total)
+    }
+  }
+}
+
+@Composable
+fun PlaceName(name: String?) {
+  Text(
+    text = name.orEmpty(),
+    style = MaterialTheme.typography.headlineLarge
+  )
+}
+
+@Composable
+fun PlaceRating(rating: Double, total: Int?) {
+  Row(
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Text(
+      text = "$rating",
+      style = MaterialTheme.typography.titleMedium,
+      modifier = Modifier.padding(
+        end = 4.dp
+      )
+    )
+    RatingBar(rating)
+    Text(
+      text = stringResource(id = R.string.total_reviews, total ?: 0),
+      style = MaterialTheme.typography.titleMedium,
+      modifier = Modifier.padding(
+        start = 4.dp
+      )
     )
   }
 }
@@ -101,7 +120,6 @@ fun PlaceScreen(place: Place) {
 @Preview
 @Composable
 fun PlaceScreenPreview() {
-
   PlaceScreen(
     place = Place(
       remoteId = "ChIJDwOJGqu5woAR3tTmF6s8bfE",
