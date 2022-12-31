@@ -13,11 +13,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -51,7 +53,11 @@ fun MainScreen(
     Scaffold(
       topBar = {
         TopAppBar(
-          title = { Text(stringResource(id = R.string.app_name)) }
+          title = { Text(stringResource(id = R.string.app_name)) },
+          colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary
+          )
         )
       },
       bottomBar = { BottomNavigationBar(navController) },
@@ -86,7 +92,7 @@ fun AddPlaceFAB(
       }
     }
   ) {
-    Icon(Filled.Add, stringResource(id = R.string.add_place))
+    Icon(Filled.Add, stringResource(id = R.string.add_place_fab))
   }
 }
 
