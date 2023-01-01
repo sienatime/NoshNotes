@@ -5,6 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Place(
+  var uid: String? = null,
   val remoteId: String? = null,
   val name: String? = null,
   val latLong: LatLong? = null,

@@ -51,6 +51,30 @@ class FirebaseRealTimeDatabaseDataSource {
     }
   }
 
+  fun getPlaces(): Flow<Result<List<Place>>> = callbackFlow {
+    val placesListener = object : ValueEventListener {
+      override fun onCancelled(error: DatabaseError) {
+        this@callbackFlow.trySendBlocking(Result.failure(error.toException()))
+      }
+
+      override fun onDataChange(dataSnapshot: DataSnapshot) {
+        val items = dataSnapshot.children.map { childDataSnapshot ->
+          childDataSnapshot.getValue(Place::class.java)?.apply {
+            this.uid = childDataSnapshot.key
+          }
+        }
+        this@callbackFlow.trySendBlocking(Result.success(items.filterNotNull()))
+      }
+    }
+    database.getReference(placeReference)
+      .addValueEventListener(placesListener)
+
+    awaitClose {
+      database.getReference(placeReference)
+        .removeEventListener(placesListener)
+    }
+  }
+
   fun addTag(tag: Tag) {
     databaseReference.child(tagReference).push().key?.let { key ->
 

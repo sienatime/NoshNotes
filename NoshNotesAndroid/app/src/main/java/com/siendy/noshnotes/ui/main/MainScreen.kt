@@ -4,6 +4,7 @@ package com.siendy.noshnotes.ui.main
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -42,8 +43,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.siendy.noshnotes.R
+import com.siendy.noshnotes.data.models.LatLong
+import com.siendy.noshnotes.data.models.Place
+import com.siendy.noshnotes.data.models.Rating
 import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.ui.components.AllTags
+import com.siendy.noshnotes.ui.navigation.Routes
+import com.siendy.noshnotes.ui.place.PlaceActivity
 import com.siendy.noshnotes.ui.theme.NoshNotesTheme
 
 @Composable
@@ -70,7 +76,7 @@ fun MainScreen(
       floatingActionButtonPosition = FabPosition.End,
       floatingActionButton = { AddPlaceFAB(context, mainViewModel) },
       content = { padding ->
-        MainContent(padding, navController, mainUiState.tags, mainViewModel)
+        MainContent(padding, navController, mainUiState.tags, context)
       }
     )
   }
@@ -81,24 +87,29 @@ fun MainContent(
   padding: PaddingValues,
   navController: NavHostController,
   tags: List<Tag>,
-  viewModel: MainViewModel
+  context: Context
 ) {
   Box(modifier = Modifier.padding(padding)) {
 
     Column {
       Button(
         onClick = {
-          viewModel.writeTag(
-            Tag(
-              name = "Lunch",
-              backgroundColor = "#FFF59D",
-              textColor = "#757575",
-              icon = "lunch",
-            )
+          val place = Place(
+            remoteId = "ChIJDwOJGqu5woAR3tTmF6s8bfE",
+            name = "Sonoratown",
+            latLong = LatLong(34.0539254, -118.3553033),
+            address = "5610 San Vicente Blvd, Los Angeles, CA 90019, USA",
+            rating = Rating(total = 76, rating = 4.7),
+            priceLevel = 1
+          )
+          context.startActivity(
+            Intent(context, PlaceActivity::class.java).apply {
+              this.putExtra(Routes.PLACE_KEY, place)
+            }
           )
         },
       ) {
-        Text("add tag")
+        Text("open place")
       }
 
       AllTags(tags)
