@@ -5,10 +5,12 @@ package com.siendy.noshnotes.ui.main
 import android.app.Activity
 import android.content.Context
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
@@ -21,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -39,6 +42,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.siendy.noshnotes.R
+import com.siendy.noshnotes.data.models.Tag
+import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.theme.NoshNotesTheme
 
 @Composable
@@ -48,6 +53,7 @@ fun MainScreen(
 ) {
   val navController = rememberNavController()
   val context = LocalContext.current
+  val mainUiState by mainViewModel.uiState.collectAsState()
 
   NoshNotesTheme {
     Scaffold(
@@ -64,7 +70,7 @@ fun MainScreen(
       floatingActionButtonPosition = FabPosition.End,
       floatingActionButton = { AddPlaceFAB(context, mainViewModel) },
       content = { padding ->
-        MainContent(padding, navController)
+        MainContent(padding, navController, mainUiState.tags, mainViewModel)
       }
     )
   }
@@ -73,10 +79,32 @@ fun MainScreen(
 @Composable
 fun MainContent(
   padding: PaddingValues,
-  navController: NavHostController
+  navController: NavHostController,
+  tags: List<Tag>,
+  viewModel: MainViewModel
 ) {
   Box(modifier = Modifier.padding(padding)) {
-    BottomBarNavigationHost(navController = navController)
+
+    Column {
+      Button(
+        onClick = {
+          viewModel.writeTag(
+            Tag(
+              name = "Lunch",
+              backgroundColor = "#FFF59D",
+              textColor = "#757575",
+              icon = "lunch",
+            )
+          )
+        },
+      ) {
+        Text("add tag")
+      }
+
+      AllTags(tags)
+
+      BottomBarNavigationHost(navController = navController)
+    }
   }
 }
 

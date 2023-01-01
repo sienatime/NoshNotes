@@ -2,6 +2,7 @@ package com.siendy.noshnotes.data.datasources
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.siendy.noshnotes.data.models.Tag
@@ -18,12 +19,12 @@ class FirebaseRealTimeDatabaseDataSource {
     FirebaseDatabase.getInstance(url)
   }
 
-  private val tagsReference by lazy {
-    database.getReference("tags")
+  private val databaseReference: DatabaseReference by lazy {
+    database.reference
   }
 
   // https://medium.com/swlh/how-to-use-firebase-realtime-database-with-kotlin-coroutine-flow-946fe4cf2cd9
-  fun getTags(): Flow<Result<List<Tag>>> = callbackFlow<Result<List<Tag>>> {
+  fun getTags(): Flow<Result<List<Tag>>> = callbackFlow {
     val tagsListener = object : ValueEventListener {
       override fun onCancelled(error: DatabaseError) {
         this@callbackFlow.trySendBlocking(Result.failure(error.toException()))
@@ -46,6 +47,13 @@ class FirebaseRealTimeDatabaseDataSource {
   }
 
   fun writeTag(tag: Tag) {
-    tagsReference.setValue(tag)
+    databaseReference.child(tagReference).push().key?.let { key ->
+
+      val childUpdates = hashMapOf<String, Any>(
+        "/$tagReference/$key" to tag.toMap()
+      )
+
+      databaseReference.updateChildren(childUpdates)
+    }
   }
 }

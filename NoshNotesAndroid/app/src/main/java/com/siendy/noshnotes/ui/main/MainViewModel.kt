@@ -18,7 +18,8 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
   private val openPlacesAutocompleteUseCase: OpenPlacesAutocompleteUseCase = OpenPlacesAutocompleteUseCase(),
-  private val convertPlaceUseCase: ConvertPlaceUseCase = ConvertPlaceUseCase()
+  private val convertPlaceUseCase: ConvertPlaceUseCase = ConvertPlaceUseCase(),
+  private val tagsRepository: TagsRepository = TagsRepository()
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(MainUiState())
@@ -26,7 +27,7 @@ class MainViewModel(
 
   init {
     viewModelScope.launch {
-      TagsRepository().getTags().collect {
+      tagsRepository.getTags().collect {
         when {
           it.isSuccess -> {
             it.getOrNull()?.let { tags ->
@@ -41,6 +42,10 @@ class MainViewModel(
         }
       }
     }
+  }
+
+  fun writeTag(tag: Tag) {
+    tagsRepository.writeTag(tag)
   }
 
   fun openPlacesAutocomplete(activity: Activity) {
