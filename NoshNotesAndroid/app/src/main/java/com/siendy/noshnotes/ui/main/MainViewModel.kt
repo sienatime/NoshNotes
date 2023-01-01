@@ -5,9 +5,9 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.libraries.places.widget.Autocomplete
-import com.siendy.noshnotes.TagsRepository
 import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.data.models.Tag
+import com.siendy.noshnotes.data.repositories.TagsRepository
 import com.siendy.noshnotes.domain.ConvertPlaceUseCase
 import com.siendy.noshnotes.domain.OpenPlacesAutocompleteUseCase
 import com.siendy.noshnotes.ui.navigation.NavigationEvent

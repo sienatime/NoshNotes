@@ -2,8 +2,8 @@ package com.siendy.noshnotes.ui.place
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.siendy.noshnotes.TagsRepository
 import com.siendy.noshnotes.data.models.Place
+import com.siendy.noshnotes.data.repositories.TagsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update

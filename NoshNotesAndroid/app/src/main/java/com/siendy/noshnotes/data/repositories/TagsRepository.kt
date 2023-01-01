@@ -1,4 +1,4 @@
-package com.siendy.noshnotes
+package com.siendy.noshnotes.data.repositories
 
 import com.siendy.noshnotes.data.datasources.FirebaseRealTimeDatabaseDataSource
 import com.siendy.noshnotes.data.models.Tag
