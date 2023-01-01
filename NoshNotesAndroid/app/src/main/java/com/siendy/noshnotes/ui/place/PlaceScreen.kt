@@ -17,25 +17,33 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.siendy.noshnotes.R
 import com.siendy.noshnotes.data.models.LatLong
 import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.data.models.PriceLevel
 import com.siendy.noshnotes.data.models.Rating
+import com.siendy.noshnotes.data.models.Tag
+import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.components.RatingBar
 import com.siendy.noshnotes.ui.theme.NoshNotesTheme
 import com.siendy.noshnotes.utils.orEmpty
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PlaceScreen(place: Place) {
+fun PlaceScreen(
+  placeViewModel: PlaceViewModel = viewModel()
+) {
   val navController = rememberNavController()
+  val placeUiState by placeViewModel.uiState.collectAsState()
 
   NoshNotesTheme {
     Scaffold(
@@ -58,7 +66,7 @@ fun PlaceScreen(place: Place) {
         )
       },
       content = { padding ->
-        PlaceContent(padding, place)
+        PlaceContent(padding, placeUiState)
       }
     )
   }
@@ -67,7 +75,7 @@ fun PlaceScreen(place: Place) {
 @Composable
 fun PlaceContent(
   padding: PaddingValues,
-  place: Place
+  placeUiState: PlaceUiState
 ) {
   Column(
     modifier = Modifier
@@ -79,9 +87,16 @@ fun PlaceContent(
         bottom = 24.dp + padding.calculateBottomPadding()
       )
   ) {
-    PlaceName(place.name)
-    place.rating.rating?.let {
-      PlaceRating(it, place.rating.total)
+    if (placeUiState.place == null) {
+      Text(stringResource(R.string.place_error))
+    } else {
+      val place = placeUiState.place
+
+      PlaceName(place.name)
+      place.rating.rating?.let {
+        PlaceRating(it, place.rating.total)
+      }
+      AllTags(tags = placeUiState.tags)
     }
   }
 }
@@ -117,10 +132,10 @@ fun PlaceRating(rating: Double, total: Int?) {
   }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-fun PlaceScreenPreview() {
-  PlaceScreen(
+fun PlaceContentPreview() {
+  val placeUiState = PlaceUiState(
     place = Place(
       remoteId = "ChIJDwOJGqu5woAR3tTmF6s8bfE",
       name = "Sonoratown",
@@ -128,6 +143,28 @@ fun PlaceScreenPreview() {
       address = "5610 San Vicente Blvd, Los Angeles, CA 90019, USA",
       rating = Rating(total = 76, rating = 4.7),
       priceLevel = PriceLevel.ONE
+    ),
+    tags = listOf(
+      Tag(
+        name = "Dinner",
+        backgroundColor = "#FFCC80",
+        textColor = "#757575",
+        icon = "dinner",
+      ),
+      Tag(
+        name = "Lunch",
+        backgroundColor = "#FFF59D",
+        textColor = "#757575",
+        icon = "lunch",
+      )
     )
   )
+
+  PlaceContent(padding = PaddingValues(), placeUiState = placeUiState)
+}
+
+@Preview
+@Composable
+fun PlaceScreenPreview() {
+  PlaceScreen()
 }

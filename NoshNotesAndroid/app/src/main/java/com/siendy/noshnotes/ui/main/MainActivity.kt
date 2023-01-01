@@ -70,7 +70,7 @@ class MainActivity : ComponentActivity() {
             Log.i("MainActivity", "Failed to get autocompleted place: ${status.statusMessage}")
           }
           Toast
-            .makeText(this, R.string.autocomplete_place_error, Toast.LENGTH_SHORT)
+            .makeText(this, R.string.place_error, Toast.LENGTH_SHORT)
             .show()
         }
       }
