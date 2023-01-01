@@ -2,7 +2,6 @@ package com.siendy.noshnotes.domain
 
 import com.google.android.libraries.places.api.model.Place
 import com.siendy.noshnotes.data.models.LatLong
-import com.siendy.noshnotes.data.models.PriceLevel
 import com.siendy.noshnotes.data.models.Rating
 
 class ConvertPlaceUseCase {
@@ -19,14 +18,7 @@ class ConvertPlaceUseCase {
         rating = googlePlace.rating,
         total = googlePlace.userRatingsTotal
       ),
-      priceLevel = googlePlace.priceLevel?.let {
-        val priceLevels = PriceLevel.values()
-        if (it < priceLevels.size - 1) {
-          priceLevels[it]
-        } else {
-          null
-        }
-      }
+      priceLevel = googlePlace.priceLevel
     )
   }
 }

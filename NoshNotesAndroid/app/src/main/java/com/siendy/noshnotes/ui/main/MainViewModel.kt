@@ -45,7 +45,7 @@ class MainViewModel(
   }
 
   fun writeTag(tag: Tag) {
-    tagsRepository.writeTag(tag)
+    tagsRepository.addTag(tag)
   }
 
   fun openPlacesAutocomplete(activity: Activity) {

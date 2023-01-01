@@ -5,12 +5,12 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Place(
-  val remoteId: String?,
-  val name: String?,
-  val latLong: LatLong,
-  val address: String?,
-  val rating: Rating,
-  val priceLevel: PriceLevel?
-) : Parcelable {
-  // lazy loaded image
-}
+  val remoteId: String? = null,
+  val name: String? = null,
+  val latLong: LatLong? = null,
+  val address: String? = null,
+  val rating: Rating? = null,
+  val priceLevel: Int? = null,
+  val note: String? = null,
+  val tags: List<Tag> = emptyList()
+) : Parcelable

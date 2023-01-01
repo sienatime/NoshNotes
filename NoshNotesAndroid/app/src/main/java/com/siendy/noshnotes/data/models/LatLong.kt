@@ -5,6 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class LatLong(
-  val latitude: Double?,
-  val longitude: Double?
+  val latitude: Double? = null,
+  val longitude: Double? = null
 ) : Parcelable

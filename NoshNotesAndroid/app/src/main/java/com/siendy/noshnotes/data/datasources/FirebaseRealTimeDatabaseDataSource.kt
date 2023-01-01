@@ -5,6 +5,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.siendy.noshnotes.data.models.FirebasePlace
+import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.data.models.Tag
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
@@ -14,6 +16,7 @@ import kotlinx.coroutines.flow.callbackFlow
 class FirebaseRealTimeDatabaseDataSource {
   private val url = "https://nosh-notes-default-rtdb.firebaseio.com/"
   private val tagReference = "tags"
+  private val placeReference = "places"
 
   private val database: FirebaseDatabase by lazy {
     FirebaseDatabase.getInstance(url)
@@ -32,7 +35,9 @@ class FirebaseRealTimeDatabaseDataSource {
 
       override fun onDataChange(dataSnapshot: DataSnapshot) {
         val items = dataSnapshot.children.map { childDataSnapshot ->
-          childDataSnapshot.getValue(Tag::class.java)
+          childDataSnapshot.getValue(Tag::class.java)?.apply {
+            this.uid = childDataSnapshot.key
+          }
         }
         this@callbackFlow.trySendBlocking(Result.success(items.filterNotNull()))
       }
@@ -46,12 +51,29 @@ class FirebaseRealTimeDatabaseDataSource {
     }
   }
 
-  fun writeTag(tag: Tag) {
+  fun addTag(tag: Tag) {
     databaseReference.child(tagReference).push().key?.let { key ->
 
       val childUpdates = hashMapOf<String, Any>(
         "/$tagReference/$key" to tag.toMap()
       )
+
+      databaseReference.updateChildren(childUpdates)
+    }
+  }
+
+  fun addPlace(place: Place) {
+    databaseReference.child(placeReference).push().key?.let { key ->
+
+      val firebasePlace = FirebasePlace.fromPlace(place)
+
+      val childUpdates = mutableMapOf<String, Any>(
+        "/$placeReference/$key" to firebasePlace.toMap()
+      )
+
+      firebasePlace.tags.forEach { tagId ->
+        childUpdates["/$tagReference/$tagId/$placeReference/$key"] = true
+      }
 
       databaseReference.updateChildren(childUpdates)
     }

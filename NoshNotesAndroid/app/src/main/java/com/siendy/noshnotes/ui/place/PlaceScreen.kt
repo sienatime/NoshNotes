@@ -29,7 +29,6 @@ import androidx.navigation.compose.rememberNavController
 import com.siendy.noshnotes.R
 import com.siendy.noshnotes.data.models.LatLong
 import com.siendy.noshnotes.data.models.Place
-import com.siendy.noshnotes.data.models.PriceLevel
 import com.siendy.noshnotes.data.models.Rating
 import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.ui.components.AllTags
@@ -93,7 +92,7 @@ fun PlaceContent(
       val place = placeUiState.place
 
       PlaceName(place.name)
-      place.rating.rating?.let {
+      place.rating?.rating?.let {
         PlaceRating(it, place.rating.total)
       }
       AllTags(tags = placeUiState.tags)
@@ -142,7 +141,7 @@ fun PlaceContentPreview() {
       latLong = LatLong(34.0539254, -118.3553033),
       address = "5610 San Vicente Blvd, Los Angeles, CA 90019, USA",
       rating = Rating(total = 76, rating = 4.7),
-      priceLevel = PriceLevel.ONE
+      priceLevel = 1
     ),
     tags = listOf(
       Tag(

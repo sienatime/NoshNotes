@@ -14,7 +14,7 @@ class TagsRepository {
     return databaseDataSource.getTags()
   }
 
-  fun writeTag(tag: Tag) {
-    databaseDataSource.writeTag(tag)
+  fun addTag(tag: Tag) {
+    databaseDataSource.addTag(tag)
   }
 }
