@@ -8,4 +8,5 @@
   <string name="place_error">Failed to get place data.</string>
   <string name="back">Back</string>
   <string name="total_reviews">(%d)</string>
+  <string name="save">Save</string>
 </resources>
