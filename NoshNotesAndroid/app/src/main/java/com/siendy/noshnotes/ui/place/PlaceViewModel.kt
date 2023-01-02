@@ -6,6 +6,8 @@ import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.data.repositories.PlacesRepository
 import com.siendy.noshnotes.data.repositories.TagsRepository
+import com.siendy.noshnotes.ui.components.AllTagsState
+import com.siendy.noshnotes.ui.components.TagState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -25,7 +27,17 @@ class PlaceViewModel(
           it.isSuccess -> {
             it.getOrNull()?.let { tags ->
               _uiState.update { currentUiState ->
-                currentUiState.copy(tags = tags)
+                currentUiState.copy(
+                  allTagsState = AllTagsState(
+                    tagStates = tags.map { tag ->
+                      TagState(
+                        tag,
+                        selected = false,
+                        clickable = true
+                      )
+                    }
+                  )
+                )
               }
             }
           }
@@ -46,5 +58,13 @@ class PlaceViewModel(
   fun addPlace(place: Place, tags: List<Tag>) {
     val placeWithTags = place.copy(tags = tags)
     placesRepository.addPlace(placeWithTags)
+  }
+
+  fun onTagSelected(tagState: TagState) {
+    _uiState.update { currentUiState ->
+      currentUiState.copy(
+        allTagsState = currentUiState.allTagsState?.updateSelectedTag(tagState)
+      )
+    }
   }
 }

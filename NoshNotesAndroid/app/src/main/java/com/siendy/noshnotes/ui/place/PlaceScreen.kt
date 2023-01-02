@@ -33,7 +33,9 @@ import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.data.models.Rating
 import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.ui.components.AllTags
+import com.siendy.noshnotes.ui.components.AllTagsState
 import com.siendy.noshnotes.ui.components.RatingBar
+import com.siendy.noshnotes.ui.components.TagState
 import com.siendy.noshnotes.ui.theme.NoshNotesTheme
 import com.siendy.noshnotes.utils.orEmpty
 
@@ -97,14 +99,26 @@ fun PlaceContent(
       place.rating?.rating?.let {
         PlaceRating(it, place.rating.total)
       }
-      AllTags(tags = placeUiState.tags)
 
-      Button(
-        onClick = {
-          placeViewModel.addPlace(place, placeUiState.tags)
-        },
-      ) {
-        Text(stringResource(id = R.string.save))
+      placeUiState.allTagsState?.let {
+        AllTags(
+          allTagsState = it
+        ) { tagState ->
+          placeViewModel.onTagSelected(tagState)
+        }
+
+        Button(
+          onClick = {
+            placeViewModel.addPlace(
+              place,
+              it.tagStates.map { tagState ->
+                tagState.tag
+              }
+            )
+          },
+        ) {
+          Text(stringResource(id = R.string.save))
+        }
       }
     }
   }
@@ -153,18 +167,24 @@ fun PlaceContentPreview() {
       rating = Rating(total = 76, rating = 4.7),
       priceLevel = 1
     ),
-    tags = listOf(
-      Tag(
-        name = "Dinner",
-        backgroundColor = "#FFCC80",
-        textColor = "#757575",
-        icon = "dinner",
-      ),
-      Tag(
-        name = "Lunch",
-        backgroundColor = "#FFF59D",
-        textColor = "#757575",
-        icon = "lunch",
+    allTagsState = AllTagsState(
+      tagStates = listOf(
+        TagState(
+          tag = Tag(
+            name = "Dinner",
+            backgroundColor = "#FFCC80",
+            textColor = "#757575",
+            icon = "dinner",
+          )
+        ),
+        TagState(
+          tag = Tag(
+            name = "Lunch",
+            backgroundColor = "#FFF59D",
+            textColor = "#757575",
+            icon = "lunch",
+          )
+        )
       )
     )
   )

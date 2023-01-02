@@ -48,6 +48,8 @@ import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.data.models.Rating
 import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.ui.components.AllTags
+import com.siendy.noshnotes.ui.components.AllTagsState
+import com.siendy.noshnotes.ui.components.TagState
 import com.siendy.noshnotes.ui.navigation.Routes
 import com.siendy.noshnotes.ui.place.PlaceActivity
 import com.siendy.noshnotes.ui.theme.NoshNotesTheme
@@ -112,7 +114,13 @@ fun MainContent(
         Text("open place")
       }
 
-      AllTags(tags)
+      AllTags(
+        AllTagsState(
+          tagStates = tags.map { tag ->
+            TagState(tag = tag)
+          }
+        )
+      )
 
       BottomBarNavigationHost(navController = navController)
     }

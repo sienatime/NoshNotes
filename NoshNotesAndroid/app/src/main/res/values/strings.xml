@@ -9,4 +9,5 @@
   <string name="back">Back</string>
   <string name="total_reviews">(%d)</string>
   <string name="save">Save</string>
+  <string name="unselect">Unselect</string>
 </resources>
