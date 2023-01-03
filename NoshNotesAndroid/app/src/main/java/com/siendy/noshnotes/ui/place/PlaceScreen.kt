@@ -26,6 +26,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import com.siendy.noshnotes.R
 import com.siendy.noshnotes.data.models.LatLong
@@ -34,8 +38,11 @@ import com.siendy.noshnotes.data.models.Rating
 import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.components.AllTagsState
+import com.siendy.noshnotes.ui.components.NewTagDialog
 import com.siendy.noshnotes.ui.components.RatingBar
+import com.siendy.noshnotes.ui.components.TagChip
 import com.siendy.noshnotes.ui.components.TagState
+import com.siendy.noshnotes.ui.navigation.Routes
 import com.siendy.noshnotes.ui.theme.NoshNotesTheme
 import com.siendy.noshnotes.utils.orEmpty
 
@@ -68,7 +75,11 @@ fun PlaceScreen(
         )
       },
       content = { padding ->
-        PlaceContent(padding, placeUiState, placeViewModel)
+        PlaceContent(
+          padding,
+          placeUiState,
+          placeViewModel
+        )
       }
     )
   }
@@ -80,14 +91,40 @@ fun PlaceContent(
   placeUiState: PlaceUiState,
   placeViewModel: PlaceViewModel = viewModel()
 ) {
+  val navController = rememberNavController()
+
+  NavHost(
+    navController,
+    Routes.ADD_NEW_PLACE,
+    Modifier.padding(padding)
+  ) {
+    composable(Routes.ADD_NEW_PLACE) {
+      PlaceDetails(
+        placeUiState,
+        placeViewModel,
+        navController
+      )
+    }
+    dialog(Routes.ADD_NEW_TAG) {
+      NewTagDialog()
+    }
+  }
+}
+
+@Composable
+fun PlaceDetails(
+  placeUiState: PlaceUiState,
+  placeViewModel: PlaceViewModel = viewModel(),
+  navController: NavHostController? = null
+) {
   Column(
     modifier = Modifier
       .verticalScroll(rememberScrollState())
       .padding(
         start = 16.dp,
         end = 16.dp,
-        top = 24.dp + padding.calculateTopPadding(),
-        bottom = 24.dp + padding.calculateBottomPadding()
+        top = 24.dp,
+        bottom = 24.dp
       )
   ) {
     if (placeUiState.place == null) {
@@ -101,10 +138,24 @@ fun PlaceContent(
       }
 
       placeUiState.allTagsState?.let {
-        AllTags(
-          allTagsState = it
-        ) { tagState ->
-          placeViewModel.onTagSelected(tagState)
+        Row {
+          AllTags(
+            allTagsState = it
+          ) { tagState ->
+            placeViewModel.onTagSelected(tagState)
+          }
+
+          TagChip(
+            tagState = TagState(
+              tag = Tag(
+                name = stringResource(R.string.new_tag_chip_label)
+              ),
+              clickable = true
+            ),
+            onTagSelected = {
+              navController?.navigate(Routes.ADD_NEW_TAG)
+            }
+          )
         }
 
         Button(

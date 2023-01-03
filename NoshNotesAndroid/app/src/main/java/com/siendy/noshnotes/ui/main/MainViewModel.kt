@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.libraries.places.widget.Autocomplete
-import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.data.repositories.PlacesRepository
 import com.siendy.noshnotes.data.repositories.TagsRepository
 import com.siendy.noshnotes.domain.ConvertPlaceUseCase
@@ -56,10 +55,6 @@ class MainViewModel(
         }
       }
     }
-  }
-
-  fun writeTag(tag: Tag) {
-    tagsRepository.addTag(tag)
   }
 
   fun openPlacesAutocomplete(activity: Activity) {
