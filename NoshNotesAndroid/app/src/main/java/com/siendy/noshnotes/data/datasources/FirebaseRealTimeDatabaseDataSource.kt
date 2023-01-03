@@ -51,19 +51,19 @@ class FirebaseRealTimeDatabaseDataSource {
     }
   }
 
-  fun getPlaces(): Flow<Result<List<Place>>> = callbackFlow {
+  fun getPlaces(): Flow<List<FirebasePlace>> = callbackFlow {
     val placesListener = object : ValueEventListener {
       override fun onCancelled(error: DatabaseError) {
-        this@callbackFlow.trySendBlocking(Result.failure(error.toException()))
+        this@callbackFlow.trySendBlocking(emptyList())
       }
 
       override fun onDataChange(dataSnapshot: DataSnapshot) {
         val items = dataSnapshot.children.map { childDataSnapshot ->
-          childDataSnapshot.getValue(Place::class.java)?.apply {
+          childDataSnapshot.getValue(FirebasePlace::class.java)?.apply {
             this.uid = childDataSnapshot.key
           }
         }
-        this@callbackFlow.trySendBlocking(Result.success(items.filterNotNull()))
+        this@callbackFlow.trySendBlocking(items.filterNotNull())
       }
     }
     database.getReference(placeReference)
@@ -95,7 +95,8 @@ class FirebaseRealTimeDatabaseDataSource {
         "/$placeReference/$key" to firebasePlace.toMap()
       )
 
-      firebasePlace.tags.forEach { tagId ->
+      firebasePlace.tags.forEach { mapEntry ->
+        val tagId = mapEntry.key
         childUpdates["/$tagReference/$tagId/$placeReference/$key"] = true
       }
 

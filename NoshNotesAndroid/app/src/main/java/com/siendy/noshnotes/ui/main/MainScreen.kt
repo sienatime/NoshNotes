@@ -46,10 +46,7 @@ import com.siendy.noshnotes.R
 import com.siendy.noshnotes.data.models.LatLong
 import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.data.models.Rating
-import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.ui.components.AllTags
-import com.siendy.noshnotes.ui.components.AllTagsState
-import com.siendy.noshnotes.ui.components.TagState
 import com.siendy.noshnotes.ui.navigation.Routes
 import com.siendy.noshnotes.ui.place.PlaceActivity
 import com.siendy.noshnotes.ui.theme.NoshNotesTheme
@@ -78,7 +75,13 @@ fun MainScreen(
       floatingActionButtonPosition = FabPosition.End,
       floatingActionButton = { AddPlaceFAB(context, mainViewModel) },
       content = { padding ->
-        MainContent(padding, navController, mainUiState.tags, context)
+        MainContent(
+          padding,
+          navController,
+          mainUiState,
+          context,
+          mainViewModel
+        )
       }
     )
   }
@@ -88,8 +91,9 @@ fun MainScreen(
 fun MainContent(
   padding: PaddingValues,
   navController: NavHostController,
-  tags: List<Tag>,
-  context: Context
+  mainUiState: MainUiState,
+  context: Context,
+  mainViewModel: MainViewModel = viewModel()
 ) {
   Box(modifier = Modifier.padding(padding)) {
 
@@ -114,15 +118,19 @@ fun MainContent(
         Text("open place")
       }
 
-      AllTags(
-        AllTagsState(
-          tagStates = tags.map { tag ->
-            TagState(tag = tag)
+      mainUiState.allTagsState?.let {
+        AllTags(
+          it,
+          onTagSelected = { tagState ->
+            mainViewModel.onTagSelected(tagState)
           }
         )
-      )
+      }
 
-      BottomBarNavigationHost(navController = navController)
+      BottomBarNavigationHost(
+        navController = navController,
+        mainUiState.filteredPlaces
+      )
     }
   }
 }
@@ -144,10 +152,13 @@ fun AddPlaceFAB(
 }
 
 @Composable
-fun BottomBarNavigationHost(navController: NavHostController) {
+fun BottomBarNavigationHost(
+  navController: NavHostController,
+  filteredPlaces: List<Place>
+) {
   NavHost(navController, startDestination = TabDestination.PlacesList.route) {
     composable(TabDestination.PlacesList.route) {
-      PlacesList()
+      PlacesList(filteredPlaces)
     }
     composable(TabDestination.PlacesMap.route) {
       PlacesMap()
