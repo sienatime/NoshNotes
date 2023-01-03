@@ -13,4 +13,5 @@
   <string name="new_tag_name">New Tag Name</string>
   <string name="new_tag_chip_label">New</string>
   <string name="cancel">Cancel</string>
+  <string name="no_places">No places. Try some filters!</string>
 </resources>

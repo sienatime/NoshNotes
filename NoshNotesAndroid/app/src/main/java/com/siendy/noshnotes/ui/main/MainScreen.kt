@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -97,7 +98,12 @@ fun MainContent(
 ) {
   Box(modifier = Modifier.padding(padding)) {
 
-    Column {
+    Column(
+      modifier = Modifier.padding(
+        horizontal = 16.dp,
+        vertical = 24.dp
+      )
+    ) {
       Button(
         onClick = {
           val place = Place(

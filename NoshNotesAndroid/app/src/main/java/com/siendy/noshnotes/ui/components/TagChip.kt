@@ -10,7 +10,6 @@ import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.siendy.noshnotes.R
 import com.siendy.noshnotes.data.models.Tag
+import com.siendy.noshnotes.ui.theme.Gray
 import com.siendy.noshnotes.utils.applySelectedStyle
 import com.siendy.noshnotes.utils.fromHex
 import com.siendy.noshnotes.utils.orEmpty
@@ -82,12 +82,12 @@ fun TagChip(
 
   val contentColor: Color = getColor(
     tag.textColor,
-    MaterialTheme.colorScheme.onTertiary
+    Color.DarkGray
   ).applySelectedStyle(tagState.selected)
 
   val backgroundColor: Color = getColor(
     tag.backgroundColor,
-    MaterialTheme.colorScheme.tertiary
+    Gray
   ).applySelectedStyle(tagState.selected)
 
   backgroundColor.alpha + 0.2f
@@ -138,6 +138,7 @@ private fun iconNameToDrawable(iconName: String?): Int {
   return when (iconName) {
     "dinner" -> R.drawable.ic_baseline_dinner_dining_24
     "lunch" -> R.drawable.ic_baseline_lunch_dining_24
+    "add" -> R.drawable.ic_baseline_add_circle_outline_24
     else -> R.drawable.ic_baseline_location_on_24
   }
 }

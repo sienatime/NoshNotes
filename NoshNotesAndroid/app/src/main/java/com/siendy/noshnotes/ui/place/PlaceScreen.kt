@@ -148,7 +148,10 @@ fun PlaceDetails(
           TagChip(
             tagState = TagState(
               tag = Tag(
-                name = stringResource(R.string.new_tag_chip_label)
+                name = stringResource(R.string.new_tag_chip_label),
+                icon = "add",
+                backgroundColor = "#E1F1F0",
+                textColor = "#018786"
               ),
               clickable = true
             ),
