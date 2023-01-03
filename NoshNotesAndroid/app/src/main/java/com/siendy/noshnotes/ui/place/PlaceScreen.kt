@@ -162,7 +162,9 @@ fun PlaceDetails(
           onClick = {
             placeViewModel.addPlace(
               place,
-              it.tagStates.map { tagState ->
+              it.tagStates.filter {
+                it.selected
+              }.map { tagState ->
                 tagState.tag
               }
             )
