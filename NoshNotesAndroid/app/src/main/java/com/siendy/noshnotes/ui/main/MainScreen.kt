@@ -140,7 +140,7 @@ fun MainContent(
       Button(
         onClick = {
           rootNavController?.navigate(Routes.place("ChIJDwOJGqu5woAR3tTmF6s8bfE"))
-        },
+        }
       ) {
         Text("open test place")
       }

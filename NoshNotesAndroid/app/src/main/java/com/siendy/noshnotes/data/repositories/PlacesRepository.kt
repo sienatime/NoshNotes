@@ -35,7 +35,7 @@ class PlacesRepository() {
     val tagsSet = tagIds.toSet()
     return getPlaces().map {
       it.filter { firebasePlace ->
-        firebasePlace.hasAnyTag(tagsSet)
+        firebasePlace.hasAllTags(tagsSet)
       }
     }.map {
       it.mapNotNull { firebasePlace ->

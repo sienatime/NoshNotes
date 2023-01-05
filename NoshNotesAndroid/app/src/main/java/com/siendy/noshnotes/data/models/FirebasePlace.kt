@@ -1,7 +1,6 @@
 package com.siendy.noshnotes.data.models
 
 import com.google.firebase.database.Exclude
-import com.siendy.noshnotes.utils.containsAny
 
 data class FirebasePlace(
   var uid: String? = null,
@@ -19,8 +18,8 @@ data class FirebasePlace(
   }
 
   @Exclude
-  fun hasAnyTag(tagsSet: Set<String>): Boolean {
-    return tags.keys.containsAny(tagsSet)
+  fun hasAllTags(tagsSet: Set<String>): Boolean {
+    return tags.keys.containsAll(tagsSet)
   }
 
   companion object {
