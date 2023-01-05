@@ -1,9 +1,8 @@
 package com.siendy.noshnotes.ui.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.AssistChip
@@ -12,6 +11,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -28,17 +28,21 @@ import com.siendy.noshnotes.utils.orEmpty
 @Composable
 fun AllTags(
   allTagsState: AllTagsState,
-  modifier: Modifier = Modifier,
+  additionalTag: @Composable () -> Unit = {},
   onTagSelected: (TagState) -> Unit = {}
 ) {
-  Row(modifier = modifier) {
+  FlowRow(
+    horizontalGap = 8.dp,
+    verticalGap = 0.dp,
+    alignment = Alignment.Start,
+  ) {
     allTagsState.tagStates.forEach { tag ->
       TagChip(
         tag,
-        modifier = Modifier.padding(end = 8.dp),
-        onTagSelected
+        onTagSelected = onTagSelected
       )
     }
+    additionalTag()
   }
 }
 
@@ -130,10 +134,19 @@ fun TagChipPreview() {
       backgroundColor = "#FFF59D",
       textColor = "#757575",
       icon = "lunch",
+    ),
+    Tag(
+      name = "Brunch"
+    ),
+    Tag(
+      name = "Sushi"
+    ),
+    Tag(
+      name = "Bars"
     )
   )
 
-  Column {
+  Column(Modifier.width(320.dp)) {
     AllTags(
       allTagsState = AllTagsState(
         tagStates = tags.map { tag ->

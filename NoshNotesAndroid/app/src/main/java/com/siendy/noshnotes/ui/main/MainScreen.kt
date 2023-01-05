@@ -126,11 +126,10 @@ fun MainContent(
 
       mainUiState.allTagsState?.let {
         AllTags(
-          it,
-          onTagSelected = { tagState ->
-            mainViewModel.onTagSelected(tagState)
-          }
-        )
+          it
+        ) { tagState ->
+          mainViewModel.onTagSelected(tagState)
+        }
       }
 
       BottomBarNavigationHost(

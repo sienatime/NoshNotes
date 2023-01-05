@@ -138,28 +138,28 @@ fun PlaceDetails(
       }
 
       placeUiState.allTagsState?.let {
-        Row {
-          AllTags(
-            allTagsState = it
-          ) { tagState ->
+        AllTags(
+          allTagsState = it,
+          additionalTag = {
+            TagChip(
+              tagState = TagState(
+                tag = Tag(
+                  name = stringResource(R.string.new_tag_chip_label),
+                  icon = "add",
+                  backgroundColor = "#E1F1F0",
+                  textColor = "#018786"
+                ),
+                clickable = true
+              ),
+              onTagSelected = {
+                navController?.navigate(Routes.ADD_NEW_TAG)
+              }
+            )
+          },
+          onTagSelected = { tagState ->
             placeViewModel.onTagSelected(tagState)
           }
-
-          TagChip(
-            tagState = TagState(
-              tag = Tag(
-                name = stringResource(R.string.new_tag_chip_label),
-                icon = "add",
-                backgroundColor = "#E1F1F0",
-                textColor = "#018786"
-              ),
-              clickable = true
-            ),
-            onTagSelected = {
-              navController?.navigate(Routes.ADD_NEW_TAG)
-            }
-          )
-        }
+        )
 
         Button(
           onClick = {
