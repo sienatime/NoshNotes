@@ -10,6 +10,4 @@ object Routes {
   const val ADD_NEW_TAG = "new_tag"
 
   const val AUTOCOMPLETE_REQUEST_CODE = 1
-
-  const val PLACE_KEY = "place"
 }
