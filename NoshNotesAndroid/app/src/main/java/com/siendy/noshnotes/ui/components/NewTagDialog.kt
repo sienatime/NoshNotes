@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavHostController
 import com.siendy.noshnotes.R
 import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.data.repositories.TagsRepository
@@ -25,9 +25,10 @@ import com.siendy.noshnotes.data.repositories.TagsRepository
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun NewTagDialog() {
+fun NewTagDialog(
+  parentNavController: NavHostController? = null
+) {
   val nameValue = remember { mutableStateOf(TextFieldValue()) }
-  val navController = rememberNavController()
 
   Column(
     modifier = Modifier.padding(
@@ -50,7 +51,7 @@ fun NewTagDialog() {
       horizontalArrangement = Arrangement.End
     ) {
       Button(onClick = {
-        navController.navigateUp()
+        parentNavController?.navigateUp()
       }) {
         Text(stringResource(id = R.string.cancel))
       }
@@ -61,7 +62,7 @@ fun NewTagDialog() {
             name = nameValue.value.text
           )
         )
-        navController.navigateUp()
+        parentNavController?.navigateUp()
       }) {
         Text(stringResource(id = R.string.save))
       }

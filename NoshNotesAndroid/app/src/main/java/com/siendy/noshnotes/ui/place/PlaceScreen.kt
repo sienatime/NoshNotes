@@ -43,70 +43,73 @@ import com.siendy.noshnotes.ui.components.RatingBar
 import com.siendy.noshnotes.ui.components.TagChip
 import com.siendy.noshnotes.ui.components.TagState
 import com.siendy.noshnotes.ui.navigation.Routes
-import com.siendy.noshnotes.ui.theme.NoshNotesTheme
 import com.siendy.noshnotes.utils.orEmpty
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlaceScreen(
-  placeViewModel: PlaceViewModel = viewModel()
+  placeId: String? = null,
+  placeViewModel: PlaceViewModel = viewModel(),
+  rootNavController: NavHostController? = null
 ) {
-  val navController = rememberNavController()
   val placeUiState by placeViewModel.uiState.collectAsState()
+  placeViewModel.getPlace(placeId)
 
-  NoshNotesTheme {
-    Scaffold(
-      topBar = {
-        TopAppBar(
-          title = { Text(stringResource(id = R.string.add_place_title)) },
-          colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary
-          ),
-          navigationIcon = {
-            IconButton(onClick = { navController.navigateUp() }) {
-              Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = stringResource(id = R.string.back),
-                tint = MaterialTheme.colorScheme.onPrimary
-              )
-            }
+  Scaffold(
+    topBar = {
+      TopAppBar(
+        title = { Text(stringResource(id = R.string.add_place_title)) },
+        colors = TopAppBarDefaults.topAppBarColors(
+          containerColor = MaterialTheme.colorScheme.primary,
+          titleContentColor = MaterialTheme.colorScheme.onPrimary
+        ),
+        navigationIcon = {
+          IconButton(onClick = { rootNavController?.navigateUp() }) {
+            Icon(
+              imageVector = Icons.Filled.ArrowBack,
+              contentDescription = stringResource(id = R.string.back),
+              tint = MaterialTheme.colorScheme.onPrimary
+            )
           }
-        )
-      },
-      content = { padding ->
-        PlaceContent(
-          padding,
-          placeUiState,
-          placeViewModel
-        )
-      }
-    )
-  }
+        }
+      )
+    },
+    content = { padding ->
+      PlaceContent(
+        padding,
+        placeUiState,
+        placeViewModel,
+        rootNavController
+      )
+    }
+  )
 }
 
 @Composable
 fun PlaceContent(
   padding: PaddingValues,
   placeUiState: PlaceUiState,
-  placeViewModel: PlaceViewModel = viewModel()
+  placeViewModel: PlaceViewModel = viewModel(),
+  rootNavController: NavHostController? = null
 ) {
   val navController = rememberNavController()
 
   NavHost(
     navController,
     Routes.ADD_NEW_PLACE,
-    Modifier.padding(padding)
+    Modifier.padding(padding),
+    route = "place_detail"
   ) {
     composable(Routes.ADD_NEW_PLACE) {
       PlaceDetails(
         placeUiState,
         placeViewModel,
-        navController
+        navController,
+        rootNavController
       )
     }
     dialog(Routes.ADD_NEW_TAG) {
-      NewTagDialog()
+      NewTagDialog(navController)
     }
   }
 }
@@ -115,7 +118,8 @@ fun PlaceContent(
 fun PlaceDetails(
   placeUiState: PlaceUiState,
   placeViewModel: PlaceViewModel = viewModel(),
-  navController: NavHostController? = null
+  navController: NavHostController? = null,
+  rootNavController: NavHostController? = null
 ) {
   Column(
     modifier = Modifier
@@ -171,6 +175,7 @@ fun PlaceDetails(
                 tagState.tag
               }
             )
+            rootNavController?.navigateUp()
           },
         ) {
           Text(stringResource(id = R.string.save))

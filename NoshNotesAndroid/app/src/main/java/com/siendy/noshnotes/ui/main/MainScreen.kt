@@ -4,7 +4,6 @@ package com.siendy.noshnotes.ui.main
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -39,53 +38,87 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.siendy.noshnotes.R
-import com.siendy.noshnotes.data.models.LatLong
 import com.siendy.noshnotes.data.models.Place
-import com.siendy.noshnotes.data.models.Rating
 import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.navigation.Routes
-import com.siendy.noshnotes.ui.place.PlaceActivity
+import com.siendy.noshnotes.ui.place.PlaceScreen
+import com.siendy.noshnotes.ui.place.PlaceViewModel
 import com.siendy.noshnotes.ui.theme.NoshNotesTheme
 
 @Composable
+fun App(
+  rootNavController: NavHostController,
+  mainViewModel: MainViewModel = viewModel(),
+  placeViewModel: PlaceViewModel = viewModel()
+) {
+
+  NoshNotesTheme {
+    NavHost(
+      navController = rootNavController,
+      startDestination = Routes.MAIN,
+      route = "root"
+    ) {
+      composable(Routes.MAIN) {
+        MainScreen(
+          mainViewModel,
+          rootNavController
+        )
+      }
+      composable(
+        "place/{placeId}",
+        arguments = listOf(navArgument("placeId") { type = NavType.StringType })
+      ) { backStackEntry ->
+        PlaceScreen(
+          backStackEntry.arguments?.getString("placeId"),
+          placeViewModel,
+          rootNavController
+        )
+      }
+    }
+  }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 @Preview
 fun MainScreen(
-  mainViewModel: MainViewModel = viewModel()
+  mainViewModel: MainViewModel = viewModel(),
+  rootNavController: NavHostController? = null
 ) {
-  val navController = rememberNavController()
+  val mainTabsNavController = rememberNavController()
   val context = LocalContext.current
   val mainUiState by mainViewModel.uiState.collectAsState()
 
-  NoshNotesTheme {
-    Scaffold(
-      topBar = {
-        TopAppBar(
-          title = { Text(stringResource(id = R.string.app_name)) },
-          colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary
-          )
+  Scaffold(
+    topBar = {
+      TopAppBar(
+        title = { Text(stringResource(id = R.string.app_name)) },
+        colors = TopAppBarDefaults.topAppBarColors(
+          containerColor = MaterialTheme.colorScheme.primary,
+          titleContentColor = MaterialTheme.colorScheme.onPrimary
         )
-      },
-      bottomBar = { BottomNavigationBar(navController) },
-      floatingActionButtonPosition = FabPosition.End,
-      floatingActionButton = { AddPlaceFAB(context, mainViewModel) },
-      content = { padding ->
-        MainContent(
-          padding,
-          navController,
-          mainUiState,
-          context,
-          mainViewModel
-        )
-      }
-    )
-  }
+      )
+    },
+    bottomBar = { BottomNavigationBar(mainTabsNavController) },
+    floatingActionButtonPosition = FabPosition.End,
+    floatingActionButton = { AddPlaceFAB(context, mainViewModel) },
+    content = { padding ->
+      MainContent(
+        padding,
+        mainTabsNavController,
+        mainUiState,
+        rootNavController,
+        mainViewModel
+      )
+    }
+  )
 }
 
 @Composable
@@ -93,7 +126,7 @@ fun MainContent(
   padding: PaddingValues,
   navController: NavHostController,
   mainUiState: MainUiState,
-  context: Context,
+  rootNavController: NavHostController?,
   mainViewModel: MainViewModel = viewModel()
 ) {
   Box(modifier = Modifier.padding(padding)) {
@@ -106,22 +139,10 @@ fun MainContent(
     ) {
       Button(
         onClick = {
-          val place = Place(
-            remoteId = "ChIJDwOJGqu5woAR3tTmF6s8bfE",
-            name = "Sonoratown",
-            latLong = LatLong(34.0539254, -118.3553033),
-            address = "5610 San Vicente Blvd, Los Angeles, CA 90019, USA",
-            rating = Rating(total = 76, rating = 4.7),
-            priceLevel = 1
-          )
-          context.startActivity(
-            Intent(context, PlaceActivity::class.java).apply {
-              this.putExtra(Routes.PLACE_KEY, place)
-            }
-          )
+          rootNavController?.navigate(Routes.place("ChIJDwOJGqu5woAR3tTmF6s8bfE"))
         },
       ) {
-        Text("open place")
+        Text("open test place")
       }
 
       mainUiState.allTagsState?.let {
@@ -133,7 +154,7 @@ fun MainContent(
       }
 
       BottomBarNavigationHost(
-        navController = navController,
+        bottomBarNavController = navController,
         mainUiState.filteredPlaces
       )
     }
@@ -158,10 +179,14 @@ fun AddPlaceFAB(
 
 @Composable
 fun BottomBarNavigationHost(
-  navController: NavHostController,
+  bottomBarNavController: NavHostController,
   filteredPlaces: List<Place>
 ) {
-  NavHost(navController, startDestination = TabDestination.PlacesList.route) {
+  NavHost(
+    bottomBarNavController,
+    startDestination = TabDestination.PlacesList.route,
+    route = "bottom"
+  ) {
     composable(TabDestination.PlacesList.route) {
       PlacesList(filteredPlaces)
     }

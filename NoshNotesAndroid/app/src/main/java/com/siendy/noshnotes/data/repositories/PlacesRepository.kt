@@ -25,6 +25,12 @@ class PlacesRepository() {
     databaseDataSource.addPlace(place)
   }
 
+  suspend fun getPlaceByRemoteId(remoteId: String?): Place? {
+    return remoteId?.let { googleMapsId ->
+      googlePlacesDataSource.getPlaceById(googleMapsId)
+    }
+  }
+
   fun getPlacesByTagIds(tagIds: List<String>): Flow<List<Place>> {
     val tagsSet = tagIds.toSet()
     return getPlaces().map {

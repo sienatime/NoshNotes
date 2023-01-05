@@ -8,49 +8,39 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.siendy.noshnotes.R
-import com.siendy.noshnotes.ui.navigation.NavigationEvent
+import com.siendy.noshnotes.ui.navigation.Routes
 import com.siendy.noshnotes.ui.navigation.Routes.AUTOCOMPLETE_REQUEST_CODE
-import com.siendy.noshnotes.ui.navigation.Routes.PLACE_KEY
-import com.siendy.noshnotes.ui.place.PlaceActivity
-import kotlinx.coroutines.launch
+import com.siendy.noshnotes.ui.place.PlaceViewModel
 
 class MainActivity : ComponentActivity() {
-  private val viewModel: MainViewModel by viewModels()
+  private val mainViewModel: MainViewModel by viewModels()
+  private val placeViewModel: PlaceViewModel by viewModels()
+
+  private var rootNavController: NavHostController? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    observeUiState()
-
     setContent {
-      MainScreen()
+      rootNavController = rememberNavController()
+
+      App(
+        rootNavController!!,
+        mainViewModel,
+        placeViewModel
+      )
     }
   }
 
-  private fun observeUiState() {
-    lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        viewModel.uiState.collect { uiState ->
-          if (uiState.navigationEvent != null && uiState.navigationEvent is NavigationEvent.Place) {
-            openPlace(uiState.navigationEvent.place)
-          }
-        }
-      }
+  private fun openPlace(placeId: String?) {
+    placeId?.let {
+      rootNavController?.navigate(Routes.place(placeId))
     }
-  }
-
-  private fun openPlace(place: com.siendy.noshnotes.data.models.Place) {
-    startActivity(
-      Intent(this@MainActivity, PlaceActivity::class.java).apply {
-        this.putExtra(PLACE_KEY, place)
-      }
-    )
   }
 
   // probably can't do anything about this deprecation unless I implement the autocomplete
@@ -61,7 +51,8 @@ class MainActivity : ComponentActivity() {
       when (resultCode) {
         Activity.RESULT_OK -> {
           data?.let {
-            viewModel.getPlaceFromAutocomplete(it)
+            val googlePlace = Autocomplete.getPlaceFromIntent(it)
+            openPlace(googlePlace.id)
           }
         }
         AutocompleteActivity.RESULT_ERROR -> {

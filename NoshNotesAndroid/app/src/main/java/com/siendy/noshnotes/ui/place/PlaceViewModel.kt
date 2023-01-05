@@ -49,6 +49,13 @@ class PlaceViewModel(
     }
   }
 
+  fun getPlace(placeId: String?) {
+    viewModelScope.launch {
+      val place = placesRepository.getPlaceByRemoteId(placeId)
+      setPlace(place)
+    }
+  }
+
   fun setPlace(place: Place?) {
     _uiState.update { currentUiState ->
       currentUiState.copy(place = place)
