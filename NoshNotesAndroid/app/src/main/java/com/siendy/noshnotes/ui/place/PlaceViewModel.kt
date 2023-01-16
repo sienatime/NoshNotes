@@ -62,9 +62,16 @@ class PlaceViewModel(
     }
   }
 
-  fun addPlace(place: Place, tags: List<Tag>) {
-    val placeWithTags = place.copy(tags = tags)
-    placesRepository.addPlace(placeWithTags)
+  fun addPlace(
+    place: Place,
+    tags: List<Tag>,
+    note: String
+  ) {
+    val updatedPlace = place.copy(
+      tags = tags,
+      note = note
+    )
+    placesRepository.addPlace(updatedPlace)
   }
 
   fun onTagSelected(tagState: TagState) {

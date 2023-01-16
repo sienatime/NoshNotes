@@ -5,5 +5,6 @@ import com.siendy.noshnotes.ui.components.AllTagsState
 
 data class PlaceUiState(
   val place: Place? = null,
-  val allTagsState: AllTagsState? = null
+  val allTagsState: AllTagsState? = null,
+  val loading: Boolean = false
 )

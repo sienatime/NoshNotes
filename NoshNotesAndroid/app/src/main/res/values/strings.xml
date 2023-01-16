@@ -13,4 +13,6 @@
   <string name="new_tag_chip_label">New</string>
   <string name="cancel">Cancel</string>
   <string name="no_places">No places. Try some filters!</string>
+  <string name="note_label">Note</string>
+  <string name="note_placeholder">What looks good about this place?</string>
 </resources>

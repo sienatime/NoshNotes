@@ -15,14 +15,18 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -114,6 +118,7 @@ fun PlaceContent(
   }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlaceDetails(
   placeUiState: PlaceUiState,
@@ -140,6 +145,19 @@ fun PlaceDetails(
       place.rating?.rating?.let {
         PlaceRating(it, place.rating.total)
       }
+
+      val noteValue = remember {
+        mutableStateOf(
+          TextFieldValue(place.note.orEmpty())
+        )
+      }
+
+      TextField(
+        value = noteValue.value,
+        onValueChange = { noteValue.value = it },
+        placeholder = { Text(text = stringResource(id = R.string.note_placeholder)) },
+        modifier = Modifier.padding(top = 28.dp, bottom = 16.dp)
+      )
 
       placeUiState.allTagsState?.let {
         AllTags(
@@ -173,12 +191,14 @@ fun PlaceDetails(
                 it.selected
               }.map { tagState ->
                 tagState.tag
-              }
+              },
+              noteValue.value.text
             )
             rootNavController?.navigateUp()
           },
+          modifier = Modifier.align(Alignment.End)
         ) {
-          Text(stringResource(id = R.string.save))
+          Text(stringResource(id = R.string.save).uppercase())
         }
       }
     }
@@ -250,11 +270,5 @@ fun PlaceContentPreview() {
     )
   )
 
-  PlaceContent(padding = PaddingValues(), placeUiState = placeUiState)
-}
-
-@Preview
-@Composable
-fun PlaceScreenPreview() {
-  PlaceScreen()
+  PlaceDetails(placeUiState = placeUiState)
 }

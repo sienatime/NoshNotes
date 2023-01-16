@@ -40,7 +40,10 @@ class PlacesRepository() {
     }.map {
       it.mapNotNull { firebasePlace ->
         firebasePlace.remoteId?.let { googleMapsId ->
-          googlePlacesDataSource.getPlaceById(googleMapsId)
+          val placeWithGoogle = googlePlacesDataSource.getPlaceById(googleMapsId)
+          placeWithGoogle.copy(
+            note = firebasePlace.note
+          )
         }
       }
     }
