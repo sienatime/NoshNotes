@@ -6,6 +6,7 @@ import com.siendy.noshnotes.data.models.FirebasePlace
 import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.data.models.Tag
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
 class PlacesRepository {
@@ -37,6 +38,10 @@ class PlacesRepository {
     allTagsMap: Map<String, Tag>
   ): Flow<List<Place>> {
     val tagsSet = tagIds.toSet()
+
+    if (tagsSet.isEmpty()) {
+      return flowOf(emptyList())
+    }
 
     return getPlaces().map {
       it.filter { firebasePlace ->
