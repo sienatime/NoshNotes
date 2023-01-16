@@ -6,10 +6,14 @@ import SwiftUI
 @main
 struct NoshNotesApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+
+  private var placeStore: PlaceStore = DefaultPlaceStore()
   
   var body: some Scene {
     WindowGroup {
-      ContentView()
+      ContentView().task {
+        await placeStore.getTags()
+      }
     }
   }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DD41D86029760EDB00A13095 /* PlaceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD41D85F29760EDB00A13095 /* PlaceStore.swift */; };
 		DD8C5C5729760A0C00727119 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */; };
 		DD8C5C5829760A0C00727119 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */; };
 		DD8C5C5B29760BBF00727119 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = DD8C5C5A29760BBF00727119 /* FirebaseDatabase */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DD41D85F29760EDB00A13095 /* PlaceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceStore.swift; sourceTree = "<group>"; };
 		DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DD8C5C5E29760C3900727119 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DDE6804E2975E32D00E418AB /* NoshNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoshNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,6 +103,7 @@
 				DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */,
 				DDE680512975E32D00E418AB /* NoshNotesApp.swift */,
 				DD8C5C5E29760C3900727119 /* AppDelegate.swift */,
+				DD41D85F29760EDB00A13095 /* PlaceStore.swift */,
 				DDE680532975E32D00E418AB /* ContentView.swift */,
 				DDE680552975E32D00E418AB /* Assets.xcassets */,
 				DDE680572975E32D00E418AB /* Preview Content */,
@@ -264,6 +267,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD8C5C5F29760C3900727119 /* AppDelegate.swift in Sources */,
+				DD41D86029760EDB00A13095 /* PlaceStore.swift in Sources */,
 				DDE680542975E32D00E418AB /* ContentView.swift in Sources */,
 				DDE680522975E32D00E418AB /* NoshNotesApp.swift in Sources */,
 			);
