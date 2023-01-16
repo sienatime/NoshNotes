@@ -246,6 +246,7 @@ fun PlaceContentPreview() {
       latLong = LatLong(34.0539254, -118.3553033),
       address = "5610 San Vicente Blvd, Los Angeles, CA 90019, USA",
       rating = Rating(total = 76, rating = 4.7),
+      note = "My favorite place!!!",
       priceLevel = 1
     ),
     allTagsState = AllTagsState(
