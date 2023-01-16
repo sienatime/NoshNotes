@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DD8C5C5729760A0C00727119 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */; };
+		DD8C5C5829760A0C00727119 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */; };
+		DD8C5C5B29760BBF00727119 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = DD8C5C5A29760BBF00727119 /* FirebaseDatabase */; };
+		DD8C5C5D29760BBF00727119 /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DD8C5C5C29760BBF00727119 /* FirebaseDatabaseSwift */; };
 		DDE680522975E32D00E418AB /* NoshNotesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE680512975E32D00E418AB /* NoshNotesApp.swift */; };
 		DDE680542975E32D00E418AB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE680532975E32D00E418AB /* ContentView.swift */; };
 		DDE680562975E32D00E418AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDE680552975E32D00E418AB /* Assets.xcassets */; };
@@ -32,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DDE6804E2975E32D00E418AB /* NoshNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoshNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDE680512975E32D00E418AB /* NoshNotesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoshNotesApp.swift; sourceTree = "<group>"; };
 		DDE680532975E32D00E418AB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -47,6 +52,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD8C5C5D29760BBF00727119 /* FirebaseDatabaseSwift in Frameworks */,
+				DD8C5C5B29760BBF00727119 /* FirebaseDatabase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +96,7 @@
 		DDE680502975E32D00E418AB /* NoshNotes */ = {
 			isa = PBXGroup;
 			children = (
+				DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */,
 				DDE680512975E32D00E418AB /* NoshNotesApp.swift */,
 				DDE680532975E32D00E418AB /* ContentView.swift */,
 				DDE680552975E32D00E418AB /* Assets.xcassets */,
@@ -129,6 +137,10 @@
 			dependencies = (
 			);
 			name = NoshNotes;
+			packageProductDependencies = (
+				DD8C5C5A29760BBF00727119 /* FirebaseDatabase */,
+				DD8C5C5C29760BBF00727119 /* FirebaseDatabaseSwift */,
+			);
 			productName = NoshNotes;
 			productReference = DDE6804E2975E32D00E418AB /* NoshNotes.app */;
 			productType = "com.apple.product-type.application";
@@ -201,6 +213,9 @@
 				Base,
 			);
 			mainGroup = DDE680452975E32D00E418AB;
+			packageReferences = (
+				DD8C5C5929760BBF00727119 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = DDE6804F2975E32D00E418AB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -219,6 +234,7 @@
 			files = (
 				DDE680592975E32D00E418AB /* Preview Assets.xcassets in Resources */,
 				DDE680562975E32D00E418AB /* Assets.xcassets in Resources */,
+				DD8C5C5729760A0C00727119 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,6 +242,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD8C5C5829760A0C00727119 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -567,6 +584,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DD8C5C5929760BBF00727119 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DD8C5C5A29760BBF00727119 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD8C5C5929760BBF00727119 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		DD8C5C5C29760BBF00727119 /* FirebaseDatabaseSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD8C5C5929760BBF00727119 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabaseSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DDE680462975E32D00E418AB /* Project object */;
 }
