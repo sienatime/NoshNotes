@@ -25,28 +25,19 @@ class MainViewModel(
 
   init {
     viewModelScope.launch {
-      tagsRepository.getTags().collect {
-        when {
-          it.isSuccess -> {
-            it.getOrNull()?.let { tags ->
-              _uiState.update { currentUiState ->
-                currentUiState.copy(
-                  allTagsState = AllTagsState(
-                    tagStates = tags.map { tag ->
-                      TagState(
-                        tag,
-                        selected = false,
-                        clickable = true
-                      )
-                    }
-                  )
+      tagsRepository.getTags().collect { tags ->
+        _uiState.update { currentUiState ->
+          currentUiState.copy(
+            allTagsState = AllTagsState(
+              tagStates = tags.map { tag ->
+                TagState(
+                  tag,
+                  selected = false,
+                  clickable = true
                 )
               }
-            }
-          }
-          it.isFailure -> {
-            it.exceptionOrNull()?.printStackTrace()
-          }
+            )
+          )
         }
       }
     }

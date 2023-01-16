@@ -27,10 +27,10 @@ class FirebaseRealTimeDatabaseDataSource {
   }
 
   // https://medium.com/swlh/how-to-use-firebase-realtime-database-with-kotlin-coroutine-flow-946fe4cf2cd9
-  fun getTags(): Flow<Result<List<Tag>>> = callbackFlow {
+  fun getTags(): Flow<List<Tag>> = callbackFlow {
     val tagsListener = object : ValueEventListener {
       override fun onCancelled(error: DatabaseError) {
-        this@callbackFlow.trySendBlocking(Result.failure(error.toException()))
+        this@callbackFlow.trySendBlocking(emptyList())
       }
 
       override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -39,7 +39,7 @@ class FirebaseRealTimeDatabaseDataSource {
             this.uid = childDataSnapshot.key
           }
         }
-        this@callbackFlow.trySendBlocking(Result.success(items.filterNotNull()))
+        this@callbackFlow.trySendBlocking(items.filterNotNull())
       }
     }
     database.getReference(tagReference)

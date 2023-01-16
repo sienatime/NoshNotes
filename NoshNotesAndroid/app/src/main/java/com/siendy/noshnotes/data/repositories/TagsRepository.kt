@@ -10,7 +10,7 @@ class TagsRepository {
     FirebaseRealTimeDatabaseDataSource()
   }
 
-  fun getTags(): Flow<Result<List<Tag>>> {
+  fun getTags(): Flow<List<Tag>> {
     return databaseDataSource.getTags()
   }
 
