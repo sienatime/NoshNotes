@@ -17,7 +17,6 @@ import com.siendy.noshnotes.ui.components.AllTagsState
 import com.siendy.noshnotes.ui.components.TagState
 import com.siendy.noshnotes.ui.place.PlaceName
 import com.siendy.noshnotes.ui.place.PlaceRating
-import com.siendy.noshnotes.utils.orEmpty
 
 @Composable
 fun PlacesList(places: List<Place>) {
@@ -41,11 +40,13 @@ fun PlaceRow(place: Place) {
     place.rating?.rating?.let {
       PlaceRating(it, place.rating.total)
 
-      Text(
-        text = place.note.orEmpty(),
-        fontStyle = FontStyle.Italic,
-        modifier = Modifier.padding(top = 8.dp)
-      )
+      if (place.note?.isNotEmpty() == true) {
+        Text(
+          text = place.note,
+          fontStyle = FontStyle.Italic,
+          modifier = Modifier.padding(top = 8.dp)
+        )
+      }
 
       AllTags(
         allTagsState = AllTagsState(

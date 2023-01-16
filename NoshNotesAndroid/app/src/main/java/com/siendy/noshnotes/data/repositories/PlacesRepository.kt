@@ -4,10 +4,11 @@ import com.siendy.noshnotes.data.datasources.FirebaseRealTimeDatabaseDataSource
 import com.siendy.noshnotes.data.datasources.GooglePlacesDataSource
 import com.siendy.noshnotes.data.models.FirebasePlace
 import com.siendy.noshnotes.data.models.Place
+import com.siendy.noshnotes.data.models.Tag
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class PlacesRepository() {
+class PlacesRepository {
 
   private val databaseDataSource by lazy {
     FirebaseRealTimeDatabaseDataSource()
@@ -31,8 +32,12 @@ class PlacesRepository() {
     }
   }
 
-  fun getPlacesByTagIds(tagIds: List<String>): Flow<List<Place>> {
+  suspend fun getPlacesByTagIds(
+    tagIds: List<String>,
+    allTagsMap: Map<String, Tag>
+  ): Flow<List<Place>> {
     val tagsSet = tagIds.toSet()
+
     return getPlaces().map {
       it.filter { firebasePlace ->
         firebasePlace.hasAllTags(tagsSet)
@@ -42,7 +47,10 @@ class PlacesRepository() {
         firebasePlace.remoteId?.let { googleMapsId ->
           val placeWithGoogle = googlePlacesDataSource.getPlaceById(googleMapsId)
           placeWithGoogle.copy(
-            note = firebasePlace.note
+            note = firebasePlace.note,
+            tags = firebasePlace.tags.keys.mapNotNull { tagId ->
+              allTagsMap[tagId]
+            }
           )
         }
       }

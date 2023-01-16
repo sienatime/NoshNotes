@@ -3,6 +3,7 @@ package com.siendy.noshnotes.ui.main
 import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.data.repositories.PlacesRepository
 import com.siendy.noshnotes.data.repositories.TagsRepository
 import com.siendy.noshnotes.domain.OpenPlacesAutocompleteUseCase
@@ -68,7 +69,7 @@ class MainViewModel(
     filterJob?.cancel()
 
     filterJob = viewModelScope.launch {
-      placesRepository.getPlacesByTagIds(selectedTagIds).collect { filteredPlaces ->
+      placesRepository.getPlacesByTagIds(selectedTagIds, allTagsMap()).collect { filteredPlaces ->
         _uiState.update { currentUiState ->
           currentUiState.copy(
             filteredPlaces = filteredPlaces
@@ -76,5 +77,13 @@ class MainViewModel(
         }
       }
     }
+  }
+
+  private fun allTagsMap(): Map<String, Tag> {
+    return uiState.value.allTagsState?.tagStates?.mapNotNull {
+      it.tag.uid?.let { uid ->
+        uid to it.tag
+      }
+    }.orEmpty().toMap()
   }
 }
