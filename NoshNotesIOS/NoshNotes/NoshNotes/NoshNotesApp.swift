@@ -7,12 +7,12 @@ import SwiftUI
 struct NoshNotesApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
-  private var placeStore: PlaceStore = DefaultPlaceStore()
+  private var tagStore: TagStore = DefaultTagStore()
   
   var body: some Scene {
     WindowGroup {
       ContentView().task {
-        await placeStore.getTags()
+        await tagStore.getTags()
       }
     }
   }

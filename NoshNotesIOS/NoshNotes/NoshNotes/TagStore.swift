@@ -8,11 +8,11 @@ struct Tag {
 
 }
 
-protocol PlaceStore {
+protocol TagStore {
   func getTags() async
 }
 
-class DefaultPlaceStore: PlaceStore {
+class DefaultTagStore: TagStore {
 
   public func getTags() {
     ref.child("tags").getData { error, data in
