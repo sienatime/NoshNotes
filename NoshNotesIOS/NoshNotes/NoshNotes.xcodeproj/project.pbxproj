@@ -1,0 +1,572 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DDE680522975E32D00E418AB /* NoshNotesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE680512975E32D00E418AB /* NoshNotesApp.swift */; };
+		DDE680542975E32D00E418AB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE680532975E32D00E418AB /* ContentView.swift */; };
+		DDE680562975E32D00E418AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDE680552975E32D00E418AB /* Assets.xcassets */; };
+		DDE680592975E32D00E418AB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDE680582975E32D00E418AB /* Preview Assets.xcassets */; };
+		DDE680632975E32E00E418AB /* NoshNotesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE680622975E32E00E418AB /* NoshNotesTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DDE6805F2975E32E00E418AB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DDE680462975E32D00E418AB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DDE6804D2975E32D00E418AB;
+			remoteInfo = NoshNotes;
+		};
+		DDE680692975E32E00E418AB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DDE680462975E32D00E418AB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DDE6804D2975E32D00E418AB;
+			remoteInfo = NoshNotes;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		DDE6804E2975E32D00E418AB /* NoshNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoshNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDE680512975E32D00E418AB /* NoshNotesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoshNotesApp.swift; sourceTree = "<group>"; };
+		DDE680532975E32D00E418AB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		DDE680552975E32D00E418AB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DDE680582975E32D00E418AB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		DDE6805E2975E32E00E418AB /* NoshNotesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NoshNotesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDE680622975E32E00E418AB /* NoshNotesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoshNotesTests.swift; sourceTree = "<group>"; };
+		DDE680682975E32E00E418AB /* NoshNotesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NoshNotesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DDE6804B2975E32D00E418AB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDE6805B2975E32D00E418AB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDE680652975E32E00E418AB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DDE680452975E32D00E418AB = {
+			isa = PBXGroup;
+			children = (
+				DDE680502975E32D00E418AB /* NoshNotes */,
+				DDE680612975E32E00E418AB /* NoshNotesTests */,
+				DDE6804F2975E32D00E418AB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DDE6804F2975E32D00E418AB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DDE6804E2975E32D00E418AB /* NoshNotes.app */,
+				DDE6805E2975E32E00E418AB /* NoshNotesTests.xctest */,
+				DDE680682975E32E00E418AB /* NoshNotesUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DDE680502975E32D00E418AB /* NoshNotes */ = {
+			isa = PBXGroup;
+			children = (
+				DDE680512975E32D00E418AB /* NoshNotesApp.swift */,
+				DDE680532975E32D00E418AB /* ContentView.swift */,
+				DDE680552975E32D00E418AB /* Assets.xcassets */,
+				DDE680572975E32D00E418AB /* Preview Content */,
+			);
+			path = NoshNotes;
+			sourceTree = "<group>";
+		};
+		DDE680572975E32D00E418AB /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				DDE680582975E32D00E418AB /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		DDE680612975E32E00E418AB /* NoshNotesTests */ = {
+			isa = PBXGroup;
+			children = (
+				DDE680622975E32E00E418AB /* NoshNotesTests.swift */,
+			);
+			path = NoshNotesTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DDE6804D2975E32D00E418AB /* NoshNotes */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DDE680722975E32E00E418AB /* Build configuration list for PBXNativeTarget "NoshNotes" */;
+			buildPhases = (
+				DDE6804A2975E32D00E418AB /* Sources */,
+				DDE6804B2975E32D00E418AB /* Frameworks */,
+				DDE6804C2975E32D00E418AB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NoshNotes;
+			productName = NoshNotes;
+			productReference = DDE6804E2975E32D00E418AB /* NoshNotes.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DDE6805D2975E32D00E418AB /* NoshNotesTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DDE680752975E32E00E418AB /* Build configuration list for PBXNativeTarget "NoshNotesTests" */;
+			buildPhases = (
+				DDE6805A2975E32D00E418AB /* Sources */,
+				DDE6805B2975E32D00E418AB /* Frameworks */,
+				DDE6805C2975E32D00E418AB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DDE680602975E32E00E418AB /* PBXTargetDependency */,
+			);
+			name = NoshNotesTests;
+			productName = NoshNotesTests;
+			productReference = DDE6805E2975E32E00E418AB /* NoshNotesTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		DDE680672975E32E00E418AB /* NoshNotesUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DDE680782975E32E00E418AB /* Build configuration list for PBXNativeTarget "NoshNotesUITests" */;
+			buildPhases = (
+				DDE680642975E32E00E418AB /* Sources */,
+				DDE680652975E32E00E418AB /* Frameworks */,
+				DDE680662975E32E00E418AB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DDE6806A2975E32E00E418AB /* PBXTargetDependency */,
+			);
+			name = NoshNotesUITests;
+			productName = NoshNotesUITests;
+			productReference = DDE680682975E32E00E418AB /* NoshNotesUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DDE680462975E32D00E418AB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1410;
+				LastUpgradeCheck = 1410;
+				TargetAttributes = {
+					DDE6804D2975E32D00E418AB = {
+						CreatedOnToolsVersion = 14.1;
+					};
+					DDE6805D2975E32D00E418AB = {
+						CreatedOnToolsVersion = 14.1;
+						TestTargetID = DDE6804D2975E32D00E418AB;
+					};
+					DDE680672975E32E00E418AB = {
+						CreatedOnToolsVersion = 14.1;
+						TestTargetID = DDE6804D2975E32D00E418AB;
+					};
+				};
+			};
+			buildConfigurationList = DDE680492975E32D00E418AB /* Build configuration list for PBXProject "NoshNotes" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DDE680452975E32D00E418AB;
+			productRefGroup = DDE6804F2975E32D00E418AB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DDE6804D2975E32D00E418AB /* NoshNotes */,
+				DDE6805D2975E32D00E418AB /* NoshNotesTests */,
+				DDE680672975E32E00E418AB /* NoshNotesUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DDE6804C2975E32D00E418AB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDE680592975E32D00E418AB /* Preview Assets.xcassets in Resources */,
+				DDE680562975E32D00E418AB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDE6805C2975E32D00E418AB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDE680662975E32E00E418AB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DDE6804A2975E32D00E418AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDE680542975E32D00E418AB /* ContentView.swift in Sources */,
+				DDE680522975E32D00E418AB /* NoshNotesApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDE6805A2975E32D00E418AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDE680632975E32E00E418AB /* NoshNotesTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDE680642975E32E00E418AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DDE680602975E32E00E418AB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DDE6804D2975E32D00E418AB /* NoshNotes */;
+			targetProxy = DDE6805F2975E32E00E418AB /* PBXContainerItemProxy */;
+		};
+		DDE6806A2975E32E00E418AB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DDE6804D2975E32D00E418AB /* NoshNotes */;
+			targetProxy = DDE680692975E32E00E418AB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		DDE680702975E32E00E418AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		DDE680712975E32E00E418AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DDE680732975E32E00E418AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"NoshNotes/Preview Content\"";
+				DEVELOPMENT_TEAM = KBDAQ88SVF;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.siendy.NoshNotes;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DDE680742975E32E00E418AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"NoshNotes/Preview Content\"";
+				DEVELOPMENT_TEAM = KBDAQ88SVF;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.siendy.NoshNotes;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		DDE680762975E32E00E418AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KBDAQ88SVF;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.siendy.NoshNotesTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NoshNotes.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NoshNotes";
+			};
+			name = Debug;
+		};
+		DDE680772975E32E00E418AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KBDAQ88SVF;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.siendy.NoshNotesTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NoshNotes.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NoshNotes";
+			};
+			name = Release;
+		};
+		DDE680792975E32E00E418AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KBDAQ88SVF;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.siendy.NoshNotesUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = NoshNotes;
+			};
+			name = Debug;
+		};
+		DDE6807A2975E32E00E418AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KBDAQ88SVF;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.siendy.NoshNotesUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = NoshNotes;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DDE680492975E32D00E418AB /* Build configuration list for PBXProject "NoshNotes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DDE680702975E32E00E418AB /* Debug */,
+				DDE680712975E32E00E418AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DDE680722975E32E00E418AB /* Build configuration list for PBXNativeTarget "NoshNotes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DDE680732975E32E00E418AB /* Debug */,
+				DDE680742975E32E00E418AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DDE680752975E32E00E418AB /* Build configuration list for PBXNativeTarget "NoshNotesTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DDE680762975E32E00E418AB /* Debug */,
+				DDE680772975E32E00E418AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DDE680782975E32E00E418AB /* Build configuration list for PBXNativeTarget "NoshNotesUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DDE680792975E32E00E418AB /* Debug */,
+				DDE6807A2975E32E00E418AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DDE680462975E32D00E418AB /* Project object */;
+}
