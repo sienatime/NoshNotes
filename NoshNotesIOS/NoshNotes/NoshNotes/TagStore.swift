@@ -3,27 +3,35 @@
 
 import Foundation
 import FirebaseDatabase
+import FirebaseDatabaseSwift
 
-struct Tag {
-
+struct Tag: Codable {
+  let name: String
 }
 
 protocol TagStore {
-  func getTags() async
+  func getTags() async-> [Tag]
 }
 
 class DefaultTagStore: TagStore {
 
-  public func getTags() {
-    ref.child("tags").getData { error, data in
-      if let error {
-        print(error)
+  public func getTags() async -> [Tag] {
+    do {
+      let data = try await ref.getData()
+      guard let children = data.children.allObjects as? [DataSnapshot] else {
+        print("snapshot.children.allObject was not of type [DataSnapshot] for some reason")
+        return []
       }
-      if let data {
-        print(data)
+      let tags = try children.map { child in
+        // let's throw if any child is invalid
+        try child.data(as: Tag.self)
       }
+      return tags
+    } catch {
+      print(error)
     }
+    return []
   }
 
-  private lazy var ref: DatabaseReference = Database.database().reference()
+  private lazy var ref: DatabaseReference = Database.database().reference(withPath: "tags")
 }
