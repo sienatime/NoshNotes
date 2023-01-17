@@ -14,7 +14,7 @@
 		DD8C5C5D29760BBF00727119 /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DD8C5C5C29760BBF00727119 /* FirebaseDatabaseSwift */; };
 		DD8C5C5F29760C3900727119 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8C5C5E29760C3900727119 /* AppDelegate.swift */; };
 		DDE680522975E32D00E418AB /* NoshNotesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE680512975E32D00E418AB /* NoshNotesApp.swift */; };
-		DDE680542975E32D00E418AB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE680532975E32D00E418AB /* ContentView.swift */; };
+		DDE680542975E32D00E418AB /* PlacesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE680532975E32D00E418AB /* PlacesListView.swift */; };
 		DDE680562975E32D00E418AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDE680552975E32D00E418AB /* Assets.xcassets */; };
 		DDE680592975E32D00E418AB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDE680582975E32D00E418AB /* Preview Assets.xcassets */; };
 		DDE680632975E32E00E418AB /* NoshNotesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE680622975E32E00E418AB /* NoshNotesTests.swift */; };
@@ -43,7 +43,7 @@
 		DD8C5C5E29760C3900727119 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DDE6804E2975E32D00E418AB /* NoshNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoshNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDE680512975E32D00E418AB /* NoshNotesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoshNotesApp.swift; sourceTree = "<group>"; };
-		DDE680532975E32D00E418AB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		DDE680532975E32D00E418AB /* PlacesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesListView.swift; sourceTree = "<group>"; };
 		DDE680552975E32D00E418AB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DDE680582975E32D00E418AB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DDE6805E2975E32E00E418AB /* NoshNotesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NoshNotesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,7 +104,7 @@
 				DDE680512975E32D00E418AB /* NoshNotesApp.swift */,
 				DD8C5C5E29760C3900727119 /* AppDelegate.swift */,
 				DD41D85F29760EDB00A13095 /* TagStore.swift */,
-				DDE680532975E32D00E418AB /* ContentView.swift */,
+				DDE680532975E32D00E418AB /* PlacesListView.swift */,
 				DDE680552975E32D00E418AB /* Assets.xcassets */,
 				DDE680572975E32D00E418AB /* Preview Content */,
 			);
@@ -268,7 +268,7 @@
 			files = (
 				DD8C5C5F29760C3900727119 /* AppDelegate.swift in Sources */,
 				DD41D86029760EDB00A13095 /* TagStore.swift in Sources */,
-				DDE680542975E32D00E418AB /* ContentView.swift in Sources */,
+				DDE680542975E32D00E418AB /* PlacesListView.swift in Sources */,
 				DDE680522975E32D00E418AB /* NoshNotesApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

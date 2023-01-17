@@ -11,7 +11,7 @@ struct NoshNotesApp: App {
   
   var body: some Scene {
     WindowGroup {
-      ContentView().task {
+      PlacesListView(tags: []).task {
         let tags = await tagStore.getTags()
         print(tags)
       }
