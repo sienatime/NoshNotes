@@ -37,9 +37,9 @@ class MainActivity : ComponentActivity() {
     }
   }
 
-  private fun openPlace(placeId: String?) {
-    placeId?.let {
-      rootNavController?.navigate(Routes.place(placeId))
+  private fun openPlace(remoteId: String?) {
+    remoteId?.let {
+      rootNavController?.navigate(Routes.newPlace(remoteId))
     }
   }
 

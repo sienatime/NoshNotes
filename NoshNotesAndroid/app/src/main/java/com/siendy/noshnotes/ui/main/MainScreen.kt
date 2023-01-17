@@ -72,6 +72,16 @@ fun App(
         )
       }
       composable(
+        "place/new?remoteId={remoteId}",
+        arguments = listOf(navArgument("remoteId") { type = NavType.StringType })
+      ) { backStackEntry ->
+        PlaceScreen(
+          backStackEntry.arguments?.getString("remoteId"),
+          placeViewModel,
+          rootNavController
+        )
+      }
+      composable(
         "place/{placeId}",
         arguments = listOf(navArgument("placeId") { type = NavType.StringType })
       ) { backStackEntry ->
@@ -139,7 +149,7 @@ fun MainContent(
     ) {
       Button(
         onClick = {
-          rootNavController?.navigate(Routes.place("ChIJDwOJGqu5woAR3tTmF6s8bfE"))
+          rootNavController?.navigate(Routes.newPlace("ChIJDwOJGqu5woAR3tTmF6s8bfE"))
         }
       ) {
         Text("open test place")
