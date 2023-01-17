@@ -52,6 +52,7 @@ class PlacesRepository {
         firebasePlace.remoteId?.let { googleMapsId ->
           val placeWithGoogle = googlePlacesDataSource.getPlaceById(googleMapsId)
           placeWithGoogle.copy(
+            uid = firebasePlace.uid,
             note = firebasePlace.note,
             tags = firebasePlace.tags.keys.mapNotNull { tagId ->
               allTagsMap[tagId]

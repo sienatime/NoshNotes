@@ -52,12 +52,12 @@ import com.siendy.noshnotes.utils.orEmpty
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlaceScreen(
-  placeId: String? = null,
+  placeRemoteId: String? = null,
   placeViewModel: PlaceViewModel = viewModel(),
   rootNavController: NavHostController? = null
 ) {
   val placeUiState by placeViewModel.uiState.collectAsState()
-  placeViewModel.getPlace(placeId)
+  placeViewModel.getPlaceByRemoteId(placeRemoteId)
 
   Scaffold(
     topBar = {

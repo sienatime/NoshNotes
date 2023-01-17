@@ -40,9 +40,9 @@ class PlaceViewModel(
     }
   }
 
-  fun getPlace(placeId: String?) {
+  fun getPlaceByRemoteId(placeRemoteId: String?) {
     viewModelScope.launch {
-      val place = placesRepository.getPlaceByRemoteId(placeId)
+      val place = placesRepository.getPlaceByRemoteId(placeRemoteId)
       setPlace(place)
     }
   }
