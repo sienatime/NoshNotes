@@ -76,9 +76,9 @@ fun App(
         arguments = listOf(navArgument("remoteId") { type = NavType.StringType })
       ) { backStackEntry ->
         PlaceScreen(
-          backStackEntry.arguments?.getString("remoteId"),
-          placeViewModel,
-          rootNavController
+          placeRemoteId = backStackEntry.arguments?.getString("remoteId"),
+          placeViewModel = placeViewModel,
+          rootNavController = rootNavController,
         )
       }
       composable(
@@ -86,9 +86,9 @@ fun App(
         arguments = listOf(navArgument("placeId") { type = NavType.StringType })
       ) { backStackEntry ->
         PlaceScreen(
-          backStackEntry.arguments?.getString("placeId"),
-          placeViewModel,
-          rootNavController
+          placeId = backStackEntry.arguments?.getString("placeId"),
+          placeViewModel = placeViewModel,
+          rootNavController = rootNavController,
         )
       }
     }
@@ -165,7 +165,8 @@ fun MainContent(
 
       BottomBarNavigationHost(
         bottomBarNavController = navController,
-        mainUiState.filteredPlaces
+        mainUiState.filteredPlaces,
+        rootNavController
       )
     }
   }
@@ -190,7 +191,8 @@ fun AddPlaceFAB(
 @Composable
 fun BottomBarNavigationHost(
   bottomBarNavController: NavHostController,
-  filteredPlaces: List<Place>
+  filteredPlaces: List<Place>,
+  rootNavController: NavHostController?
 ) {
   NavHost(
     bottomBarNavController,
@@ -198,7 +200,7 @@ fun BottomBarNavigationHost(
     route = "bottom"
   ) {
     composable(TabDestination.PlacesList.route) {
-      PlacesList(filteredPlaces)
+      PlacesList(filteredPlaces, rootNavController)
     }
     composable(TabDestination.PlacesMap.route) {
       PlacesMap()

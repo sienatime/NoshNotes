@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.siendy.noshnotes.R.string
 import com.siendy.noshnotes.data.models.LatLong
 import com.siendy.noshnotes.data.models.Place
@@ -21,11 +23,12 @@ import com.siendy.noshnotes.data.models.Rating
 import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.components.AllTagsState
 import com.siendy.noshnotes.ui.components.TagState
+import com.siendy.noshnotes.ui.navigation.Routes
 import com.siendy.noshnotes.ui.place.PlaceName
 import com.siendy.noshnotes.ui.place.PlaceRating
 
 @Composable
-fun PlacesList(places: List<Place>) {
+fun PlacesList(places: List<Place>, rootNavController: NavHostController?) {
   if (places.isEmpty()) {
     Text(
       stringResource(string.no_places)
@@ -33,15 +36,18 @@ fun PlacesList(places: List<Place>) {
   } else {
     LazyColumn() {
       items(places) { place ->
-        PlaceRow(place)
+        PlaceRow(place, rootNavController)
       }
     }
   }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PlaceRow(place: Place) {
-
+fun PlaceRow(
+  place: Place,
+  rootNavController: NavHostController? = null
+) {
   Card(
     colors = CardDefaults.cardColors(
       containerColor = MaterialTheme.colorScheme.surface
@@ -49,7 +55,12 @@ fun PlaceRow(place: Place) {
     elevation = CardDefaults.cardElevation(
       defaultElevation = 4.dp
     ),
-    modifier = Modifier.padding(vertical = 8.dp)
+    modifier = Modifier.padding(vertical = 8.dp),
+    onClick = {
+      place.uid?.let { placeId ->
+        rootNavController?.navigate(Routes.place(placeId))
+      }
+    }
   ) {
 
     Column(

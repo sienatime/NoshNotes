@@ -53,11 +53,17 @@ import com.siendy.noshnotes.utils.orEmpty
 @Composable
 fun PlaceScreen(
   placeRemoteId: String? = null,
+  placeId: String? = null,
   placeViewModel: PlaceViewModel = viewModel(),
   rootNavController: NavHostController? = null
 ) {
   val placeUiState by placeViewModel.uiState.collectAsState()
-  placeViewModel.getPlaceByRemoteId(placeRemoteId)
+
+  when {
+    placeRemoteId != null -> placeViewModel.getPlaceByRemoteId(placeRemoteId)
+    placeId != null -> placeViewModel.getPlaceById(placeId)
+    else -> placeViewModel.failed()
+  }
 
   Scaffold(
     topBar = {
