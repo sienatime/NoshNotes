@@ -9,13 +9,19 @@ struct Tag: Codable {
   let name: String
 }
 
-protocol TagStore {
-  func getTags() async-> [Tag]
-}
+class TagStore: ObservableObject {
 
-class DefaultTagStore: TagStore {
+  @Published var tags: [Tag] = []
 
-  public func getTags() async -> [Tag] {
+  @MainActor
+  public func reloadTags() async {
+    // Some SwiftUI examples put the logic of taking the fetched data and setting it on the Published property in the view but I don't like that. I want all the state updates to be in one place
+    self.tags = await fetchTags()
+  }
+
+  // Fetches the tags and returns them asynchronously.
+  // We could try to separate the state changes from the API later on.
+  private func fetchTags() async -> [Tag] {
     do {
       let data = try await ref.getData()
       guard let children = data.children.allObjects as? [DataSnapshot] else {
@@ -23,14 +29,14 @@ class DefaultTagStore: TagStore {
         return []
       }
       let tags = try children.map { child in
-        // let's throw if any child is invalid
+        // let's fail if any child is invalid
         try child.data(as: Tag.self)
       }
       return tags
     } catch {
       print(error)
+      return []
     }
-    return []
   }
 
   private lazy var ref: DatabaseReference = Database.database().reference(withPath: "tags")

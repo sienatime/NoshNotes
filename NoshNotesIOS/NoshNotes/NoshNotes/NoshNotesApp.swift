@@ -7,13 +7,12 @@ import SwiftUI
 struct NoshNotesApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
-  private var tagStore: TagStore = DefaultTagStore()
+  @StateObject private var tagStore = TagStore()
   
   var body: some Scene {
     WindowGroup {
-      PlacesListView(tags: []).task {
-        let tags = await tagStore.getTags()
-        print(tags)
+      PlacesListView(tags: tagStore.tags).task {
+        await tagStore.reloadTags()
       }
     }
   }
