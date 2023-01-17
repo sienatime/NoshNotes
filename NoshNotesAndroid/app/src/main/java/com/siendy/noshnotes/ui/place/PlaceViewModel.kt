@@ -47,6 +47,7 @@ class PlaceViewModel(
       _uiState.update { currentUiState ->
         currentUiState.copy(
           place = place,
+          originalTags = place?.tags?.mapNotNull { it.uid }.orEmpty(),
           allTagsState = AllTagsState(
             tagStates = tags.map { tag ->
               TagState(
@@ -64,14 +65,15 @@ class PlaceViewModel(
 
   fun addPlace(
     place: Place,
-    tags: List<Tag>,
-    note: String
+    newTags: List<Tag>,
+    note: String,
+    originalTags: List<String>
   ) {
     val updatedPlace = place.copy(
-      tags = tags,
+      tags = newTags,
       note = note
     )
-    placesRepository.addPlace(updatedPlace)
+    placesRepository.updatePlace(updatedPlace, originalTags)
   }
 
   fun onTagSelected(tagState: TagState) {

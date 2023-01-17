@@ -4,6 +4,7 @@
   <string name="map">Map</string>
   <string name="add_place_fab">Add</string>
   <string name="add_place_title">Add Place</string>
+  <string name="update_place_title">Update Place</string>
   <string name="place_error">Failed to get place data.</string>
   <string name="back">Back</string>
   <string name="total_reviews">(%d)</string>

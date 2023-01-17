@@ -20,20 +20,14 @@ class PlacesRepository {
     GooglePlacesDataSource()
   }
 
-  fun getPlaces(): Flow<List<FirebasePlace>> {
+  private fun getPlaces(): Flow<List<FirebasePlace>> {
     return databaseDataSource.getPlaces()
   }
 
-  fun addPlace(place: Place) {
-    databaseDataSource.addPlace(place)
+  fun updatePlace(place: Place, originalTags: List<String>) {
+    databaseDataSource.updatePlace(place, originalTags)
   }
 
-  // TODO i want to actually use Firebase ID first??? but i might not HAVE a firebase ID,
-  //  and in that case i need a google ID. i kinda need...both...
-  //  so maybe i need like /place/new?googleId=abc OR /place/firebaseid
-  //  cuz if i have a firebase id already, i need to fetch firebase first THEN merge with google?
-  //  or whatever, i think i already have logic for the opposite but i need to put it somewhere better
-  //  (merge Place and GooglePlace)
   suspend fun getPlaceByRemoteId(remoteId: String?): Place? {
     return remoteId?.let { googleMapsId ->
       googlePlacesDataSource.getPlaceById(googleMapsId)

@@ -22,6 +22,11 @@ data class FirebasePlace(
     return tags.keys.containsAll(tagsSet)
   }
 
+  @Exclude
+  fun hasTag(tagId: String): Boolean {
+    return tags.keys.contains(tagId)
+  }
+
   companion object {
     fun fromPlace(place: Place): FirebasePlace {
       return FirebasePlace(

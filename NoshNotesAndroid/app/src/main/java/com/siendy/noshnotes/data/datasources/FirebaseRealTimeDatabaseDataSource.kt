@@ -108,21 +108,30 @@ class FirebaseRealTimeDatabaseDataSource {
     }
   }
 
-  fun addPlace(place: Place) {
-    databaseReference.child(placeReference).push().key?.let { key ->
-
-      val firebasePlace = FirebasePlace.fromPlace(place)
-
-      val childUpdates = mutableMapOf<String, Any>(
-        "/$placeReference/$key" to firebasePlace.toMap()
-      )
-
-      firebasePlace.tags.forEach { mapEntry ->
-        val tagId = mapEntry.key
-        childUpdates["/$tagReference/$tagId/$placeReference/$key"] = true
-      }
-
-      databaseReference.updateChildren(childUpdates)
+  fun updatePlace(place: Place, originalTags: List<String>) {
+    val key = if (place.uid != null) {
+      place.uid
+    } else {
+      databaseReference.child(placeReference).push().key
     }
+
+    val firebasePlace = FirebasePlace.fromPlace(place)
+
+    val childUpdates = mutableMapOf<String, Any?>(
+      "/$placeReference/$key" to firebasePlace.toMap()
+    )
+
+    firebasePlace.tags.forEach { mapEntry ->
+      val tagId = mapEntry.key
+      childUpdates["/$tagReference/$tagId/$placeReference/$key"] = true
+    }
+
+    originalTags.forEach { tagId ->
+      if (!firebasePlace.hasTag(tagId)) {
+        childUpdates["/$tagReference/$tagId/$placeReference/$key"] = null
+      }
+    }
+
+    databaseReference.updateChildren(childUpdates)
   }
 }

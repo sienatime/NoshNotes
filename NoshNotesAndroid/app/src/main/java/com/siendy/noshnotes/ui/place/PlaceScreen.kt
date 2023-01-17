@@ -3,12 +3,14 @@ package com.siendy.noshnotes.ui.place
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -49,7 +51,6 @@ import com.siendy.noshnotes.ui.components.TagState
 import com.siendy.noshnotes.ui.navigation.Routes
 import com.siendy.noshnotes.utils.orEmpty
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlaceScreen(
   placeRemoteId: String? = null,
@@ -57,18 +58,42 @@ fun PlaceScreen(
   placeViewModel: PlaceViewModel = viewModel(),
   rootNavController: NavHostController? = null
 ) {
-  val placeUiState by placeViewModel.uiState.collectAsState()
-
   when {
-    placeRemoteId != null -> placeViewModel.getPlaceByRemoteId(placeRemoteId)
-    placeId != null -> placeViewModel.getPlaceById(placeId)
+    placeRemoteId != null -> {
+      placeViewModel.getPlaceByRemoteId(placeRemoteId)
+
+      PlaceAddOrEdit(
+        title = stringResource(id = R.string.add_place_title),
+        placeViewModel,
+        rootNavController
+      )
+    }
+    placeId != null -> {
+      placeViewModel.getPlaceById(placeId)
+
+      PlaceAddOrEdit(
+        title = stringResource(id = R.string.update_place_title),
+        placeViewModel,
+        rootNavController
+      )
+    }
     else -> placeViewModel.failed()
   }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlaceAddOrEdit(
+  title: String,
+  placeViewModel: PlaceViewModel = viewModel(),
+  rootNavController: NavHostController? = null
+) {
+  val placeUiState by placeViewModel.uiState.collectAsState()
 
   Scaffold(
     topBar = {
       TopAppBar(
-        title = { Text(stringResource(id = R.string.add_place_title)) },
+        title = { Text(title) },
         colors = TopAppBarDefaults.topAppBarColors(
           containerColor = MaterialTheme.colorScheme.primary,
           titleContentColor = MaterialTheme.colorScheme.onPrimary
@@ -135,6 +160,7 @@ fun PlaceDetails(
   Column(
     modifier = Modifier
       .verticalScroll(rememberScrollState())
+      .fillMaxWidth()
       .padding(
         start = 16.dp,
         end = 16.dp,
@@ -143,7 +169,13 @@ fun PlaceDetails(
       )
   ) {
     if (placeUiState.place == null) {
-      Text(stringResource(R.string.place_error))
+      if (placeUiState.loading) {
+        CircularProgressIndicator(
+          modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+      } else {
+        Text(stringResource(R.string.place_error))
+      }
     } else {
       val place = placeUiState.place
 
@@ -198,7 +230,8 @@ fun PlaceDetails(
               }.map { tagState ->
                 tagState.tag
               },
-              noteValue.value.text
+              noteValue.value.text,
+              placeUiState.originalTags
             )
             rootNavController?.navigateUp()
           },
@@ -240,6 +273,13 @@ fun PlaceRating(rating: Double, total: Int?) {
       )
     )
   }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PlaceLoadingPreview() {
+  val placeUiState = PlaceUiState(loading = true)
+  PlaceDetails(placeUiState = placeUiState)
 }
 
 @Preview(showBackground = true)
