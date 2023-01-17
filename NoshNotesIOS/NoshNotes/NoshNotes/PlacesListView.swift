@@ -4,11 +4,11 @@
 import SwiftUI
 
 struct PlacesListView: View {
-  var tags: [Tag]
+  var tags: [TagWithID]
 
   var body: some View {
-    VStack {
-      Text("Hello, \(tags.count) tag(s)!")
+    List(tags) { tag in
+      Text(tag.name)
     }
     .padding()
   }
@@ -16,7 +16,10 @@ struct PlacesListView: View {
 
 struct PlacesListView_Previews: PreviewProvider {
   static var previews: some View {
-    PlacesListView(tags: [])
-    PlacesListView(tags: [Tag(name: "Dinner")])
+    PlacesListView(tags: [
+      TagWithID(id: "1", tag: Tag(name: "Dinner")),
+      TagWithID(id: "2", tag: Tag(name: "Lunch")),
+    ])
+
   }
 }
