@@ -35,9 +35,7 @@ class FirebaseRealTimeDatabaseDataSource {
 
       override fun onDataChange(dataSnapshot: DataSnapshot) {
         val items = dataSnapshot.children.map { childDataSnapshot ->
-          childDataSnapshot.getValue(Tag::class.java)?.apply {
-            this.uid = childDataSnapshot.key
-          }
+          childDataSnapshot.getValue(Tag::class.java)
         }
         this@callbackFlow.trySendBlocking(items.filterNotNull())
       }
@@ -59,9 +57,7 @@ class FirebaseRealTimeDatabaseDataSource {
 
       override fun onDataChange(dataSnapshot: DataSnapshot) {
         val items = dataSnapshot.children.map { childDataSnapshot ->
-          childDataSnapshot.getValue(FirebasePlace::class.java)?.apply {
-            this.uid = childDataSnapshot.key
-          }
+          childDataSnapshot.getValue(FirebasePlace::class.java)
         }
         this@callbackFlow.trySendBlocking(items.filterNotNull())
       }
@@ -82,9 +78,7 @@ class FirebaseRealTimeDatabaseDataSource {
       }
 
       override fun onDataChange(dataSnapshot: DataSnapshot) {
-        val item = dataSnapshot.getValue(FirebasePlace::class.java)?.apply {
-          this.uid = dataSnapshot.key
-        }
+        val item = dataSnapshot.getValue(FirebasePlace::class.java)
         this@callbackFlow.trySendBlocking(item)
       }
     }
@@ -101,7 +95,7 @@ class FirebaseRealTimeDatabaseDataSource {
     databaseReference.child(tagReference).push().key?.let { key ->
 
       val childUpdates = hashMapOf<String, Any>(
-        "/$tagReference/$key" to tag.toMap()
+        "/$tagReference/$key" to tag.copy(uid = key).toMap()
       )
 
       databaseReference.updateChildren(childUpdates)
@@ -115,7 +109,7 @@ class FirebaseRealTimeDatabaseDataSource {
       databaseReference.child(placeReference).push().key
     }
 
-    val firebasePlace = FirebasePlace.fromPlace(place)
+    val firebasePlace = FirebasePlace.fromPlace(place.copy(uid = key))
 
     val childUpdates = mutableMapOf<String, Any?>(
       "/$placeReference/$key" to firebasePlace.toMap()

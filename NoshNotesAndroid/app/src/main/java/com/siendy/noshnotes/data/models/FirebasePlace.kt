@@ -3,7 +3,7 @@ package com.siendy.noshnotes.data.models
 import com.google.firebase.database.Exclude
 
 data class FirebasePlace(
-  var uid: String? = null,
+  val uid: String? = null,
   val remoteId: String? = null,
   val note: String? = null,
   val tags: Map<String, Boolean> = mapOf()
@@ -11,6 +11,7 @@ data class FirebasePlace(
   @Exclude
   fun toMap(): Map<String, Any?> {
     return hashMapOf(
+      "uid" to uid,
       "remoteId" to remoteId,
       "note" to note,
       "tags" to tags
@@ -30,6 +31,7 @@ data class FirebasePlace(
   companion object {
     fun fromPlace(place: Place): FirebasePlace {
       return FirebasePlace(
+        uid = place.uid,
         remoteId = place.remoteId,
         note = place.note,
         tags = place.tags.filter { it.uid != null }.associate { it.uid!! to true }

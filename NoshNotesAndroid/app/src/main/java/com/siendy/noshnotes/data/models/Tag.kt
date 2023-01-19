@@ -3,7 +3,7 @@ package com.siendy.noshnotes.data.models
 import com.google.firebase.database.Exclude
 
 data class Tag(
-  var uid: String? = null,
+  val uid: String? = null,
   val name: String? = null,
   val icon: String? = null,
   val backgroundColor: String? = null,
@@ -12,6 +12,7 @@ data class Tag(
   @Exclude
   fun toMap(): Map<String, Any?> {
     return hashMapOf(
+      "uid" to uid,
       "name" to name,
       "icon" to icon,
       "backgroundColor" to backgroundColor,
