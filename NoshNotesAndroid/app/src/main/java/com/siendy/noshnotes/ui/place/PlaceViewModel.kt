@@ -20,46 +20,66 @@ class PlaceViewModel(
   private val _uiState = MutableStateFlow(PlaceUiState())
   val uiState: StateFlow<PlaceUiState> = _uiState
 
+  fun newState() {
+    _uiState.update {
+      PlaceUiState()
+    }
+  }
+
   fun getPlaceByRemoteId(placeRemoteId: String?) {
     viewModelScope.launch {
       val place = placesRepository.getPlaceByRemoteId(placeRemoteId)
-      setPlace(place)
+      tagsRepository.getTags().collect { tags ->
+        _uiState.update { currentUiState ->
+          currentUiState.copy(
+            place = place,
+            originalTags = emptyList(),
+            allTagsState = AllTagsState(
+              tagStates = tags.map { tag ->
+                TagState(
+                  tag,
+                  selected = false,
+                  clickable = true
+                )
+              }
+            ),
+            loading = false
+          )
+        }
+      }
     }
   }
 
   fun getPlaceById(placeId: String?) {
     viewModelScope.launch {
-      val place = placesRepository.getPlaceById(placeId, allTagsMap())
-      setPlace(place)
+      tagsRepository.getTags().collect { tags ->
+        val place = placesRepository.getPlaceById(placeId, allTagsMap(tags))
+
+        val placeTagIds = place?.tags?.map { it.uid }.orEmpty()
+
+        _uiState.update { currentUiState ->
+          currentUiState.copy(
+            place = place,
+            originalTags = place?.tags?.mapNotNull { it.uid }.orEmpty(),
+            allTagsState = AllTagsState(
+              tagStates = tags.map { tag ->
+                TagState(
+                  tag,
+                  selected = placeTagIds.contains(tag.uid),
+                  clickable = true
+                )
+              }
+            ),
+            loading = false
+          )
+        }
+      }
     }
   }
 
   fun failed() {
     _uiState.update { currentUiState ->
       currentUiState.copy(loading = false)
-    }
-  }
-
-  private suspend fun setPlace(place: Place?) {
-    tagsRepository.getTags().collect { tags ->
-      val placeTagIds = place?.tags?.map { it.uid }.orEmpty()
-
-      _uiState.update { currentUiState ->
-        currentUiState.copy(
-          place = place,
-          originalTags = place?.tags?.mapNotNull { it.uid }.orEmpty(),
-          allTagsState = AllTagsState(
-            tagStates = tags.map { tag ->
-              TagState(
-                tag,
-                selected = placeTagIds.contains(tag.uid),
-                clickable = true
-              )
-            }
-          ),
-          loading = false
-        )
-      }
     }
   }
 
@@ -84,11 +104,11 @@ class PlaceViewModel(
     }
   }
 
-  private fun allTagsMap(): Map<String, Tag> {
-    return uiState.value.allTagsState?.tagStates?.mapNotNull {
-      it.tag.uid?.let { uid ->
-        uid to it.tag
+  private fun allTagsMap(tags: List<Tag>): Map<String, Tag> {
+    return tags.mapNotNull {
+      it.uid?.let { uid ->
+        uid to it
       }
-    }.orEmpty().toMap()
+    }.toMap()
   }
 }

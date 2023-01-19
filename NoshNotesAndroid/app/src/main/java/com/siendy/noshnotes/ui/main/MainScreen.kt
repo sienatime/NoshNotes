@@ -75,6 +75,7 @@ fun App(
         "place/new?remoteId={remoteId}",
         arguments = listOf(navArgument("remoteId") { type = NavType.StringType })
       ) { backStackEntry ->
+        placeViewModel.newState()
         PlaceScreen(
           placeRemoteId = backStackEntry.arguments?.getString("remoteId"),
           placeViewModel = placeViewModel,
@@ -85,6 +86,7 @@ fun App(
         "place/{placeId}",
         arguments = listOf(navArgument("placeId") { type = NavType.StringType })
       ) { backStackEntry ->
+        placeViewModel.newState()
         PlaceScreen(
           placeId = backStackEntry.arguments?.getString("placeId"),
           placeViewModel = placeViewModel,
