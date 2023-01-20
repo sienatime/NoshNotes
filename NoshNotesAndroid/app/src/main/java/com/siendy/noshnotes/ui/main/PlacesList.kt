@@ -1,15 +1,19 @@
 package com.siendy.noshnotes.ui.main
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -28,15 +32,29 @@ import com.siendy.noshnotes.ui.place.PlaceName
 import com.siendy.noshnotes.ui.place.PlaceRating
 
 @Composable
-fun PlacesList(places: List<Place>, rootNavController: NavHostController?) {
-  if (places.isEmpty()) {
-    Text(
-      stringResource(string.no_places)
-    )
+fun PlacesList(
+  mainUiState: MainUiState,
+  rootNavController: NavHostController?
+) {
+  if (mainUiState.loading) {
+    Column(
+      modifier = Modifier.fillMaxSize(),
+      verticalArrangement = Arrangement.Center,
+      horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+      CircularProgressIndicator()
+    }
   } else {
-    LazyColumn() {
-      items(places) { place ->
-        PlaceRow(place, rootNavController)
+    val places = mainUiState.filteredPlaces
+    if (places.isEmpty()) {
+      Text(
+        stringResource(string.no_places)
+      )
+    } else {
+      LazyColumn {
+        items(places) { place ->
+          PlaceRow(place, rootNavController)
+        }
       }
     }
   }
@@ -88,6 +106,13 @@ fun PlaceRow(
       }
     }
   }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LoadingPreview() {
+  val state = MainUiState()
+  PlacesList(mainUiState = state, rootNavController = null)
 }
 
 @Preview(showBackground = true)

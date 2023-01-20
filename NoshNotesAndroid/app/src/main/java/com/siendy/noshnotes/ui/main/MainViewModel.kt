@@ -37,7 +37,8 @@ class MainViewModel(
                   clickable = true
                 )
               }
-            )
+            ),
+            loading = false
           )
         }
       }
@@ -51,7 +52,8 @@ class MainViewModel(
   fun onTagSelected(tagState: TagState) {
     _uiState.update { currentUiState ->
       currentUiState.copy(
-        allTagsState = currentUiState.allTagsState?.updateSelectedTag(tagState)
+        allTagsState = currentUiState.allTagsState?.updateSelectedTag(tagState),
+        loading = true
       )
     }
     getPlacesBySelectedTags()
@@ -72,7 +74,8 @@ class MainViewModel(
       placesRepository.getPlacesByTagIds(selectedTagIds, allTagsMap()).collect { filteredPlaces ->
         _uiState.update { currentUiState ->
           currentUiState.copy(
-            filteredPlaces = filteredPlaces
+            filteredPlaces = filteredPlaces,
+            loading = false
           )
         }
       }

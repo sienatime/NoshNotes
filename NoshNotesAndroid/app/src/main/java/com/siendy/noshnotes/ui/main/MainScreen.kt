@@ -45,7 +45,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.siendy.noshnotes.R
-import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.navigation.Routes
 import com.siendy.noshnotes.ui.place.PlaceScreen
@@ -159,7 +158,7 @@ fun MainContent(
 
       BottomBarNavigationHost(
         bottomBarNavController = navController,
-        mainUiState.filteredPlaces,
+        mainUiState,
         rootNavController
       )
     }
@@ -185,7 +184,7 @@ fun AddPlaceFAB(
 @Composable
 fun BottomBarNavigationHost(
   bottomBarNavController: NavHostController,
-  filteredPlaces: List<Place>,
+  mainUiState: MainUiState,
   rootNavController: NavHostController?
 ) {
   NavHost(
@@ -194,7 +193,7 @@ fun BottomBarNavigationHost(
     route = "bottom"
   ) {
     composable(TabDestination.PlacesList.route) {
-      PlacesList(filteredPlaces, rootNavController)
+      PlacesList(mainUiState, rootNavController)
     }
     composable(TabDestination.PlacesMap.route) {
       PlacesMap()
