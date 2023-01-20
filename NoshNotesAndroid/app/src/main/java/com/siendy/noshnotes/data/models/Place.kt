@@ -13,5 +13,5 @@ data class Place(
   val note: String? = null,
   val tags: List<Tag> = emptyList(),
   val photo: Bitmap? = null,
-  val photoAttribution: String? = null
+  val photoAttributionHtml: String? = null
 )

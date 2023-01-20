@@ -25,7 +25,7 @@ class ConvertPlaceUseCase {
       ),
       priceLevel = googlePlace.priceLevel,
       photo = photo,
-      photoAttribution = photoAttribution
+      photoAttributionHtml = photoAttribution
     )
   }
 }

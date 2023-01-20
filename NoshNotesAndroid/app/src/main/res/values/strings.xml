@@ -16,4 +16,5 @@
   <string name="no_places">No places. Try some filters!</string>
   <string name="note_label">Note</string>
   <string name="note_placeholder">What looks good about this place?</string>
+  <string name="photo_attribution">Photo by: %s</string>
 </resources>
