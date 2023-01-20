@@ -7,9 +7,13 @@ import SwiftUI
 struct TagSelectorView: View {
   var tags: [TagWithID]
 
+  let rows = (0..<3).map { _ in
+    GridItem(.flexible(maximum: 36), alignment: .leading)
+  }
+
   var body: some View {
     ScrollView(.horizontal) {
-      LazyHStack {
+      LazyHGrid(rows: rows, alignment: .top) {
         ForEach(tags) { tag in
           ChipButton(tag: tag)
         }
