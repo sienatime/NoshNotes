@@ -20,12 +20,6 @@ class PlaceViewModel(
   private val _uiState = MutableStateFlow(PlaceUiState())
   val uiState: StateFlow<PlaceUiState> = _uiState
 
-  fun newState() {
-    _uiState.update {
-      PlaceUiState()
-    }
-  }
-
   fun getPlaceByRemoteId(placeRemoteId: String?) {
     viewModelScope.launch {
       val place = placesRepository.getPlaceByRemoteId(placeRemoteId)

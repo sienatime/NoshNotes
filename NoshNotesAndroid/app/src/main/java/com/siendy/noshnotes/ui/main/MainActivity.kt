@@ -7,7 +7,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.android.libraries.places.widget.Autocomplete
@@ -15,12 +14,8 @@ import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.siendy.noshnotes.R
 import com.siendy.noshnotes.ui.navigation.Routes
 import com.siendy.noshnotes.ui.navigation.Routes.AUTOCOMPLETE_REQUEST_CODE
-import com.siendy.noshnotes.ui.place.PlaceViewModel
 
 class MainActivity : ComponentActivity() {
-  private val mainViewModel: MainViewModel by viewModels()
-  private val placeViewModel: PlaceViewModel by viewModels()
-
   private var rootNavController: NavHostController? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +26,6 @@ class MainActivity : ComponentActivity() {
 
       App(
         rootNavController!!,
-        mainViewModel,
-        placeViewModel
       )
     }
   }

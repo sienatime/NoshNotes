@@ -49,14 +49,11 @@ import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.navigation.Routes
 import com.siendy.noshnotes.ui.place.PlaceScreen
-import com.siendy.noshnotes.ui.place.PlaceViewModel
 import com.siendy.noshnotes.ui.theme.NoshNotesTheme
 
 @Composable
 fun App(
-  rootNavController: NavHostController,
-  mainViewModel: MainViewModel = viewModel(),
-  placeViewModel: PlaceViewModel = viewModel()
+  rootNavController: NavHostController
 ) {
 
   NoshNotesTheme {
@@ -67,7 +64,6 @@ fun App(
     ) {
       composable(Routes.MAIN) {
         MainScreen(
-          mainViewModel,
           rootNavController
         )
       }
@@ -75,22 +71,18 @@ fun App(
         "place/new?remoteId={remoteId}",
         arguments = listOf(navArgument("remoteId") { type = NavType.StringType })
       ) { backStackEntry ->
-        placeViewModel.newState()
         PlaceScreen(
           placeRemoteId = backStackEntry.arguments?.getString("remoteId"),
-          placeViewModel = placeViewModel,
-          rootNavController = rootNavController,
+          rootNavController = rootNavController
         )
       }
       composable(
         "place/{placeId}",
         arguments = listOf(navArgument("placeId") { type = NavType.StringType })
       ) { backStackEntry ->
-        placeViewModel.newState()
         PlaceScreen(
           placeId = backStackEntry.arguments?.getString("placeId"),
-          placeViewModel = placeViewModel,
-          rootNavController = rootNavController,
+          rootNavController = rootNavController
         )
       }
     }
@@ -101,8 +93,8 @@ fun App(
 @Composable
 @Preview
 fun MainScreen(
-  mainViewModel: MainViewModel = viewModel(),
-  rootNavController: NavHostController? = null
+  rootNavController: NavHostController? = null,
+  mainViewModel: MainViewModel = viewModel()
 ) {
   val mainTabsNavController = rememberNavController()
   val context = LocalContext.current
