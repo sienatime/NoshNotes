@@ -6,6 +6,7 @@ import SwiftUI
 
 struct TagSelectorView: View {
   var tags: [TagWithID]
+  @State var selectedTagIDs: Set<String> = []
 
   let rows = (0..<3).map { _ in
     GridItem(.flexible(maximum: 36), alignment: .leading)
@@ -15,7 +16,17 @@ struct TagSelectorView: View {
     ScrollView(.horizontal) {
       LazyHGrid(rows: rows, alignment: .top) {
         ForEach(tags) { tag in
-          ChipButton(tag: tag)
+          ChipButton(
+            tag: tag,
+            isSelected: selectedTagIDs.contains(tag.id),
+            onSelect:  { tag in
+              if selectedTagIDs.contains(tag.id) {
+                selectedTagIDs.remove(tag.id)
+              } else {
+                selectedTagIDs.insert(tag.id)
+              }
+              print(selectedTagIDs)
+            })
         }
       }.padding()
     }
@@ -24,12 +35,12 @@ struct TagSelectorView: View {
 
 struct ChipButton: View {
   let tag: TagWithID
-  @State var isSelected: Bool = false
+  let isSelected: Bool
+  let onSelect: (TagWithID) -> Void
 
   var body: some View {
     Button(tag.name) {
-      isSelected = !isSelected
-      print(tag.id)
+      onSelect(tag)
     }
     .buttonStyle(.bordered)
     .tint(isSelected ? Color.purple : Color.blue)
