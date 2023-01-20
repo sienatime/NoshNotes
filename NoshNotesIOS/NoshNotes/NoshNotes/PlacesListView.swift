@@ -7,10 +7,7 @@ struct PlacesListView: View {
   var tags: [TagWithID]
 
   var body: some View {
-    List(tags) { tag in
-      Text(tag.name)
-    }
-    .padding()
+    TagSelectorView(tags: tags)
   }
 }
 
