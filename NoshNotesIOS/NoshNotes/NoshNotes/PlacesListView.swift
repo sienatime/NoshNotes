@@ -16,6 +16,10 @@ struct PlacesListView_Previews: PreviewProvider {
     PlacesListView(tags: [
       TagWithID(id: "1", tag: Tag(name: "Dinner")),
       TagWithID(id: "2", tag: Tag(name: "Lunch")),
+      TagWithID(id: "3", tag: Tag(name: "Brunch")),
+      TagWithID(id: "4", tag: Tag(name: "Sushi")),
+      TagWithID(id: "5", tag: Tag(name: "Bar")),
+      TagWithID(id: "6", tag: Tag(name: "Mediterranean")),
     ])
 
   }

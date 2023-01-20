@@ -107,15 +107,6 @@
         "revision" : "ab3a58b7209a17d781c0d1dbb3e1ff3da306bae8",
         "version" : "1.20.3"
       }
-    },
-    {
-      "identity" : "swiftuichipgroup",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Open-Bytes/SwiftUIChipGroup",
-      "state" : {
-        "revision" : "11ce46abfeccd894cd94bcf98034f16eafb3be35",
-        "version" : "0.1.0"
-      }
     }
   ],
   "version" : 2

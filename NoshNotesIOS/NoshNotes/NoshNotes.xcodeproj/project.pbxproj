@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		DD3A433E297A3DF800A0DE77 /* TagSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3A433D297A3DF800A0DE77 /* TagSelectorView.swift */; };
 		DD41D86029760EDB00A13095 /* TagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD41D85F29760EDB00A13095 /* TagStore.swift */; };
-		DD41D865297A3DB000A13095 /* SwiftUIChipGroup in Frameworks */ = {isa = PBXBuildFile; productRef = DD41D864297A3DB000A13095 /* SwiftUIChipGroup */; };
 		DD8C5C5729760A0C00727119 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */; };
 		DD8C5C5829760A0C00727119 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */; };
 		DD8C5C5B29760BBF00727119 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = DD8C5C5A29760BBF00727119 /* FirebaseDatabase */; };
@@ -59,7 +58,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD41D865297A3DB000A13095 /* SwiftUIChipGroup in Frameworks */,
 				DD8C5C5D29760BBF00727119 /* FirebaseDatabaseSwift in Frameworks */,
 				DD8C5C5B29760BBF00727119 /* FirebaseDatabase in Frameworks */,
 			);
@@ -151,7 +149,6 @@
 			packageProductDependencies = (
 				DD8C5C5A29760BBF00727119 /* FirebaseDatabase */,
 				DD8C5C5C29760BBF00727119 /* FirebaseDatabaseSwift */,
-				DD41D864297A3DB000A13095 /* SwiftUIChipGroup */,
 			);
 			productName = NoshNotes;
 			productReference = DDE6804E2975E32D00E418AB /* NoshNotes.app */;
@@ -227,7 +224,6 @@
 			mainGroup = DDE680452975E32D00E418AB;
 			packageReferences = (
 				DD8C5C5929760BBF00727119 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				DD41D863297A3DB000A13095 /* XCRemoteSwiftPackageReference "SwiftUIChipGroup" */,
 			);
 			productRefGroup = DDE6804F2975E32D00E418AB /* Products */;
 			projectDirPath = "";
@@ -602,14 +598,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		DD41D863297A3DB000A13095 /* XCRemoteSwiftPackageReference "SwiftUIChipGroup" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Open-Bytes/SwiftUIChipGroup";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
-			};
-		};
 		DD8C5C5929760BBF00727119 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -621,11 +609,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		DD41D864297A3DB000A13095 /* SwiftUIChipGroup */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DD41D863297A3DB000A13095 /* XCRemoteSwiftPackageReference "SwiftUIChipGroup" */;
-			productName = SwiftUIChipGroup;
-		};
 		DD8C5C5A29760BBF00727119 /* FirebaseDatabase */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DD8C5C5929760BBF00727119 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
