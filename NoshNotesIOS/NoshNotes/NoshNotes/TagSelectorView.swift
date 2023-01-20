@@ -9,17 +9,45 @@ struct TagSelectorView: View {
   var tags: [TagWithID]
 
   var body: some View {
-    ChipGroup(
-      chips: tags.map { BetterChipItem(id: $0.id, name: $0.name, isSelected: false) },
-      width: 250,
-      selection: .multi
-    ) { chip in
-      print(chip.id)
-    }
-//    List(tags) { tag in
-//      Text(tag.name)
+//    ChipGroup(
+//      chips: tags.map { BetterChipItem(id: $0.id, name: $0.name, isSelected: false) },
+//      width: 250,
+//      selection: .multi
+//    ) { chip in
+//      print(chip.id)
 //    }
-//    .padding()
+    List(tags) { tag in
+      ChipButton(tag: tag)
+    }
+    .padding()
+  }
+}
+
+struct ChipButton: View {
+  var tag: TagWithID
+  @State var isSelected: Bool = false
+
+  var background: some View {
+    let color = isSelected ? Color.purple : Color.blue
+    return Capsule().fill(color.opacity(0.8))
+  }
+
+  var body: some View {
+    ZStack {
+      background
+      Button(action: {
+        isSelected = !isSelected
+        print(tag.id)
+      }, label: {
+          Text(tag.name)
+          .padding(.all, 5)
+          .foregroundColor(.white)
+
+      })
+      .padding(.horizontal, 10)
+      .padding(.vertical, 3)
+    }
+
   }
 }
 
