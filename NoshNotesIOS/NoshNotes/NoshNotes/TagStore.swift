@@ -16,36 +16,40 @@ struct Tag: Codable {
   let name: String
 }
 
+enum FirebaseError: Error {
+  case childrenType
+}
+
 class TagStore: ObservableObject {
 
   @Published var tags: [TagWithID] = []
 
+  // We have to put this on the @MainActor so the SwiftUI Views can observe the tags property.
   @MainActor
   public func reloadTags() async {
     // Some SwiftUI examples put the logic of taking the fetched data and setting it on the Published property in the view but I don't like that. I want all the state updates to be in one place
-    self.tags = await fetchTags()
-    print(self.tags)
+    do {
+      self.tags = try await fetchTags()
+    } catch {
+      print(error)
+      self.tags = []
+    }
   }
 
   // Fetches the tags and returns them asynchronously.
   // We could try to separate the state changes from the API later on.
-  private func fetchTags() async -> [TagWithID] {
-    do {
-      let data = try await ref.getData()
-      guard let children = data.children.allObjects as? [DataSnapshot] else {
-        print("snapshot.children.allObject was not of type [DataSnapshot] for some reason")
-        return []
-      }
-      let keyedTags = try children.map { child in
-        // let's fail if any child is invalid
-        let tag = try child.data(as: Tag.self)
-        return TagWithID(id: child.key, tag: tag)
-      }
-      return keyedTags
-    } catch {
-      print(error)
-      return []
+  private func fetchTags() async throws -> [TagWithID] {
+    let data = try await ref.getData()
+    guard let children = data.children.allObjects as? [DataSnapshot] else {
+      print("snapshot.children.allObject was not of type [DataSnapshot] for some reason")
+      throw FirebaseError.childrenType
     }
+    let keyedTags = try children.map { child in
+      // let's fail if any child is invalid
+      let tag = try child.data(as: Tag.self)
+      return TagWithID(id: child.key, tag: tag)
+    }
+    return keyedTags
   }
 
   private lazy var ref: DatabaseReference = Database.database().reference(withPath: "tags")

@@ -25,7 +25,6 @@ struct TagSelectorView: View {
               } else {
                 selectedTagIDs.insert(tag.id)
               }
-              print(selectedTagIDs)
             })
         }
       }.padding()

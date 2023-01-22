@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		DD3A433E297A3DF800A0DE77 /* TagSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3A433D297A3DF800A0DE77 /* TagSelectorView.swift */; };
 		DD41D86029760EDB00A13095 /* TagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD41D85F29760EDB00A13095 /* TagStore.swift */; };
+		DD765EEF297CD6A600C75D63 /* PlaceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765EEE297CD6A600C75D63 /* PlaceStore.swift */; };
 		DD8C5C5729760A0C00727119 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */; };
 		DD8C5C5829760A0C00727119 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */; };
 		DD8C5C5B29760BBF00727119 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = DD8C5C5A29760BBF00727119 /* FirebaseDatabase */; };
@@ -41,6 +42,7 @@
 /* Begin PBXFileReference section */
 		DD3A433D297A3DF800A0DE77 /* TagSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSelectorView.swift; sourceTree = "<group>"; };
 		DD41D85F29760EDB00A13095 /* TagStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagStore.swift; sourceTree = "<group>"; };
+		DD765EEE297CD6A600C75D63 /* PlaceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceStore.swift; sourceTree = "<group>"; };
 		DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DD8C5C5E29760C3900727119 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DDE6804E2975E32D00E418AB /* NoshNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoshNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,6 +108,7 @@
 				DDE680512975E32D00E418AB /* NoshNotesApp.swift */,
 				DD8C5C5E29760C3900727119 /* AppDelegate.swift */,
 				DD41D85F29760EDB00A13095 /* TagStore.swift */,
+				DD765EEE297CD6A600C75D63 /* PlaceStore.swift */,
 				DDE680532975E32D00E418AB /* PlacesListView.swift */,
 				DD3A433D297A3DF800A0DE77 /* TagSelectorView.swift */,
 				DDE680552975E32D00E418AB /* Assets.xcassets */,
@@ -274,6 +277,7 @@
 				DD41D86029760EDB00A13095 /* TagStore.swift in Sources */,
 				DDE680542975E32D00E418AB /* PlacesListView.swift in Sources */,
 				DDE680522975E32D00E418AB /* NoshNotesApp.swift in Sources */,
+				DD765EEF297CD6A600C75D63 /* PlaceStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

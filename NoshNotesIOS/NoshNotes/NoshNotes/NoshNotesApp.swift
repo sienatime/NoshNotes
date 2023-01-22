@@ -8,11 +8,14 @@ struct NoshNotesApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
   @StateObject private var tagStore = TagStore()
+  @StateObject private var placeStore = PlaceStore()
   
   var body: some Scene {
     WindowGroup {
-      PlacesListView(tags: tagStore.tags).task {
+      PlacesListView(tags: tagStore.tags, places: placeStore.allPlaces).task {
         await tagStore.reloadTags()
+      }.task {
+        await placeStore.reloadPlaces()
       }
     }
   }

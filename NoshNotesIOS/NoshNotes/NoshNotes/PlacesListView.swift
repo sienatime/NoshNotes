@@ -5,23 +5,36 @@ import SwiftUI
 
 struct PlacesListView: View {
   var tags: [TagWithID]
+  var places: [Place]
 
   var body: some View {
-    TagSelectorView(tags: tags)
+    VStack {
+      TagSelectorView(tags: tags).layoutPriority(0.5)
+      List(places) { place in
+        Text(place.remoteId)
+      }.layoutPriority(1)
+    }
   }
 }
 
 struct PlacesListView_Previews: PreviewProvider {
   static var previews: some View {
-    PlacesListView(tags: [
-      TagWithID(id: "1", tag: Tag(name: "Dinner")),
-      TagWithID(id: "2", tag: Tag(name: "Lunch")),
-      TagWithID(id: "3", tag: Tag(name: "Brunch")),
-      TagWithID(id: "4", tag: Tag(name: "Sushi")),
-      TagWithID(id: "5", tag: Tag(name: "Bar")),
-      TagWithID(id: "6", tag: Tag(name: "Mediterranean")),
-      TagWithID(id: "7", tag: Tag(name: "Japanese")),
+    PlacesListView(tags: [], places: [
+      Place(note: "cool", remoteId: "123", tags: [:], uid: "p1")
     ])
+    PlacesListView(
+      tags: [
+        TagWithID(id: "1", tag: Tag(name: "Dinner")),
+        TagWithID(id: "2", tag: Tag(name: "Lunch")),
+        TagWithID(id: "3", tag: Tag(name: "Brunch")),
+        TagWithID(id: "4", tag: Tag(name: "Sushi")),
+        TagWithID(id: "5", tag: Tag(name: "Bar")),
+        TagWithID(id: "6", tag: Tag(name: "Mediterranean")),
+        TagWithID(id: "7", tag: Tag(name: "Japanese")),
+      ],
+      places: [
+        Place(note: "", remoteId: "123", tags: ["1": true], uid: "place_1"),
+      ])
 
   }
 }
