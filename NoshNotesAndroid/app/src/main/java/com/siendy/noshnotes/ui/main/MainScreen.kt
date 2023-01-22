@@ -150,7 +150,8 @@ fun MainContent(
       BottomBarNavigationHost(
         bottomBarNavController = navController,
         mainUiState,
-        rootNavController
+        rootNavController,
+        mainViewModel
       )
     }
   }
@@ -176,7 +177,8 @@ fun AddPlaceFAB(
 fun BottomBarNavigationHost(
   bottomBarNavController: NavHostController,
   mainUiState: MainUiState,
-  rootNavController: NavHostController?
+  rootNavController: NavHostController?,
+  mainViewModel: MainViewModel
 ) {
   NavHost(
     bottomBarNavController,
@@ -184,7 +186,7 @@ fun BottomBarNavigationHost(
     route = "bottom"
   ) {
     composable(TabDestination.PlacesList.route) {
-      PlacesList(mainUiState, rootNavController)
+      PlacesList(mainUiState, rootNavController, mainViewModel)
     }
     composable(TabDestination.PlacesMap.route) {
       PlacesMap()

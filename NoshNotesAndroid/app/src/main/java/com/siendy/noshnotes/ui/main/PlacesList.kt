@@ -1,24 +1,36 @@
 package com.siendy.noshnotes.ui.main
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons.Filled
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.siendy.noshnotes.R.string
 import com.siendy.noshnotes.data.models.LatLong
@@ -35,7 +47,8 @@ import com.siendy.noshnotes.ui.place.PlaceRating
 @Composable
 fun PlacesList(
   mainUiState: MainUiState,
-  rootNavController: NavHostController?
+  rootNavController: NavHostController?,
+  mainViewModel: MainViewModel
 ) {
   if (mainUiState.loading) {
     Column(
@@ -54,7 +67,7 @@ fun PlacesList(
     } else {
       LazyColumn {
         items(places) { place ->
-          PlaceRow(place, rootNavController)
+          PlaceRow(place, rootNavController, mainViewModel)
         }
       }
     }
@@ -65,7 +78,8 @@ fun PlacesList(
 @Composable
 fun PlaceRow(
   place: Place,
-  rootNavController: NavHostController? = null
+  rootNavController: NavHostController? = null,
+  mainViewModel: MainViewModel = viewModel()
 ) {
   Card(
     colors = CardDefaults.cardColors(
@@ -83,11 +97,22 @@ fun PlaceRow(
   ) {
 
     Column {
-      PlacePhoto(
-        place,
-        height = 120.dp,
-        attributionEndPadding = 8.dp
-      )
+
+      Box(
+        modifier = Modifier.fillMaxWidth()
+      ) {
+        PlacePhoto(
+          place,
+          height = 120.dp,
+          attributionEndPadding = 8.dp
+        )
+
+        RemoveButton(
+          Modifier.align(Alignment.TopEnd),
+          mainViewModel,
+          place
+        )
+      }
 
       Column(
         modifier = Modifier.padding(8.dp)
@@ -130,4 +155,34 @@ fun PlaceRowPreview() {
     priceLevel = 1
   )
   PlaceRow(place)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RemoveButton(
+  modifier: Modifier,
+  mainViewModel: MainViewModel,
+  place: Place
+) {
+  Box(
+    modifier = Modifier
+      .padding(8.dp)
+      .size(24.dp)
+      .clip(CircleShape)
+      .background(MaterialTheme.colorScheme.onPrimary)
+      .then(modifier)
+      .clickable {
+        // should confirm this first in a dialog
+//        mainViewModel.deletePlace(place)
+      }
+  ) {
+    Icon(
+      Filled.Close,
+      contentDescription = stringResource(id = string.delete_place),
+      tint = MaterialTheme.colorScheme.primary,
+      modifier = Modifier
+        .size(AssistChipDefaults.IconSize)
+        .align(Alignment.Center)
+    )
+  }
 }
