@@ -19,15 +19,17 @@ struct TagSelectorView: View {
           ChipButton(
             tag: tag,
             isSelected: selectedTagIDs.contains(tag.id),
-            onSelect:  { tag in
-              if selectedTagIDs.contains(tag.id) {
-                selectedTagIDs.remove(tag.id)
-              } else {
-                selectedTagIDs.insert(tag.id)
-              }
-            })
+            onSelect: onSelect)
         }
       }.padding()
+    }
+  }
+
+  private func onSelect(tag: TagWithID) {
+    if selectedTagIDs.contains(tag.id) {
+      selectedTagIDs.remove(tag.id)
+    } else {
+      selectedTagIDs.insert(tag.id)
     }
   }
 }
@@ -43,6 +45,20 @@ struct ChipButton: View {
     }
     .buttonStyle(.bordered)
     .tint(isSelected ? Color.purple : Color.blue)
+  }
+}
+
+struct TagSelectorView_Previews: PreviewProvider {
+  static var previews: some View {
+    TagSelectorView(tags: [
+      TagWithID(id: "1", tag: Tag(name: "Dinner")),
+      TagWithID(id: "2", tag: Tag(name: "Lunch")),
+      TagWithID(id: "3", tag: Tag(name: "Brunch")),
+      TagWithID(id: "4", tag: Tag(name: "Sushi")),
+      TagWithID(id: "5", tag: Tag(name: "Bar")),
+      TagWithID(id: "6", tag: Tag(name: "Mediterranean")),
+      TagWithID(id: "7", tag: Tag(name: "Japanese")),
+    ])
   }
 }
 

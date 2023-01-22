@@ -9,10 +9,11 @@ struct PlacesListView: View {
 
   var body: some View {
     VStack {
-      TagSelectorView(tags: tags).layoutPriority(0.5)
+      TagSelectorView(tags: tags)
+        .frame(maxHeight: 160)
       List(places) { place in
         Text(place.remoteId)
-      }.layoutPriority(1)
+      }
     }
   }
 }
