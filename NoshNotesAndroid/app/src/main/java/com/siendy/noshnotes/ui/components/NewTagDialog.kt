@@ -20,6 +20,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -32,11 +33,11 @@ import androidx.navigation.NavHostController
 import com.siendy.noshnotes.R
 import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.data.repositories.TagsRepository
+import com.siendy.noshnotes.ui.UIConstants
 import com.siendy.noshnotes.ui.theme.DarkGray
 import com.siendy.noshnotes.ui.theme.Gray
 import com.siendy.noshnotes.utils.toHexString
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun NewTagDialog(
@@ -54,83 +55,96 @@ fun NewTagDialog(
         bottom = 8.dp
       )
     ) {
-      TextField(
-        value = nameValue.value,
-        onValueChange = { nameValue.value = it },
-        placeholder = {
-          Text(text = stringResource(id = R.string.new_tag_name))
-        }
+      TagNameInput(nameValue)
+
+      TagColors(selectedColor)
+
+      DialogButtons(
+        parentNavController,
+        nameValue,
+        selectedColor
       )
+    }
+  }
+}
 
-      val colors: List<Color> = listOf(
-        Gray,
-        Color(0xFFF8BBD0),
-        Color(0xFFFFCC80),
-        Color(0xFFFFF59D),
-        Color(0xFFDCEDC8),
-        Color(0xFFB2DFDB),
-        Color(0xFFB2EBF2),
-        Color(0xFFBBDEFB),
-        Color(0xFFE1BEE7),
-      )
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TagNameInput(nameValue: MutableState<TextFieldValue>) {
+  TextField(
+    value = nameValue.value,
+    onValueChange = { nameValue.value = it },
+    placeholder = {
+      Text(text = stringResource(id = R.string.new_tag_name))
+    }
+  )
+}
 
-      LazyRow(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(top = 16.dp)
-      ) {
+@Composable
+fun TagColors(selectedColor: MutableState<androidx.compose.ui.graphics.Color>) {
+  LazyRow(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(top = 16.dp)
+  ) {
 
-        items(colors) { color ->
-          val modifier = if (selectedColor.value == color) {
-            Modifier
-              .width(24.dp)
-              .height(24.dp)
-              .background(color = color)
-              .clickable {
-                selectedColor.value = color
-              }.border(1.dp, DarkGray)
-          } else {
-            Modifier
-              .width(24.dp)
-              .height(24.dp)
-              .background(color = color)
-              .clickable {
-                selectedColor.value = color
-              }
+    items(UIConstants.tagColors) { color ->
+      val modifier = if (selectedColor.value == color) {
+        Modifier
+          .width(24.dp)
+          .height(24.dp)
+          .background(color = color)
+          .clickable {
+            selectedColor.value = color
           }
-
-          Box(modifier = modifier)
-          Spacer(modifier = Modifier.padding(end = 8.dp))
-        }
+          .border(1.dp, DarkGray)
+      } else {
+        Modifier
+          .width(24.dp)
+          .height(24.dp)
+          .background(color = color)
+          .clickable {
+            selectedColor.value = color
+          }
       }
 
-      Row(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(top = 16.dp),
-        horizontalArrangement = Arrangement.End
-      ) {
-        Button(
-          modifier = Modifier.padding(end = 8.dp),
-          onClick = {
-            parentNavController?.navigateUp()
-          }
-        ) {
-          Text(stringResource(id = R.string.cancel).uppercase())
-        }
+      Box(modifier = modifier)
+      Spacer(modifier = Modifier.padding(end = 8.dp))
+    }
+  }
+}
 
-        Button(onClick = {
-          TagsRepository().addTag(
-            Tag(
-              name = nameValue.value.text,
-              backgroundColor = selectedColor.value.toHexString()
-            )
-          )
-          parentNavController?.navigateUp()
-        }) {
-          Text(stringResource(id = R.string.save).uppercase())
-        }
+@Composable
+fun DialogButtons(
+  parentNavController: NavHostController? = null,
+  nameValue: MutableState<TextFieldValue>,
+  selectedColor: MutableState<Color>
+) {
+  Row(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(top = 16.dp),
+    horizontalArrangement = Arrangement.End
+  ) {
+    Button(
+      modifier = Modifier.padding(end = 8.dp),
+      onClick = {
+        parentNavController?.navigateUp()
       }
+    ) {
+      Text(stringResource(id = R.string.cancel).uppercase())
+    }
+
+    Button(onClick = {
+      TagsRepository().addTag(
+        Tag(
+          name = nameValue.value.text,
+          backgroundColor = selectedColor.value.toHexString()
+        )
+      )
+      parentNavController?.navigateUp()
+    }) {
+      Text(stringResource(id = R.string.save).uppercase())
     }
   }
 }
