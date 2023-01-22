@@ -1,6 +1,5 @@
 package com.siendy.noshnotes.ui.components
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -13,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
@@ -33,6 +34,7 @@ import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.data.repositories.TagsRepository
 import com.siendy.noshnotes.ui.theme.DarkGray
 import com.siendy.noshnotes.ui.theme.Gray
+import com.siendy.noshnotes.utils.toHexString
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
@@ -72,14 +74,13 @@ fun NewTagDialog(
         Color(0xFFE1BEE7),
       )
 
-      Row(
+      LazyRow(
         modifier = Modifier
           .fillMaxWidth()
           .padding(top = 16.dp)
       ) {
 
-        colors.forEach { color ->
-
+        items(colors) { color ->
           val modifier = if (selectedColor.value == color) {
             Modifier
               .width(24.dp)
@@ -87,7 +88,6 @@ fun NewTagDialog(
               .background(color = color)
               .clickable {
                 selectedColor.value = color
-                Log.d("SIENALOG", "${selectedColor.value}")
               }.border(1.dp, DarkGray)
           } else {
             Modifier
@@ -96,7 +96,6 @@ fun NewTagDialog(
               .background(color = color)
               .clickable {
                 selectedColor.value = color
-                Log.d("SIENALOG", "${selectedColor.value}")
               }
           }
 
@@ -123,7 +122,8 @@ fun NewTagDialog(
         Button(onClick = {
           TagsRepository().addTag(
             Tag(
-              name = nameValue.value.text
+              name = nameValue.value.text,
+              backgroundColor = selectedColor.value.toHexString()
             )
           )
           parentNavController?.navigateUp()
