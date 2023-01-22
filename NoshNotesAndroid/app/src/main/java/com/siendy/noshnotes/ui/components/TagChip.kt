@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.siendy.noshnotes.R
 import com.siendy.noshnotes.data.models.Tag
+import com.siendy.noshnotes.ui.TagIcon
 import com.siendy.noshnotes.ui.theme.Gray
 import com.siendy.noshnotes.utils.applySelectedStyle
 import com.siendy.noshnotes.utils.fromHex
@@ -78,7 +79,7 @@ fun TagChip(
     ),
     leadingIcon = {
       Icon(
-        painterResource(iconNameToDrawable(tag.icon)),
+        painterResource(TagIcon.drawableForName(tag.icon)),
         contentDescription = null,
         Modifier.size(AssistChipDefaults.IconSize)
       )
@@ -107,15 +108,6 @@ private fun getColor(
   return hex?.let {
     Color.fromHex(it)
   } ?: default
-}
-
-private fun iconNameToDrawable(iconName: String?): Int {
-  return when (iconName) {
-    "dinner" -> R.drawable.ic_baseline_dinner_dining_24
-    "lunch" -> R.drawable.ic_baseline_lunch_dining_24
-    "add" -> R.drawable.ic_baseline_add_circle_outline_24
-    else -> R.drawable.ic_baseline_location_on_24
-  }
 }
 
 @Preview(showBackground = true)

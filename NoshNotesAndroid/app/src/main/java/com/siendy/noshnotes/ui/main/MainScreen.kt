@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
@@ -140,14 +139,6 @@ fun MainContent(
         vertical = 24.dp
       )
     ) {
-      Button(
-        onClick = {
-          rootNavController?.navigate(Routes.newPlace("ChIJDwOJGqu5woAR3tTmF6s8bfE"))
-        }
-      ) {
-        Text("open test place")
-      }
-
       mainUiState.allTagsState?.let {
         AllTags(
           it
