@@ -31,6 +31,7 @@
 		DD765F19297DF92800C75D63 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD765F14297DF92700C75D63 /* UIKit.framework */; };
 		DD765F1A297DF92800C75D63 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD765F15297DF92700C75D63 /* QuartzCore.framework */; };
 		DD765F1C297DFA9E00C75D63 /* GooglePlaces.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD765F1B297DFA9E00C75D63 /* GooglePlaces.xcframework */; };
+		DD765F1F297E3C4300C75D63 /* GooglePlaces.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DD765F1E297E3C4300C75D63 /* GooglePlaces.bundle */; };
 		DD8C5C5729760A0C00727119 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */; };
 		DD8C5C5829760A0C00727119 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */; };
 		DD8C5C5B29760BBF00727119 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = DD8C5C5A29760BBF00727119 /* FirebaseDatabase */; };
@@ -85,7 +86,7 @@
 		DD765F14297DF92700C75D63 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DD765F15297DF92700C75D63 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		DD765F1B297DFA9E00C75D63 /* GooglePlaces.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = GooglePlaces.xcframework; sourceTree = "<group>"; };
-		DD765F1D297DFAE600C75D63 /* GooglePlaces.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlaces.bundle; sourceTree = "<group>"; };
+		DD765F1E297E3C4300C75D63 /* GooglePlaces.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GooglePlaces.bundle; path = "GooglePlaces.xcframework/ios-arm64/GooglePlaces.framework/Resources/GooglePlaces.bundle"; sourceTree = "<group>"; };
 		DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DD8C5C5E29760C3900727119 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DDE6804E2975E32D00E418AB /* NoshNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoshNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -171,7 +172,7 @@
 		DDE680452975E32D00E418AB = {
 			isa = PBXGroup;
 			children = (
-				DD765F1D297DFAE600C75D63 /* GooglePlaces.bundle */,
+				DD765F1E297E3C4300C75D63 /* GooglePlaces.bundle */,
 				DD765EF8297DF8A200C75D63 /* GoogleMaps.bundle */,
 				DD765EF3297DF85000C75D63 /* GoogleMaps.xcframework */,
 				DD765EF2297DF85000C75D63 /* GoogleMapsCore.xcframework */,
@@ -341,6 +342,7 @@
 				DDE680562975E32D00E418AB /* Assets.xcassets in Resources */,
 				DD8C5C5729760A0C00727119 /* GoogleService-Info.plist in Resources */,
 				DD765EF9297DF8A200C75D63 /* GoogleMaps.bundle in Resources */,
+				DD765F1F297E3C4300C75D63 /* GooglePlaces.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
