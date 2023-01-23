@@ -70,7 +70,7 @@ class PlaceStore: ObservableObject {
       // let's fail if any child is invalid
       try child.data(as: FirebasePlace.self)
     }
-    let placeData = await fetchPlaceData(ids: firebasePlaces.map(\.remoteId))
+    let placeData = await try fetchPlaceData(ids: firebasePlaces.map(\.remoteId))
 
     let places = firebasePlaces.compactMap { firebasePlace -> Place? in
       guard let googlePlace = placeData[firebasePlace.remoteId] else {
@@ -82,15 +82,15 @@ class PlaceStore: ObservableObject {
     return places
   }
 
-  private func fetchPlaceData(ids: [String]) async -> [String: GooglePlace] {
-    await withTaskGroup(of: (String, GooglePlace?).self, body: { group in
+  private func fetchPlaceData(ids: [String]) async throws -> [String: GooglePlace] {
+    try await withThrowingTaskGroup(of: (String, GooglePlace?).self, body: { group in
       for id in ids {
         group.addTask {
-          await (id, try? self.fetchPlaceData(id: id))
+          await (id, try self.fetchPlaceData(id: id))
         }
       }
 
-      return await group.reduce(into: [:], { partialResult, resultTuple in
+      return try await group.reduce(into: [:], { partialResult, resultTuple in
         partialResult[resultTuple.0] = resultTuple.1
       })
     })
