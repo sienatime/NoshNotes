@@ -3,7 +3,6 @@
 
 import FirebaseCore
 import Foundation
-import GoogleMaps
 import GooglePlaces
 import SwiftUI
 
@@ -13,7 +12,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool
   {
     FirebaseApp.configure()
-    GMSServices.provideAPIKey("AIzaSyBOpFP6JvDulE8Qf4B17yODOnWifA4bj2Q")
     GMSPlacesClient.provideAPIKey("AIzaSyBOpFP6JvDulE8Qf4B17yODOnWifA4bj2Q")
 
     return true

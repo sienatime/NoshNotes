@@ -10,10 +10,6 @@
 		DD3A433E297A3DF800A0DE77 /* TagSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3A433D297A3DF800A0DE77 /* TagSelectorView.swift */; };
 		DD41D86029760EDB00A13095 /* TagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD41D85F29760EDB00A13095 /* TagStore.swift */; };
 		DD765EEF297CD6A600C75D63 /* PlaceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765EEE297CD6A600C75D63 /* PlaceStore.swift */; };
-		DD765EF1297DF81200C75D63 /* GoogleMapsBase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD765EF0297DF81200C75D63 /* GoogleMapsBase.xcframework */; };
-		DD765EF4297DF85000C75D63 /* GoogleMapsCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD765EF2297DF85000C75D63 /* GoogleMapsCore.xcframework */; };
-		DD765EF5297DF85000C75D63 /* GoogleMaps.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD765EF3297DF85000C75D63 /* GoogleMaps.xcframework */; };
-		DD765EF9297DF8A200C75D63 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DD765EF8297DF8A200C75D63 /* GoogleMaps.bundle */; };
 		DD765EFC297DF8C600C75D63 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD765EFB297DF8C600C75D63 /* Accelerate.framework */; };
 		DD765F03297DF8E000C75D63 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD765EFD297DF8E000C75D63 /* CoreData.framework */; };
 		DD765F04297DF8E000C75D63 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD765EFE297DF8E000C75D63 /* CoreLocation.framework */; };
@@ -65,10 +61,6 @@
 		DD3A433D297A3DF800A0DE77 /* TagSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSelectorView.swift; sourceTree = "<group>"; };
 		DD41D85F29760EDB00A13095 /* TagStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagStore.swift; sourceTree = "<group>"; };
 		DD765EEE297CD6A600C75D63 /* PlaceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceStore.swift; sourceTree = "<group>"; };
-		DD765EF0297DF81200C75D63 /* GoogleMapsBase.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = GoogleMapsBase.xcframework; sourceTree = "<group>"; };
-		DD765EF2297DF85000C75D63 /* GoogleMapsCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = GoogleMapsCore.xcframework; sourceTree = "<group>"; };
-		DD765EF3297DF85000C75D63 /* GoogleMaps.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = GoogleMaps.xcframework; sourceTree = "<group>"; };
-		DD765EF8297DF8A200C75D63 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = "GoogleMaps.xcframework/ios-arm64/GoogleMaps.framework/Resources/GoogleMaps.bundle"; sourceTree = "<group>"; };
 		DD765EFB297DF8C600C75D63 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		DD765EFD297DF8E000C75D63 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		DD765EFE297DF8E000C75D63 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -120,10 +112,7 @@
 				DD765F07297DF8E000C75D63 /* CoreTelephony.framework in Frameworks */,
 				DD765F08297DF8E000C75D63 /* CoreText.framework in Frameworks */,
 				DD765EFC297DF8C600C75D63 /* Accelerate.framework in Frameworks */,
-				DD765EF4297DF85000C75D63 /* GoogleMapsCore.xcframework in Frameworks */,
-				DD765EF5297DF85000C75D63 /* GoogleMaps.xcframework in Frameworks */,
 				DD8C5C5D29760BBF00727119 /* FirebaseDatabaseSwift in Frameworks */,
-				DD765EF1297DF81200C75D63 /* GoogleMapsBase.xcframework in Frameworks */,
 				DD765F1C297DFA9E00C75D63 /* GooglePlaces.xcframework in Frameworks */,
 				DD8C5C5B29760BBF00727119 /* FirebaseDatabase in Frameworks */,
 			);
@@ -173,10 +162,6 @@
 			isa = PBXGroup;
 			children = (
 				DD765F1E297E3C4300C75D63 /* GooglePlaces.bundle */,
-				DD765EF8297DF8A200C75D63 /* GoogleMaps.bundle */,
-				DD765EF3297DF85000C75D63 /* GoogleMaps.xcframework */,
-				DD765EF2297DF85000C75D63 /* GoogleMapsCore.xcframework */,
-				DD765EF0297DF81200C75D63 /* GoogleMapsBase.xcframework */,
 				DD765F1B297DFA9E00C75D63 /* GooglePlaces.xcframework */,
 				DDE680502975E32D00E418AB /* NoshNotes */,
 				DDE680612975E32E00E418AB /* NoshNotesTests */,
@@ -341,7 +326,6 @@
 				DDE680592975E32D00E418AB /* Preview Assets.xcassets in Resources */,
 				DDE680562975E32D00E418AB /* Assets.xcassets in Resources */,
 				DD8C5C5729760A0C00727119 /* GoogleService-Info.plist in Resources */,
-				DD765EF9297DF8A200C75D63 /* GoogleMaps.bundle in Resources */,
 				DD765F1F297E3C4300C75D63 /* GooglePlaces.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
