@@ -4,14 +4,41 @@
 import Foundation
 import FirebaseDatabase
 import FirebaseDatabaseSwift
+import GooglePlaces
 
-struct Place: Codable, Identifiable {
+struct Place: Identifiable {
+  let id: String
+  let name: String
+}
+
+struct FirebasePlace: Codable, Identifiable {
   var id: String { uid }
 
   let note: String?
-  let remoteId: String
-  let tags: [String: Bool]
-  let uid: String
+  let remoteId: String // aka Google Places ID
+  let tags: [String: Bool] // Key = Firebase Tag ID
+  let uid: String // Firebase ID
+}
+
+// Our own custom struct representing validated Google Places data
+struct GooglePlace: Codable {
+  enum DataError: Error {
+    case dataMissing(field: String)
+  }
+
+  let id: String // The Google Places SDK ID
+  let name: String
+
+  init(gmsPlace: GMSPlace) throws {
+    guard let name = gmsPlace.name else {
+      throw DataError.dataMissing(field: "name")
+    }
+    guard let id = gmsPlace.placeID else {
+      throw DataError.dataMissing(field: "placeID")
+    }
+    self.id = id
+    self.name = name
+  }
 }
 
 class PlaceStore: ObservableObject {
@@ -35,12 +62,47 @@ class PlaceStore: ObservableObject {
       print("snapshot.children.allObject was not of type [DataSnapshot] for some reason")
       throw FirebaseError.childrenType
     }
-    let places = try children.map { child in
+    let firebasePlaces = try children.map { child in
       // let's fail if any child is invalid
-      try child.data(as: Place.self)
+      try child.data(as: FirebasePlace.self)
     }
-    return places
+    return firebasePlaces.map { firebasePlace in
+      Place(id: firebasePlace.id, name: "to be fetched")
+    }
+  }
+
+  private func fetchPlaceData(id: String) async throws -> GooglePlace {
+    let gmsPlace = try await fetchGMSPlaceDetails(id: id)
+    return try GooglePlace(gmsPlace: gmsPlace)
+  }
+
+  private func fetchGMSPlaceDetails(id: String) async throws -> GMSPlace {
+    try await withCheckedThrowingContinuation { continuation in
+      fetchGMSPlaceDetails(id: id) { result in
+        switch result {
+        case .failure(let error):
+          continuation.resume(throwing: error)
+        case .success(let gmsPlace):
+          continuation.resume(returning: gmsPlace)
+        }
+      }
+    }
+  }
+
+  private func fetchGMSPlaceDetails(id: String, completion: @escaping (Result<GMSPlace, Error>) -> Void) {
+    let fields: GMSPlaceField = [.name, .placeID]
+    placesClient.fetchPlace(
+      fromPlaceID: id,
+      placeFields: fields,
+      sessionToken: nil) { placeData, error in
+        if let error {
+          completion(.failure(error))
+        } else if let placeData {
+          completion(.success(placeData))
+        }
+      }
   }
 
   private lazy var ref: DatabaseReference = Database.database().reference(withPath: "places")
+  private lazy var placesClient = GMSPlacesClient.shared()
 }

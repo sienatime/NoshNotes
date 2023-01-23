@@ -12,7 +12,7 @@ struct PlacesListView: View {
       TagSelectorView(tags: tags)
         .frame(maxHeight: 160)
       List(places) { place in
-        Text(place.remoteId)
+        Text(place.name)
       }
     }
   }
@@ -21,7 +21,7 @@ struct PlacesListView: View {
 struct PlacesListView_Previews: PreviewProvider {
   static var previews: some View {
     PlacesListView(tags: [], places: [
-      Place(note: "cool", remoteId: "123", tags: [:], uid: "p1")
+      Place(id: "1", name: "Super Cool Place"),
     ])
     PlacesListView(
       tags: [
@@ -34,7 +34,7 @@ struct PlacesListView_Previews: PreviewProvider {
         TagWithID(id: "7", tag: Tag(name: "Japanese")),
       ],
       places: [
-        Place(note: "", remoteId: "123", tags: ["1": true], uid: "place_1"),
+        Place(id: "1", name: "Super Cool Place"),
       ])
 
   }

@@ -9,7 +9,7 @@ struct NoshNotesApp: App {
 
   @StateObject private var tagStore = TagStore()
   @StateObject private var placeStore = PlaceStore()
-  
+
   var body: some Scene {
     WindowGroup {
       PlacesListView(tags: tagStore.tags, places: placeStore.allPlaces).task {
