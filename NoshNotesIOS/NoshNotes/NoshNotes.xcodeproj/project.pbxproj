@@ -79,6 +79,8 @@
 		DD765F15297DF92700C75D63 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		DD765F1B297DFA9E00C75D63 /* GooglePlaces.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = GooglePlaces.xcframework; sourceTree = "<group>"; };
 		DD765F1E297E3C4300C75D63 /* GooglePlaces.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GooglePlaces.bundle; path = "GooglePlaces.xcframework/ios-arm64/GooglePlaces.framework/Resources/GooglePlaces.bundle"; sourceTree = "<group>"; };
+		DD765F2029806AE500C75D63 /* PlacesAPIKey.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = PlacesAPIKey.xcconfig; sourceTree = "<group>"; };
+		DD765F2129806B9700C75D63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DD8C5C5E29760C3900727119 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DDE6804E2975E32D00E418AB /* NoshNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoshNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -183,6 +185,7 @@
 		DDE680502975E32D00E418AB /* NoshNotes */ = {
 			isa = PBXGroup;
 			children = (
+				DD765F2129806B9700C75D63 /* Info.plist */,
 				DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */,
 				DDE680512975E32D00E418AB /* NoshNotesApp.swift */,
 				DD8C5C5E29760C3900727119 /* AppDelegate.swift */,
@@ -192,6 +195,7 @@
 				DD3A433D297A3DF800A0DE77 /* TagSelectorView.swift */,
 				DDE680552975E32D00E418AB /* Assets.xcassets */,
 				DDE680572975E32D00E418AB /* Preview Content */,
+				DD765F2029806AE500C75D63 /* PlacesAPIKey.xcconfig */,
 			);
 			path = NoshNotes;
 			sourceTree = "<group>";
@@ -394,6 +398,7 @@
 /* Begin XCBuildConfiguration section */
 		DDE680702975E32E00E418AB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD765F2029806AE500C75D63 /* PlacesAPIKey.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -455,6 +460,7 @@
 		};
 		DDE680712975E32E00E418AB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD765F2029806AE500C75D63 /* PlacesAPIKey.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -519,6 +525,7 @@
 				DEVELOPMENT_TEAM = KBDAQ88SVF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NoshNotes/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -548,6 +555,7 @@
 				DEVELOPMENT_TEAM = KBDAQ88SVF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NoshNotes/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

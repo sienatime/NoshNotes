@@ -12,7 +12,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool
   {
     FirebaseApp.configure()
-    GMSPlacesClient.provideAPIKey("AIzaSyBOpFP6JvDulE8Qf4B17yODOnWifA4bj2Q")
+
+    if let apiKey = Bundle.main.infoDictionary?["PlacesAPIKey"] as? String {
+      GMSPlacesClient.provideAPIKey(apiKey)
+    } else {
+      print("Couldn't find Google Places API key")
+    }
 
     return true
   }
