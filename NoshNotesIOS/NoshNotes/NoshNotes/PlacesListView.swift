@@ -7,9 +7,11 @@ struct PlacesListView: View {
   var tags: [TagWithID]
   var places: [Place]
 
+  @State var selectedTagIDs: Set<String> = []
+
   var body: some View {
     VStack {
-      TagSelectorView(tags: tags)
+      TagSelectorView(tags: tags, selectedTagIDs: $selectedTagIDs)
         .frame(maxHeight: 160)
       List(places) { place in
         Text(place.name)

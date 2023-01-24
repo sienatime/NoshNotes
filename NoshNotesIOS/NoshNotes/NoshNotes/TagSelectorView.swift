@@ -6,7 +6,7 @@ import SwiftUI
 
 struct TagSelectorView: View {
   var tags: [TagWithID]
-  @State var selectedTagIDs: Set<String> = []
+  @Binding var selectedTagIDs: Set<String>
 
   let rows = (0..<3).map { _ in
     GridItem(.flexible(maximum: 36), alignment: .leading)
@@ -49,15 +49,35 @@ struct ChipButton: View {
 }
 
 struct TagSelectorView_Previews: PreviewProvider {
+  struct PreviewHost: View {
+    let tags: [Tag]
+    @State var selectedTagIDs: Set<String> = []
+
+    var tagsWithId: [TagWithID] {
+      tags.enumerated().map { index, tag in
+        TagWithID(id: "\(index)", tag: tag)
+      }
+    }
+
+    var body: some View {
+      TagSelectorView(tags: tagsWithId, selectedTagIDs: $selectedTagIDs)
+    }
+  }
+
   static var previews: some View {
-    TagSelectorView(tags: [
-      TagWithID(id: "1", tag: Tag(name: "Dinner")),
-      TagWithID(id: "2", tag: Tag(name: "Lunch")),
-      TagWithID(id: "3", tag: Tag(name: "Brunch")),
-      TagWithID(id: "4", tag: Tag(name: "Sushi")),
-      TagWithID(id: "5", tag: Tag(name: "Bar")),
-      TagWithID(id: "6", tag: Tag(name: "Mediterranean")),
-      TagWithID(id: "7", tag: Tag(name: "Japanese")),
+    PreviewHost(tags: [
+      Tag(name: "Dinner"),
+      Tag(name: "Lunch"),
+      Tag(name: "Brunch"),
+      Tag(name: "Sushi"),
+      Tag(name: "Bar"),
+      Tag(name: "Mediterranean"),
+      Tag(name: "Japanese"),
+    ])
+    PreviewHost(tags: [
+      Tag(name: "TODO"),
+      Tag(name: "Fix"),
+      Tag(name: "Flows"),
     ])
   }
 }
