@@ -4,16 +4,23 @@
 import SwiftUI
 
 struct PlacesListView: View {
-  var tags: [TagWithID]
-  var places: [Place]
+  let tags: [TagWithID]
+  let places: [Place]
 
   @State var selectedTagIDs: Set<String> = []
+
+  var filteredPlaces: [Place] {
+    places.filter { place in
+      // TODO: This feels like business logic that should live somewhere else.
+      selectedTagIDs.isSubset(of: place.tagIDs)
+    }
+  }
 
   var body: some View {
     VStack {
       TagSelectorView(tags: tags, selectedTagIDs: $selectedTagIDs)
         .frame(maxHeight: 160)
-      List(places) { place in
+      List(filteredPlaces) { place in
         Text(place.name)
       }
     }
@@ -23,7 +30,7 @@ struct PlacesListView: View {
 struct PlacesListView_Previews: PreviewProvider {
   static var previews: some View {
     PlacesListView(tags: [], places: [
-      Place(id: "1", name: "Super Cool Place"),
+      Place(id: "1", name: "Super Cool Place", tagIDs: []),
     ])
     PlacesListView(
       tags: [
@@ -36,7 +43,7 @@ struct PlacesListView_Previews: PreviewProvider {
         TagWithID(id: "7", tag: Tag(name: "Japanese")),
       ],
       places: [
-        Place(id: "1", name: "Super Cool Place"),
+        Place(id: "1", name: "Super Cool Place", tagIDs: ["1", "4"]),
       ])
 
   }

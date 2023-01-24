@@ -9,6 +9,7 @@ import GooglePlaces
 struct Place: Identifiable {
   let id: String
   let name: String
+  let tagIDs: Set<String>
 }
 
 struct FirebasePlace: Codable, Identifiable {
@@ -77,7 +78,10 @@ class PlaceStore: ObservableObject {
         print("Google place ID \(firebasePlace.remoteId) not found")
         return nil
       }
-      return Place(id: firebasePlace.id, name: googlePlace.name)
+      return Place(
+        id: firebasePlace.id,
+        name: googlePlace.name,
+        tagIDs: Set(firebasePlace.tags.keys))
     }
     return places
   }
