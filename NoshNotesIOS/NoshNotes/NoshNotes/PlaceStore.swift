@@ -7,8 +7,9 @@ import FirebaseDatabaseSwift
 import GooglePlaces
 
 struct Place: Identifiable {
-  let id: String
+  let id: String // The Firebase ID
   let name: String
+  let note: String?
   let tagIDs: Set<String>
 }
 
@@ -71,7 +72,7 @@ class PlaceStore: ObservableObject {
       // let's fail if any child is invalid
       try child.data(as: FirebasePlace.self)
     }
-    let placeData = await try fetchPlaceData(ids: firebasePlaces.map(\.remoteId))
+    let placeData = try await fetchPlaceData(ids: firebasePlaces.map(\.remoteId))
 
     let places = firebasePlaces.compactMap { firebasePlace -> Place? in
       guard let googlePlace = placeData[firebasePlace.remoteId] else {
@@ -81,6 +82,7 @@ class PlaceStore: ObservableObject {
       return Place(
         id: firebasePlace.id,
         name: googlePlace.name,
+        note: firebasePlace.note,
         tagIDs: Set(firebasePlace.tags.keys))
     }
     return places

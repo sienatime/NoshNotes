@@ -4,6 +4,7 @@
 import SwiftUI
 
 struct PlacesListView: View {
+  // The tags you can select in order to filter the places
   let tags: [TagWithID]
   let places: [Place]
 
@@ -16,12 +17,22 @@ struct PlacesListView: View {
     }
   }
 
+  // TODO: move this logic outside this view. It might not know about all the tags. 
+  func tagNames(for ids: Set<String>) -> [String] {
+    let tagsByID: [String: String] = tags.reduce(into: [:]) { partialResult, tagWithId in
+      partialResult[tagWithId.id] = tagWithId.name
+    }
+
+    let names = ids.compactMap { tagsByID[$0] }
+    return names.sorted()
+  }
+
   var body: some View {
     VStack {
       TagSelectorView(tags: tags, selectedTagIDs: $selectedTagIDs)
         .frame(maxHeight: 160)
       List(filteredPlaces) { place in
-        Text(place.name)
+        PlaceCardView(place: place, tags: tagNames(for: place.tagIDs))
       }
     }
   }
@@ -30,7 +41,7 @@ struct PlacesListView: View {
 struct PlacesListView_Previews: PreviewProvider {
   static var previews: some View {
     PlacesListView(tags: [], places: [
-      Place(id: "1", name: "Super Cool Place", tagIDs: []),
+      Place(id: "1", name: "Super Cool Place", note: nil, tagIDs: []),
     ])
     PlacesListView(
       tags: [
@@ -43,7 +54,7 @@ struct PlacesListView_Previews: PreviewProvider {
         TagWithID(id: "7", tag: Tag(name: "Japanese")),
       ],
       places: [
-        Place(id: "1", name: "Super Cool Place", tagIDs: ["1", "4"]),
+        Place(id: "1", name: "Super Cool Place", note: "it's cool", tagIDs: ["1", "4"]),
       ])
 
   }
