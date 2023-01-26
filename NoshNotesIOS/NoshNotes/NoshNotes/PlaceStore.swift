@@ -7,7 +7,7 @@ import FirebaseDatabaseSwift
 import GooglePlaces
 
 struct Place: Identifiable {
-  let id: String // The Firebase ID
+  let id: String // The Firebase ID...for now
   let name: String
   let note: String?
   let tagIDs: Set<String>
