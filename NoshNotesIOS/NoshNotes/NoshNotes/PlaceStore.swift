@@ -23,7 +23,7 @@ struct FirebasePlace: Codable, Identifiable {
 }
 
 // Our own custom struct representing validated Google Places data
-struct GooglePlace: Codable {
+struct GooglePlace {
   enum DataError: Error {
     case dataMissing(field: String)
   }
@@ -74,18 +74,22 @@ class PlaceStore: ObservableObject {
     }
     let placeData = try await fetchPlaceData(ids: firebasePlaces.map(\.remoteId))
 
-    let places = firebasePlaces.compactMap { firebasePlace -> Place? in
-      guard let googlePlace = placeData[firebasePlace.remoteId] else {
-        print("Google place ID \(firebasePlace.remoteId) not found")
-        return nil
-      }
-      return Place(
-        id: firebasePlace.id,
-        name: googlePlace.name,
-        note: firebasePlace.note,
-        tagIDs: Set(firebasePlace.tags.keys))
+    let places = firebasePlaces.compactMap { firebasePlace in
+      buildPlace(from: firebasePlace, with: placeData)
     }
     return places
+  }
+
+  private func buildPlace(from firebasePlace: FirebasePlace, with placeData: [String: GooglePlace]) -> Place? {
+    guard let googlePlace = placeData[firebasePlace.remoteId] else {
+      print("Google place ID \(firebasePlace.remoteId) not found")
+      return nil
+    }
+    return Place(
+      id: firebasePlace.id,
+      name: googlePlace.name,
+      note: firebasePlace.note,
+      tagIDs: Set(firebasePlace.tags.keys))
   }
 
   private func fetchPlaceData(ids: [String]) async throws -> [String: GooglePlace] {
@@ -121,7 +125,7 @@ class PlaceStore: ObservableObject {
   }
 
   private func fetchGMSPlaceDetails(id: String, completion: @escaping (Result<GMSPlace, Error>) -> Void) {
-    let fields: GMSPlaceField = [.name, .placeID]
+    let fields: GMSPlaceField = [.name, .placeID, .photos]
     placesClient.fetchPlace(
       fromPlaceID: id,
       placeFields: fields,
