@@ -17,7 +17,7 @@ struct PlacesListView: View {
     }
   }
 
-  // TODO: move this logic outside this view. It might not know about all the tags. 
+  // TODO: move this logic outside this view. It might not know about all the tags on places. 
   func tagNames(for ids: Set<String>) -> [String] {
     let tagsByID: [String: String] = tags.reduce(into: [:]) { partialResult, tagWithId in
       partialResult[tagWithId.id] = tagWithId.name
