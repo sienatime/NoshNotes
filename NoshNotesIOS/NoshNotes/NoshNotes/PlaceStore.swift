@@ -7,10 +7,19 @@ import FirebaseDatabaseSwift
 import GooglePlaces
 
 struct Place: Identifiable {
+  init(id: String, name: String, note: String? = nil, tagIDs: Set<String> = [], imageMetadata: GMSPlacePhotoMetadata? = nil) {
+    self.id = id
+    self.name = name
+    self.note = note
+    self.tagIDs = tagIDs
+    self.imageMetadata = imageMetadata
+  }
+
   let id: String // The Firebase ID...for now
   let name: String
   let note: String?
   let tagIDs: Set<String>
+  let imageMetadata: GMSPlacePhotoMetadata?
 }
 
 struct FirebasePlace: Codable, Identifiable {
@@ -30,6 +39,7 @@ struct GooglePlace {
 
   let id: String // The Google Places SDK ID
   let name: String
+  let imageMetadata: GMSPlacePhotoMetadata?
 
   init(gmsPlace: GMSPlace) throws {
     guard let name = gmsPlace.name else {
@@ -40,6 +50,7 @@ struct GooglePlace {
     }
     self.id = id
     self.name = name
+    self.imageMetadata = gmsPlace.photos?.first
   }
 }
 
@@ -72,6 +83,11 @@ class PlaceStore: ObservableObject {
       // let's fail if any child is invalid
       try child.data(as: FirebasePlace.self)
     }
+    /// use this fake data if Firebase goes down
+//    let firebasePlaces = [
+//      FirebasePlace(note: "cool place", remoteId: "ChIJDwOJGqu5woAR3tTmF6s8bfE", tags: [:], uid: "123")
+//    ]
+    
     let placeData = try await fetchPlaceData(ids: firebasePlaces.map(\.remoteId))
 
     let places = firebasePlaces.compactMap { firebasePlace in
@@ -89,7 +105,8 @@ class PlaceStore: ObservableObject {
       id: firebasePlace.id,
       name: googlePlace.name,
       note: firebasePlace.note,
-      tagIDs: Set(firebasePlace.tags.keys))
+      tagIDs: Set(firebasePlace.tags.keys),
+      imageMetadata: googlePlace.imageMetadata)
   }
 
   private func fetchPlaceData(ids: [String]) async throws -> [String: GooglePlace] {

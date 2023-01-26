@@ -6,9 +6,21 @@ import SwiftUI
 struct PlaceCardView: View {
   let place: Place
   let tags: [String]
+  @State private var image: UIImage?
+
+  @Environment(\.imageLoader) private var imageLoader
 
   var body: some View {
     VStack(alignment: .leading, spacing: 8) {
+      if let image {
+        Image(uiImage: image)
+          .resizable()
+          .aspectRatio(contentMode: .fill)
+          .frame(width: 330, height: 240)
+          .clipped()
+      } else {
+        Color.blue.opacity(0.2).frame(width: 330, height: 240)
+      }
       Text(place.name)
         .fontWeight(.bold)
         .font(.title)
@@ -26,6 +38,20 @@ struct PlaceCardView: View {
             .cornerRadius(20)
         }
       }
+    }.task {
+      await loadImage()
+    }
+  }
+
+  private func loadImage() async {
+    guard let imageMetadata = place.imageMetadata else {
+      return
+    }
+    do {
+      self.image = try await imageLoader.fetchImage(metadata: imageMetadata)
+    } catch {
+      print("something went wrong: \(error)")
+      self.image = nil
     }
   }
 }
@@ -36,15 +62,23 @@ struct PlaceCardView_Previews: PreviewProvider {
       place: Place(
         id: "1",
         name: "Cool Place",
-        note: "it's cool",
-        tagIDs: []),
+        note: "it's cool"),
       tags: ["cool", "place"])
     PlaceCardView(
       place: Place(
         id: "2",
-        name: "Other Place",
-        note: nil,
-        tagIDs: []),
+        name: "Other Place"),
       tags: ["other", "place"])
+  }
+}
+
+struct PlaceImageStoreKey: EnvironmentKey {
+  static let defaultValue = PlaceImageStore()
+}
+
+extension EnvironmentValues {
+  var imageLoader: PlaceImageStore {
+    get { self[PlaceImageStoreKey.self] }
+    set { self[PlaceImageStoreKey.self ] = newValue}
   }
 }
