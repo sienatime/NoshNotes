@@ -6,7 +6,7 @@ import FirebaseDatabase
 import FirebaseDatabaseSwift
 import GooglePlaces
 
-struct Place: Identifiable {
+struct Place: Identifiable, Hashable {
   init(id: String, name: String, note: String? = nil, tagIDs: Set<String> = [], imageMetadata: GMSPlacePhotoMetadata? = nil) {
     self.id = id
     self.name = name

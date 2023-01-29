@@ -5,7 +5,9 @@ import SwiftUI
 
 struct PlaceCardView: View {
   let place: Place
+  // we ignore place.tagIds and instead display these tag strings. is that bad? I didn't want to talk to the tag store in this view.
   let tags: [String]
+  
   @State private var image: UIImage?
 
   @Environment(\.imageLoader) private var imageLoader
@@ -16,10 +18,10 @@ struct PlaceCardView: View {
         Image(uiImage: image)
           .resizable()
           .aspectRatio(contentMode: .fill)
-          .frame(width: 330, height: 240)
+          .frame(width: 330, height: 180)
           .clipped()
       } else {
-        Color.blue.opacity(0.2).frame(width: 330, height: 240)
+        Color.blue.opacity(0.2).frame(width: 330, height: 180)
       }
       Text(place.name)
         .fontWeight(.bold)

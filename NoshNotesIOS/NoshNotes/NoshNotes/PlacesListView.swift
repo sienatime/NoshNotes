@@ -17,7 +17,8 @@ struct PlacesListView: View {
     }
   }
 
-  // TODO: move this logic outside this view. It might not know about all the tags on places. 
+  // TODO: move this logic outside this view. It might not know about all the tags on places.
+  // Also we want to share this logic with PlaceDetailView
   func tagNames(for ids: Set<String>) -> [String] {
     let tagsByID: [String: String] = tags.reduce(into: [:]) { partialResult, tagWithId in
       partialResult[tagWithId.id] = tagWithId.name
@@ -28,11 +29,18 @@ struct PlacesListView: View {
   }
 
   var body: some View {
-    VStack {
-      TagSelectorView(tags: tags, selectedTagIDs: $selectedTagIDs)
-        .frame(maxHeight: 160)
-      List(filteredPlaces) { place in
-        PlaceCardView(place: place, tags: tagNames(for: place.tagIDs))
+    NavigationStack {
+      VStack {
+        TagSelectorView(tags: tags, selectedTagIDs: $selectedTagIDs)
+          .frame(maxHeight: 160)
+        List(filteredPlaces) { place in
+          PlaceCardView(place: place, tags: tagNames(for: place.tagIDs))
+          // Background + opacity hack to avoid arrow and annoying layout
+            .background(
+              NavigationLink("", destination: PlaceDetailView(place: place, tags: tagNames(for: place.tagIDs)))
+                .opacity(0)
+            )
+        }
       }
     }
   }
@@ -55,6 +63,7 @@ struct PlacesListView_Previews: PreviewProvider {
       ],
       places: [
         Place(id: "1", name: "Super Cool Place", note: "it's cool", tagIDs: ["1", "4"]),
+        Place(id: "2", name: "Another Cool Place", note: "it's also cool", tagIDs: ["1", "4"]),
       ])
 
   }
