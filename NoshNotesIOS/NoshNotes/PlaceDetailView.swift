@@ -6,10 +6,27 @@ import SwiftUI
 struct PlaceDetailView: View {
   let place: Place
   let tagNames: [String]
+
+  @State private var updatedNote: String
   // TODO: implement edit mode
 
+  init(place: Place, tagNames: [String]) {
+    self.place = place
+    self.tagNames = tagNames
+    self.updatedNote = place.note ?? ""
+  }
+
   var body: some View {
-    PlaceCardView(place: place, tagNames: tagNames)
+    VStack {
+      GooglePlaceImage(imageMetadata: place.imageMetadata)
+      Form {
+        TextField(text: $updatedNote, prompt: Text("What looks good about this place?")) {
+          Text("Note")
+        }
+      }
+      Text("Tags")
+      Spacer()
+    }.padding(.horizontal)
   }
 }
 
