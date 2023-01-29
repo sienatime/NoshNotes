@@ -10,19 +10,9 @@ struct PlaceCardView: View {
 
   @State private var image: UIImage?
 
-  @Environment(\.imageLoader) private var imageLoader
-
   var body: some View {
     VStack(alignment: .leading, spacing: 8) {
-      if let image {
-        Image(uiImage: image)
-          .resizable()
-          .aspectRatio(contentMode: .fill)
-          .frame(width: 330, height: 180)
-          .clipped()
-      } else {
-        Color.blue.opacity(0.2).frame(width: 330, height: 180)
-      }
+      GooglePlaceImage(imageMetadata: place.imageMetadata)
       Text(place.name)
         .fontWeight(.bold)
         .font(.title)
@@ -40,20 +30,6 @@ struct PlaceCardView: View {
             .cornerRadius(20)
         }
       }
-    }.task {
-      await loadImage()
-    }
-  }
-
-  private func loadImage() async {
-    guard let imageMetadata = place.imageMetadata else {
-      return
-    }
-    do {
-      self.image = try await imageLoader.fetchImage(metadata: imageMetadata)
-    } catch {
-      print("something went wrong: \(error)")
-      self.image = nil
     }
   }
 }
