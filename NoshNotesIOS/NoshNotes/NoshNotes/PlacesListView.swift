@@ -34,10 +34,10 @@ struct PlacesListView: View {
         TagSelectorView(tags: tags, selectedTagIDs: $selectedTagIDs)
           .frame(maxHeight: 160)
         List(filteredPlaces) { place in
-          PlaceCardView(place: place, tags: tagNames(for: place.tagIDs))
+          PlaceCardView(place: place, tagNames: tagNames(for: place.tagIDs))
           // Background + opacity hack to avoid arrow and annoying layout
             .background(
-              NavigationLink("", destination: PlaceDetailView(place: place, tags: tagNames(for: place.tagIDs)))
+              NavigationLink("", destination: PlaceDetailView(place: place, tagNames: tagNames(for: place.tagIDs)))
                 .opacity(0)
             )
         }
