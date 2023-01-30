@@ -46,7 +46,7 @@ struct PlaceDetailView: View {
 struct PlaceDetailView_Previews: PreviewProvider {
   static var previews: some View {
     PlaceDetailView(
-      place: Place(id: "123", name: "Cool Place", note: "it's cool"),
+      place: Place(id: "123", name: "Cool Place", note: "it's cool", tagIDs: ["1", "4"]),
       tags: [
         TagWithID(id: "1", tag: Tag(name: "Dinner")),
         TagWithID(id: "2", tag: Tag(name: "Lunch")),
