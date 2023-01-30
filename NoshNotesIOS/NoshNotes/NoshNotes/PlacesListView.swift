@@ -48,9 +48,6 @@ struct PlacesListView: View {
 
 struct PlacesListView_Previews: PreviewProvider {
   static var previews: some View {
-    PlacesListView(tags: [], places: [
-      Place(id: "1", name: "Super Cool Place", note: nil, tagIDs: []),
-    ])
     PlacesListView(
       tags: [
         TagWithID(id: "1", tag: Tag(name: "Dinner")),
@@ -65,6 +62,8 @@ struct PlacesListView_Previews: PreviewProvider {
         Place(id: "1", name: "Super Cool Place", note: "it's cool", tagIDs: ["1", "4"]),
         Place(id: "2", name: "Another Cool Place", note: "it's also cool", tagIDs: ["1", "4"]),
       ])
-
+    PlacesListView(tags: [], places: [
+      Place(id: "1", name: "Super Cool Place", note: nil, tagIDs: []),
+    ])
   }
 }

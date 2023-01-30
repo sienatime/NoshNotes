@@ -27,15 +27,17 @@ struct PlaceDetailView: View {
         }
         Text("Tags")
         HStack {
+          // TODO: show all available tags with the current tags selected
           ForEach(tagNames, id: \.self) {
             TagView(text: $0)
           }
         }
         Button("Add Tag") {
-          print("add tag!")
+          // TODO: launch the tag creation dialog
         }
         Button("Save") {
           print("save!")
+          // TODO: write to the Firebase backend
         }.buttonStyle(.borderedProminent)
       }
     }.padding(.horizontal)
