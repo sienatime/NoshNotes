@@ -9,7 +9,7 @@ struct TagSelectorView: View {
   @Binding var selectedTagIDs: Set<String>
 
   let rows = (0..<3).map { _ in
-    GridItem(.flexible(maximum: 36), alignment: .leading)
+    GridItem(.flexible(minimum: 34, maximum: 36), alignment: .leading)
   }
 
   var body: some View {

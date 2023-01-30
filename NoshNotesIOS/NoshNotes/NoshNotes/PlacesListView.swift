@@ -18,7 +18,6 @@ struct PlacesListView: View {
   }
 
   // TODO: move this logic outside this view. It might not know about all the tags on places.
-  // Also we want to share this logic with PlaceDetailView
   func tagNames(for ids: Set<String>) -> [String] {
     let tagsByID: [String: String] = tags.reduce(into: [:]) { partialResult, tagWithId in
       partialResult[tagWithId.id] = tagWithId.name
@@ -32,12 +31,12 @@ struct PlacesListView: View {
     NavigationStack {
       VStack {
         TagSelectorView(tags: tags, selectedTagIDs: $selectedTagIDs)
-          .frame(maxHeight: 160)
+          .frame(maxHeight: 120)
         List(filteredPlaces) { place in
           PlaceCardView(place: place, tagNames: tagNames(for: place.tagIDs))
           // Background + opacity hack to avoid arrow and annoying layout
             .background(
-              NavigationLink("", destination: PlaceDetailView(place: place, tagNames: tagNames(for: place.tagIDs)))
+              NavigationLink("", destination: PlaceDetailView(place: place, tags: tags))
                 .opacity(0)
             )
         }
