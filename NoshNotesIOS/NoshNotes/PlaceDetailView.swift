@@ -25,8 +25,7 @@ struct PlaceDetailView: View {
         }
       }
       Text("Tags")
-      Spacer()
-    }.padding(.horizontal)
+    }
   }
 }
 
