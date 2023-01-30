@@ -14,7 +14,9 @@ import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.siendy.noshnotes.R
 import com.siendy.noshnotes.ui.navigation.Routes
 import com.siendy.noshnotes.ui.navigation.Routes.AUTOCOMPLETE_REQUEST_CODE
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
   private var rootNavController: NavHostController? = null
 

@@ -29,12 +29,12 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.siendy.noshnotes.R
-import com.siendy.noshnotes.data.models.Tag
-import com.siendy.noshnotes.data.repositories.TagsRepository
 import com.siendy.noshnotes.ui.TagIcon
 import com.siendy.noshnotes.ui.UIConstants
+import com.siendy.noshnotes.ui.place.PlaceViewModel
 import com.siendy.noshnotes.ui.theme.DarkGray
 import com.siendy.noshnotes.ui.theme.Gray
 import com.siendy.noshnotes.ui.theme.Purple80
@@ -43,7 +43,8 @@ import com.siendy.noshnotes.utils.toHexString
 @Preview
 @Composable
 fun NewTagDialog(
-  parentNavController: NavHostController? = null
+  parentNavController: NavHostController? = null,
+  placeViewModel: PlaceViewModel = hiltViewModel()
 ) {
   val nameValue = remember { mutableStateOf(TextFieldValue()) }
   val selectedColor = remember { mutableStateOf(Gray) }
@@ -51,12 +52,10 @@ fun NewTagDialog(
 
   Dialog(
     onConfirm = {
-      TagsRepository().addTag(
-        Tag(
-          name = nameValue.value.text,
-          backgroundColor = selectedColor.value.toHexString(),
-          icon = selectedIcon.value.iconName
-        )
+      placeViewModel.addTag(
+        name = nameValue.value.text,
+        backgroundColor = selectedColor.value.toHexString(),
+        icon = selectedIcon.value.iconName
       )
     },
     parentNavController,

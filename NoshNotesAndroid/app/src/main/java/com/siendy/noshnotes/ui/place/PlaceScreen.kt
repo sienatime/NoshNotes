@@ -33,7 +33,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -58,7 +58,7 @@ import com.siendy.noshnotes.utils.orEmpty
 fun PlaceScreen(
   placeRemoteId: String? = null,
   placeId: String? = null,
-  placeViewModel: PlaceViewModel = viewModel(),
+  placeViewModel: PlaceViewModel = hiltViewModel(),
   rootNavController: NavHostController? = null
 ) {
   when {
@@ -88,7 +88,7 @@ fun PlaceScreen(
 @Composable
 fun PlaceAddOrEdit(
   title: String,
-  placeViewModel: PlaceViewModel = viewModel(),
+  placeViewModel: PlaceViewModel = hiltViewModel(),
   rootNavController: NavHostController? = null
 ) {
   val placeUiState by placeViewModel.uiState.collectAsState()
@@ -127,7 +127,7 @@ fun PlaceAddOrEdit(
 fun PlaceContent(
   padding: PaddingValues,
   placeUiState: PlaceUiState,
-  placeViewModel: PlaceViewModel = viewModel(),
+  placeViewModel: PlaceViewModel = hiltViewModel(),
   rootNavController: NavHostController? = null
 ) {
   val navController = rememberNavController()
@@ -147,7 +147,10 @@ fun PlaceContent(
       )
     }
     dialog(Routes.ADD_NEW_TAG) {
-      NewTagDialog(navController)
+      NewTagDialog(
+        navController,
+        placeViewModel
+      )
     }
   }
 }
@@ -156,7 +159,7 @@ fun PlaceContent(
 @Composable
 fun PlaceDetails(
   placeUiState: PlaceUiState,
-  placeViewModel: PlaceViewModel = viewModel(),
+  placeViewModel: PlaceViewModel = hiltViewModel(),
   navController: NavHostController? = null,
   rootNavController: NavHostController? = null
 ) {

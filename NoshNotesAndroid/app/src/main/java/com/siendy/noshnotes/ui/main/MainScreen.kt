@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -54,9 +54,8 @@ import com.siendy.noshnotes.ui.theme.NoshNotesTheme
 @Composable
 fun App(
   rootNavController: NavHostController,
-  mainViewModel: MainViewModel = viewModel()
+  mainViewModel: MainViewModel = hiltViewModel()
 ) {
-
   NoshNotesTheme {
     NavHost(
       navController = rootNavController,
@@ -106,7 +105,7 @@ fun App(
 @Preview
 fun MainScreen(
   rootNavController: NavHostController? = null,
-  mainViewModel: MainViewModel = viewModel()
+  mainViewModel: MainViewModel = hiltViewModel()
 ) {
   val mainTabsNavController = rememberNavController()
   val context = LocalContext.current
@@ -143,7 +142,7 @@ fun MainContent(
   navController: NavHostController,
   mainUiState: MainUiState,
   rootNavController: NavHostController?,
-  mainViewModel: MainViewModel = viewModel()
+  mainViewModel: MainViewModel = hiltViewModel()
 ) {
   Box(modifier = Modifier.padding(padding)) {
 
@@ -164,8 +163,7 @@ fun MainContent(
       BottomBarNavigationHost(
         bottomBarNavController = navController,
         mainUiState,
-        rootNavController,
-        mainViewModel
+        rootNavController
       )
     }
   }
@@ -191,8 +189,7 @@ fun AddPlaceFAB(
 fun BottomBarNavigationHost(
   bottomBarNavController: NavHostController,
   mainUiState: MainUiState,
-  rootNavController: NavHostController?,
-  mainViewModel: MainViewModel
+  rootNavController: NavHostController?
 ) {
   NavHost(
     bottomBarNavController,
@@ -200,7 +197,7 @@ fun BottomBarNavigationHost(
     route = "bottom"
   ) {
     composable(TabDestination.PlacesList.route) {
-      PlacesList(mainUiState, rootNavController, mainViewModel)
+      PlacesList(mainUiState, rootNavController)
     }
     composable(TabDestination.PlacesMap.route) {
       PlacesMap()

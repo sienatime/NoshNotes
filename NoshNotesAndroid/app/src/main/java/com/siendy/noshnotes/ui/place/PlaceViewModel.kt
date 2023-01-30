@@ -8,14 +8,17 @@ import com.siendy.noshnotes.data.repositories.PlacesRepository
 import com.siendy.noshnotes.data.repositories.TagsRepository
 import com.siendy.noshnotes.ui.components.AllTagsState
 import com.siendy.noshnotes.ui.components.TagState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PlaceViewModel(
-  private val tagsRepository: TagsRepository = TagsRepository(),
-  private val placesRepository: PlacesRepository = PlacesRepository()
+@HiltViewModel
+class PlaceViewModel @Inject constructor(
+  private val tagsRepository: TagsRepository,
+  private val placesRepository: PlacesRepository
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(PlaceUiState())
   val uiState: StateFlow<PlaceUiState> = _uiState
@@ -96,6 +99,20 @@ class PlaceViewModel(
         allTagsState = currentUiState.allTagsState?.updateSelectedTag(tagState)
       )
     }
+  }
+
+  fun addTag(
+    name: String,
+    backgroundColor: String,
+    icon: String
+  ) {
+    tagsRepository.addTag(
+      Tag(
+        name = name,
+        backgroundColor = backgroundColor,
+        icon = icon
+      )
+    )
   }
 
   private fun allTagsMap(tags: List<Tag>): Map<String, Tag> {

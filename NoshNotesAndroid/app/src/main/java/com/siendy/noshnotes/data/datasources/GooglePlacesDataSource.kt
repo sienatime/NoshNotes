@@ -8,19 +8,18 @@ import com.google.android.libraries.places.api.net.FetchPhotoRequest
 import com.google.android.libraries.places.api.net.FetchPhotoResponse
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchPlaceResponse
+import com.google.android.libraries.places.api.net.PlacesClient
 import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.domain.ConvertPlaceUseCase
-import com.siendy.noshnotes.ui.NoshNotesApplication
+import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-class GooglePlacesDataSource(
-  private val convertPlaceUseCase: ConvertPlaceUseCase = ConvertPlaceUseCase()
+class GooglePlacesDataSource @Inject constructor(
+  private val placesClient: PlacesClient,
+  private val convertPlaceUseCase: ConvertPlaceUseCase
 ) {
-
-  private val placesClient = NoshNotesApplication.instance?.getGooglePlacesClient()
-    ?: throw Exception("Application instance is null")
 
   suspend fun getPlaceById(googleMapsId: String): Place {
     val googlePlace = getPlace(googleMapsId)

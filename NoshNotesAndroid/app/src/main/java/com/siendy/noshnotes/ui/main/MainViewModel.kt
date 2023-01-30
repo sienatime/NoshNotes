@@ -9,16 +9,19 @@ import com.siendy.noshnotes.data.repositories.TagsRepository
 import com.siendy.noshnotes.domain.OpenPlacesAutocompleteUseCase
 import com.siendy.noshnotes.ui.components.AllTagsState
 import com.siendy.noshnotes.ui.components.TagState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(
-  private val openPlacesAutocompleteUseCase: OpenPlacesAutocompleteUseCase = OpenPlacesAutocompleteUseCase(),
-  private val tagsRepository: TagsRepository = TagsRepository(),
-  private val placesRepository: PlacesRepository = PlacesRepository()
+@HiltViewModel
+class MainViewModel @Inject constructor(
+  private val openPlacesAutocompleteUseCase: OpenPlacesAutocompleteUseCase,
+  private val tagsRepository: TagsRepository,
+  private val placesRepository: PlacesRepository
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(MainUiState())

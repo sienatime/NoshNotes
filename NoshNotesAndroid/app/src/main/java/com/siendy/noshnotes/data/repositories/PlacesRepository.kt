@@ -9,17 +9,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class PlacesRepository {
-
-  private val databaseDataSource by lazy {
-    FirebaseRealTimeDatabaseDataSource()
-  }
-
-  private val googlePlacesDataSource by lazy {
-    GooglePlacesDataSource()
-  }
-
+class PlacesRepository @Inject constructor(
+  private val databaseDataSource: FirebaseRealTimeDatabaseDataSource,
+  private val googlePlacesDataSource: GooglePlacesDataSource
+) {
   private fun getPlaces(): Flow<List<FirebasePlace>> {
     return databaseDataSource.getPlaces()
   }
