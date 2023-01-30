@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -28,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -197,7 +199,10 @@ fun PlaceDetails(
         value = noteValue.value,
         onValueChange = { noteValue.value = it },
         placeholder = { Text(text = stringResource(id = R.string.note_placeholder)) },
-        modifier = Modifier.padding(top = 28.dp, bottom = 16.dp)
+        modifier = Modifier.padding(top = 28.dp, bottom = 16.dp),
+        keyboardOptions = KeyboardOptions.Default.copy(
+          capitalization = KeyboardCapitalization.Sentences
+        )
       )
 
       placeUiState.allTagsState?.let {

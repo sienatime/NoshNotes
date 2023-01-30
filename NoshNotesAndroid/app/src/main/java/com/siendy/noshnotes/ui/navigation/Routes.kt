@@ -4,6 +4,7 @@ object Routes {
   const val MAIN = "main"
   fun place(placeId: String) = "place/$placeId"
   fun newPlace(remoteId: String) = "place/new?remoteId=$remoteId"
+  fun deletePlace(placeId: String) = "place/$placeId/delete"
 
   const val PLACES_LIST = "places_list"
   const val PLACES_MAP = "places_map"

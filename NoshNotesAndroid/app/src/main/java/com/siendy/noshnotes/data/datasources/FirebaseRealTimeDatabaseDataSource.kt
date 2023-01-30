@@ -128,4 +128,20 @@ class FirebaseRealTimeDatabaseDataSource {
 
     databaseReference.updateChildren(childUpdates)
   }
+
+  suspend fun deletePlace(placeId: String) {
+    getPlace(placeId).collect { firebasePlace ->
+      val key = firebasePlace?.uid ?: return@collect
+
+      val childUpdates = mutableMapOf<String, Any?>(
+        "/$placeReference/$key" to null
+      )
+
+      firebasePlace.tags.keys.forEach { tagId ->
+        childUpdates["/$tagReference/$tagId/$placeReference/$key"] = null
+      }
+
+      databaseReference.updateChildren(childUpdates)
+    }
+  }
 }

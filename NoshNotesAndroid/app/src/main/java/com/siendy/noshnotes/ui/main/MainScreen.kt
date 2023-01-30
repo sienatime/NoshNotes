@@ -41,17 +41,20 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.siendy.noshnotes.R
 import com.siendy.noshnotes.ui.components.AllTags
+import com.siendy.noshnotes.ui.components.ConfirmDeletePlaceDialog
 import com.siendy.noshnotes.ui.navigation.Routes
 import com.siendy.noshnotes.ui.place.PlaceScreen
 import com.siendy.noshnotes.ui.theme.NoshNotesTheme
 
 @Composable
 fun App(
-  rootNavController: NavHostController
+  rootNavController: NavHostController,
+  mainViewModel: MainViewModel = viewModel()
 ) {
 
   NoshNotesTheme {
@@ -62,7 +65,8 @@ fun App(
     ) {
       composable(Routes.MAIN) {
         MainScreen(
-          rootNavController
+          rootNavController,
+          mainViewModel
         )
       }
       composable(
@@ -81,6 +85,16 @@ fun App(
         PlaceScreen(
           placeId = backStackEntry.arguments?.getString("placeId"),
           rootNavController = rootNavController
+        )
+      }
+      dialog(
+        "place/{placeId}/delete",
+        arguments = listOf(navArgument("placeId") { type = NavType.StringType })
+      ) { backStackEntry ->
+        ConfirmDeletePlaceDialog(
+          navHostController = rootNavController,
+          mainViewModel = mainViewModel,
+          placeId = backStackEntry.arguments?.getString("placeId")
         )
       }
     }

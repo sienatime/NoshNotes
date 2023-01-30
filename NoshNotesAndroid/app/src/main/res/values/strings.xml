@@ -19,4 +19,5 @@
   <string name="photo_attribution">Photo by: %s</string>
   <string name="delete_place">Delete Place</string>
   <string name="confirm_delete_place">Are you sure you want to delete this place?</string>
+  <string name="confirm">Confirm</string>
 </resources>

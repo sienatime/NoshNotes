@@ -109,8 +109,8 @@ fun PlaceRow(
 
         RemoveButton(
           Modifier.align(Alignment.TopEnd),
-          mainViewModel,
-          place
+          rootNavController,
+          place.uid
         )
       }
 
@@ -161,8 +161,8 @@ fun PlaceRowPreview() {
 @Composable
 fun RemoveButton(
   modifier: Modifier,
-  mainViewModel: MainViewModel,
-  place: Place
+  rootNavController: NavHostController?,
+  placeId: String?
 ) {
   Box(
     modifier = Modifier
@@ -172,8 +172,9 @@ fun RemoveButton(
       .background(MaterialTheme.colorScheme.onPrimary)
       .then(modifier)
       .clickable {
-        // should confirm this first in a dialog
-//        mainViewModel.deletePlace(place)
+        placeId?.let {
+          rootNavController?.navigate(Routes.deletePlace(placeId))
+        }
       }
   ) {
     Icon(

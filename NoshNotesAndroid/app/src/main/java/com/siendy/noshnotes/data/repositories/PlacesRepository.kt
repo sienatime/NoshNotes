@@ -83,4 +83,8 @@ class PlacesRepository {
       }
     }
   }
+
+  suspend fun deletePlace(placeId: String) {
+    databaseDataSource.deletePlace(placeId)
+  }
 }

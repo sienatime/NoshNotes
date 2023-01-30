@@ -59,6 +59,23 @@ class MainViewModel(
     getPlacesBySelectedTags()
   }
 
+  fun deletePlace(placeId: String?) {
+    if (placeId == null) return
+    _uiState.update { currentUiState ->
+      currentUiState.copy(
+        loading = true
+      )
+    }
+    viewModelScope.launch {
+      placesRepository.deletePlace(placeId)
+      _uiState.update { currentUiState ->
+        currentUiState.copy(
+          loading = false
+        )
+      }
+    }
+  }
+
   private var filterJob: Job? = null
 
   private fun getPlacesBySelectedTags() {
