@@ -22,12 +22,7 @@ struct PlaceCardView: View {
       }
       HStack {
         ForEach(tagNames, id: \.self) {
-          Text($0)
-            .fontWeight(.light)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 4)
-            .background(Color(white: 0.8))
-            .cornerRadius(20)
+          TagView(text: $0)
         }
       }
     }

@@ -8,7 +8,6 @@ struct PlaceDetailView: View {
   let tagNames: [String]
 
   @State private var updatedNote: String
-  // TODO: implement edit mode
 
   init(place: Place, tagNames: [String]) {
     self.place = place
@@ -17,15 +16,29 @@ struct PlaceDetailView: View {
   }
 
   var body: some View {
-    VStack {
+    VStack(spacing: 16) {
       GooglePlaceImage(imageMetadata: place.imageMetadata)
-      Form {
-        TextField(text: $updatedNote, prompt: Text("What looks good about this place?")) {
+      VStack(alignment: .leading, spacing: 16) {
+        HStack {
           Text("Note")
+
+          TextField("Note", text: $updatedNote, prompt: Text("What looks good about this place?"))
+            .textFieldStyle(.roundedBorder)
         }
+        Text("Tags")
+        HStack {
+          ForEach(tagNames, id: \.self) {
+            TagView(text: $0)
+          }
+        }
+        Button("Add Tag") {
+          print("add tag!")
+        }
+        Button("Save") {
+          print("save!")
+        }.buttonStyle(.borderedProminent)
       }
-      Text("Tags")
-    }
+    }.padding(.horizontal)
   }
 }
 

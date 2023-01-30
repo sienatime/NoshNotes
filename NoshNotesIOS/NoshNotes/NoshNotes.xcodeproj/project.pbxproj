@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		DD33B8F529872D1A0085DFA2 /* PlaceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD33B8F429872D1A0085DFA2 /* PlaceDetailView.swift */; };
 		DD33B8F7298738070085DFA2 /* GooglePlaceImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD33B8F6298738070085DFA2 /* GooglePlaceImage.swift */; };
+		DD33B8F929888BC80085DFA2 /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD33B8F829888BC80085DFA2 /* TagView.swift */; };
 		DD3A433E297A3DF800A0DE77 /* TagSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3A433D297A3DF800A0DE77 /* TagSelectorView.swift */; };
 		DD41D86029760EDB00A13095 /* TagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD41D85F29760EDB00A13095 /* TagStore.swift */; };
 		DD765EEF297CD6A600C75D63 /* PlaceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765EEE297CD6A600C75D63 /* PlaceStore.swift */; };
@@ -64,6 +65,7 @@
 /* Begin PBXFileReference section */
 		DD33B8F429872D1A0085DFA2 /* PlaceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetailView.swift; sourceTree = "<group>"; };
 		DD33B8F6298738070085DFA2 /* GooglePlaceImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooglePlaceImage.swift; sourceTree = "<group>"; };
+		DD33B8F829888BC80085DFA2 /* TagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
 		DD3A433D297A3DF800A0DE77 /* TagSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSelectorView.swift; sourceTree = "<group>"; };
 		DD41D85F29760EDB00A13095 /* TagStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagStore.swift; sourceTree = "<group>"; };
 		DD765EEE297CD6A600C75D63 /* PlaceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceStore.swift; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 				DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */,
 				DDE680512975E32D00E418AB /* NoshNotesApp.swift */,
 				DD33B8F429872D1A0085DFA2 /* PlaceDetailView.swift */,
+				DD33B8F829888BC80085DFA2 /* TagView.swift */,
 				DD8C5C5E29760C3900727119 /* AppDelegate.swift */,
 				DD41D85F29760EDB00A13095 /* TagStore.swift */,
 				DD765EEE297CD6A600C75D63 /* PlaceStore.swift */,
@@ -370,6 +373,7 @@
 			files = (
 				DD3A433E297A3DF800A0DE77 /* TagSelectorView.swift in Sources */,
 				DD765F232980841400C75D63 /* PlaceCardView.swift in Sources */,
+				DD33B8F929888BC80085DFA2 /* TagView.swift in Sources */,
 				DD8C5C5F29760C3900727119 /* AppDelegate.swift in Sources */,
 				DD41D86029760EDB00A13095 /* TagStore.swift in Sources */,
 				DD33B8F7298738070085DFA2 /* GooglePlaceImage.swift in Sources */,
