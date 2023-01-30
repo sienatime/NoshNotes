@@ -171,7 +171,6 @@
 		DDE680452975E32D00E418AB = {
 			isa = PBXGroup;
 			children = (
-				DD33B8F429872D1A0085DFA2 /* PlaceDetailView.swift */,
 				DD765F1E297E3C4300C75D63 /* GooglePlaces.bundle */,
 				DD765F1B297DFA9E00C75D63 /* GooglePlaces.xcframework */,
 				DDE680502975E32D00E418AB /* NoshNotes */,
@@ -197,6 +196,7 @@
 				DD765F2129806B9700C75D63 /* Info.plist */,
 				DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */,
 				DDE680512975E32D00E418AB /* NoshNotesApp.swift */,
+				DD33B8F429872D1A0085DFA2 /* PlaceDetailView.swift */,
 				DD8C5C5E29760C3900727119 /* AppDelegate.swift */,
 				DD41D85F29760EDB00A13095 /* TagStore.swift */,
 				DD765EEE297CD6A600C75D63 /* PlaceStore.swift */,
