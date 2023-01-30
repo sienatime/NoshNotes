@@ -1,14 +1,11 @@
 package com.siendy.noshnotes.data.models
 
-import com.google.firebase.database.Exclude
-
 data class FirebasePlace(
   val uid: String? = null,
   val remoteId: String? = null,
   val note: String? = null,
   val tags: Map<String, Boolean> = mapOf()
 ) {
-  @Exclude
   fun toMap(): Map<String, Any?> {
     return hashMapOf(
       "uid" to uid,
@@ -18,14 +15,14 @@ data class FirebasePlace(
     )
   }
 
-  @Exclude
+  fun tagIds(): Set<String> = tags.keys
+
   fun hasAllTags(tagsSet: Set<String>): Boolean {
-    return tags.keys.containsAll(tagsSet)
+    return tagIds().containsAll(tagsSet)
   }
 
-  @Exclude
   fun hasTag(tagId: String): Boolean {
-    return tags.keys.contains(tagId)
+    return tagIds().contains(tagId)
   }
 
   companion object {

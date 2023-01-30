@@ -137,7 +137,7 @@ class FirebaseRealTimeDatabaseDataSource {
         "/$placeReference/$key" to null
       )
 
-      firebasePlace.tags.keys.forEach { tagId ->
+      firebasePlace.tagIds().forEach { tagId ->
         childUpdates["/$tagReference/$tagId/$placeReference/$key"] = null
       }
 
