@@ -24,7 +24,6 @@ struct PlaceDetailView: View {
         VStack(alignment: .leading, spacing: 16) {
           HStack {
             Text("Note")
-
             TextField("Note", text: $updatedNote, prompt: Text("What looks good about this place?"))
               .textFieldStyle(.roundedBorder)
           }

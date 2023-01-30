@@ -31,6 +31,7 @@ struct PlacesListView: View {
     NavigationStack {
       VStack {
         TagSelectorView(tags: tags, selectedTagIDs: $selectedTagIDs)
+          .padding(.horizontal)
           .frame(maxHeight: 120)
         List(filteredPlaces) { place in
           PlaceCardView(place: place, tagNames: tagNames(for: place.tagIDs))

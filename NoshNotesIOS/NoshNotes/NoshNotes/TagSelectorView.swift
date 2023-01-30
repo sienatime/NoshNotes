@@ -21,7 +21,7 @@ struct TagSelectorView: View {
             isSelected: selectedTagIDs.contains(tag.id),
             onSelect: onSelect)
         }
-      }.padding()
+      }
     }
   }
 
