@@ -23,8 +23,8 @@ fun Color.toHexString(): String {
   return this.toArgb().hexToString()
 }
 
-fun Float.darken(): Float = if (this < 0.15f) {
+fun Float.darken(): Float = if (this < 0.1f) {
   0f
 } else {
-  this - 0.15f
+  this - 0.1f
 }

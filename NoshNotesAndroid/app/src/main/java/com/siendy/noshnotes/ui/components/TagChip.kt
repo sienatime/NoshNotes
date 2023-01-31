@@ -1,9 +1,12 @@
 package com.siendy.noshnotes.ui.components
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
@@ -19,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.siendy.noshnotes.R
+import com.siendy.noshnotes.R.string
 import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.ui.TagIcon
 import com.siendy.noshnotes.ui.theme.Gray
@@ -66,39 +70,48 @@ fun TagChip(
     Gray
   ).applySelectedStyle(tagState.selected)
 
-  backgroundColor.alpha + 0.2f
-
-  AssistChip(
-    modifier = modifier,
-    label = { Text(tag.name.orEmpty()) },
-    colors = AssistChipDefaults.assistChipColors(
-      containerColor = backgroundColor,
-      labelColor = contentColor,
-      leadingIconContentColor = contentColor,
-      trailingIconContentColor = contentColor,
-    ),
-    leadingIcon = {
-      Icon(
-        painterResource(TagIcon.drawableForName(tag.icon)),
-        contentDescription = null,
-        Modifier.size(AssistChipDefaults.IconSize)
-      )
-    },
-    trailingIcon = {
-      if (tagState.selected) {
+  Box {
+    AssistChip(
+      modifier = modifier,
+      label = { Text(tag.name.orEmpty()) },
+      colors = AssistChipDefaults.assistChipColors(
+        containerColor = backgroundColor,
+        labelColor = contentColor,
+        leadingIconContentColor = contentColor,
+        trailingIconContentColor = contentColor,
+      ),
+      leadingIcon = {
         Icon(
-          Icons.Filled.Close,
-          contentDescription = stringResource(id = R.string.unselect),
+          painterResource(TagIcon.drawableForName(tag.icon)),
+          contentDescription = null,
           Modifier.size(AssistChipDefaults.IconSize)
         )
+      },
+      trailingIcon = {
+        if (tagState.selected) {
+          Icon(
+            Filled.Close,
+            contentDescription = stringResource(id = string.unselect),
+            Modifier.size(AssistChipDefaults.IconSize)
+          )
+        }
+      },
+      onClick = {
+        if (tagState.clickable) {
+          onTagSelected.invoke(tagState)
+        }
       }
-    },
-    onClick = {
-      if (tagState.clickable) {
-        onTagSelected.invoke(tagState)
-      }
+    )
+    if (tagState.selected) {
+      Image(
+        painterResource(id = R.drawable.ic_selected_circle),
+        contentDescription = null,
+        Modifier
+          .padding(top = 14.dp, start = 7.dp)
+          .size(AssistChipDefaults.IconSize + 2.dp)
+      )
     }
-  )
+  }
 }
 
 private fun getColor(
@@ -118,14 +131,12 @@ fun TagChipPreview() {
     Tag(
       name = "Dinner",
       backgroundColor = "#FFCC80",
-      textColor = "#757575",
       icon = "dinner",
     ),
     Tag(
       name = "Lunch",
       backgroundColor = "#FFF59D",
-      textColor = "#757575",
-      icon = "lunch",
+      icon = "lunch"
     ),
     Tag(
       name = "Brunch"
