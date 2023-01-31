@@ -73,15 +73,17 @@ struct PlacesListView: View {
 
   var newPlaceButton: some View {
     Button("+") {
-      showingCreateModal.toggle()
+      showingCreateModal = true
     }
+    .font(.system(.largeTitle))
+    .frame(width: 54, height: 54)
+    .background(Color.blue)
+    .foregroundColor(.white)
+    .cornerRadius(27)
     .sheet(isPresented: $showingCreateModal) {
       CreatePlaceView()
-    }.font(.system(.largeTitle))
-      .frame(width: 54, height: 54)
-      .background(Color.blue)
-      .foregroundColor(.white)
-      .cornerRadius(27)
+    }
+
   }
 }
 
