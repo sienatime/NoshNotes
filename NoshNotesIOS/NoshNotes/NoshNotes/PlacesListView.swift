@@ -8,9 +8,19 @@ struct PlacesListView: View {
   let tags: [TagWithID]
   let places: [Place]
 
-  @State var selectedTagIDs: Set<String> = []
+  init(tags: [TagWithID], places: [Place]) {
+    self.tags = tags
+    self.places = places
 
-  var filteredPlaces: [Place] {
+    tagsByID = tags.reduce(into: [:]) { partialResult, tagWithId in
+      partialResult[tagWithId.id] = tagWithId.name
+    }
+  }
+  private let tagsByID: [String: String]
+
+  @State private var selectedTagIDs: Set<String> = []
+
+  private var filteredPlaces: [Place] {
     places.filter { place in
       // TODO: This feels like business logic that should live somewhere else.
       selectedTagIDs.isSubset(of: place.tagIDs)
@@ -19,10 +29,6 @@ struct PlacesListView: View {
 
   // TODO: move this logic outside this view. It might not know about all the tags on places.
   func tagNames(for ids: Set<String>) -> [String] {
-    let tagsByID: [String: String] = tags.reduce(into: [:]) { partialResult, tagWithId in
-      partialResult[tagWithId.id] = tagWithId.name
-    }
-
     let names = ids.compactMap { tagsByID[$0] }
     return names.sorted()
   }

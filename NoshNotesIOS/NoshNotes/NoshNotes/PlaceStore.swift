@@ -23,7 +23,13 @@ struct Place: Identifiable, Hashable {
     self.imageMetadata = imageMetadata
   }
 
-  static func forPreview(id: String = UUID().uuidString, name: String, note: String? = nil, tagIDs: Set<String> = []) -> Place {
+  static func forPreview(
+    id: String = UUID().uuidString,
+    name: String,
+    note: String? = nil,
+    tagIDs: Set<String> = []
+  ) -> Place
+  {
     Place(id: id, name: name, remoteId: "", note: note, tagIDs: tagIDs)
   }
 
