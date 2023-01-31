@@ -113,19 +113,31 @@ class PlaceStore: ObservableObject {
 
   // On the Main Actor because it updates a @Published property observed by SwiftUI
   @MainActor
-  func observePlaces() {
-    ref.observe(.value) { [weak self] data in self?.handle(data: data) }
+  func observeChanges() async {
+    do {
+      for try await places in streamPlaces() {
+        self.allPlaces = places
+      }
+    } catch {
+      print(error)
+      self.allPlaces = []
+    }
   }
 
-  @MainActor
-  private func handle(data: DataSnapshot) {
-    Task {
-      do {
-        let places = try await makePlaces(from: data)
-        self.allPlaces = places
-      } catch {
-        print(error)
-        self.allPlaces = []
+  // Map from DataSnapshot to [Place] asynchronously
+  // This AsyncThrowingMapSequence type is irritating
+  private func streamPlaces() -> AsyncThrowingMapSequence<AsyncStream<DataSnapshot>, [Place]> {
+    streamData().map { data in
+      // This requires explicit self because we are wrapping the block in the returned sequence. Except if you in-line this method in observeChanges it still requires it :shrug:
+      try await self.makePlaces(from: data)
+    }
+  }
+
+  // Convert from Firebase closure based API to AsyncStream
+  private func streamData() -> AsyncStream<DataSnapshot> {
+    AsyncStream { continuation in
+      ref.observe(.value) { data in
+        continuation.yield(data)
       }
     }
   }

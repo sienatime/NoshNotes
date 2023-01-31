@@ -16,8 +16,8 @@ struct NoshNotesApp: App {
         .environmentObject(placeStore)
         .task {
           await tagStore.reloadTags()
-        }.onAppear() {
-          placeStore.observePlaces()
+        }.task {
+          await placeStore.observeChanges()
         }
     }
   }
