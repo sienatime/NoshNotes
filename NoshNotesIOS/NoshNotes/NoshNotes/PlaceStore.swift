@@ -111,20 +111,28 @@ class PlaceStore: ObservableObject {
     }
   }
 
-  // We have to put this on the @MainActor so the SwiftUI Views can observe the tags property.
+  // On the Main Actor because it updates a @Published property observed by SwiftUI
   @MainActor
-  public func reloadPlaces() async {
-    do {
-      self.allPlaces = try await fetchPlaces()
-      print(self.allPlaces)
-    } catch {
-      print(error)
-      self.allPlaces = []
+  func observePlaces() {
+    ref.observe(.value) { [weak self] data in self?.handle(data: data) }
+  }
+
+  @MainActor
+  private func handle(data: DataSnapshot) {
+    Task {
+      do {
+        let places = try await makePlaces(from: data)
+        self.allPlaces = places
+      } catch {
+        print(error)
+        self.allPlaces = []
+      }
     }
   }
 
-  private func fetchPlaces() async throws -> [Place] {
-    let data = try await ref.getData()
+  // Converts the Firebase DataSnapshot to a list of Places
+  // But also fetches from Google Places first to populate the place names.
+  private func makePlaces(from data: DataSnapshot) async throws -> [Place] {
     guard let children = data.children.allObjects as? [DataSnapshot] else {
       print("snapshot.children.allObject was not of type [DataSnapshot] for some reason")
       throw FirebaseError.childrenType
@@ -137,13 +145,18 @@ class PlaceStore: ObservableObject {
 //    let firebasePlaces = [
 //      FirebasePlace(note: "cool place", remoteId: "ChIJDwOJGqu5woAR3tTmF6s8bfE", tags: [:], uid: "123")
 //    ]
-    
+
     let placeData = try await fetchPlaceData(ids: firebasePlaces.map(\.remoteId))
 
     let places = firebasePlaces.compactMap { firebasePlace in
       buildPlace(from: firebasePlace, with: placeData)
     }
     return places
+  }
+
+  private func fetchPlaces() async throws -> [Place] {
+    let data = try await ref.getData()
+    return try await makePlaces(from: data)
   }
 
   private func buildPlace(from firebasePlace: FirebasePlace, with placeData: [String: GooglePlace]) -> Place? {

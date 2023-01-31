@@ -11,12 +11,15 @@ struct PlaceDetailView: View {
   @State private var selectedTagIDs: Set<String>
 
   @EnvironmentObject var placeStore: PlaceStore
+  @Environment(\.dismiss) var dismiss: DismissAction
 
   init(place: Place, tags: [TagWithID]) {
     self.place = place
     self.tags = tags
-    self.updatedNote = place.note ?? ""
-    self.selectedTagIDs = place.tagIDs
+
+    // When we added the DismissAction we had to start using the underscore versions of these State properties
+    self._updatedNote = State(initialValue: place.note ?? "")
+    self._selectedTagIDs = State(initialValue: place.tagIDs)
   }
 
   var body: some View {
@@ -54,6 +57,7 @@ struct PlaceDetailView: View {
     Task {
       do {
         try await placeStore.update(place: newPlace)
+        dismiss()
       } catch {
         print(error)
       }
