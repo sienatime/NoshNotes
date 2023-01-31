@@ -7,19 +7,28 @@ import FirebaseDatabaseSwift
 import GooglePlaces
 
 struct Place: Identifiable, Hashable {
-  init(id: String, name: String, note: String? = nil, tagIDs: Set<String> = [], imageMetadata: GMSPlacePhotoMetadata? = nil) {
+  init(
+    id: String,
+    name: String,
+    note: String? = nil,
+    tagIDs: Set<String> = [],
+    imageMetadata: GMSPlacePhotoMetadata? = nil,
+    remoteId: String = "")
+  {
     self.id = id
     self.name = name
     self.note = note
     self.tagIDs = tagIDs
     self.imageMetadata = imageMetadata
+    self.remoteId = remoteId
   }
 
-  let id: String // The Firebase ID...for now
+  let id: String // The Firebase ID
   let name: String
   let note: String?
   let tagIDs: Set<String>
   let imageMetadata: GMSPlacePhotoMetadata?
+  let remoteId: String // The Google Place ID
 }
 
 struct FirebasePlace: Codable, Identifiable {
@@ -62,7 +71,34 @@ class PlaceStore: ObservableObject {
   @Published var allPlaces: [Place] = []
 
   public func update(place: Place) async throws {
+    var tagsDict: [String: Bool] = [:]
+    for tagId in place.tagIDs {
+      tagsDict[tagId] = true
+    }
 
+    let firebasePlace = FirebasePlace(
+      note: place.note,
+      remoteId: place.remoteId,
+      tags: tagsDict,
+      uid: place.id)
+
+    try await update(firebasePlace: firebasePlace)
+  }
+
+  private func update(firebasePlace: FirebasePlace) async throws {
+    try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
+      do {
+        try ref.child(firebasePlace.id).setValue(from: firebasePlace) { error in
+          if let error {
+            continuation.resume(throwing: error)
+          } else {
+            continuation.resume(returning: ())
+          }
+        }
+      } catch {
+        continuation.resume(throwing: error)
+      }
+    }
   }
 
   // We have to put this on the @MainActor so the SwiftUI Views can observe the tags property.
@@ -110,7 +146,8 @@ class PlaceStore: ObservableObject {
       name: googlePlace.name,
       note: firebasePlace.note,
       tagIDs: Set(firebasePlace.tags.keys),
-      imageMetadata: googlePlace.imageMetadata)
+      imageMetadata: googlePlace.imageMetadata,
+      remoteId: googlePlace.id)
   }
 
   private func fetchPlaceData(ids: [String]) async throws -> [String: GooglePlace] {

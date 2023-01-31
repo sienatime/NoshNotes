@@ -47,12 +47,13 @@ struct PlaceDetailView: View {
       id: place.id,
       name: place.name,
       note: updatedNote,
-      tagIDs: selectedTagIDs
+      tagIDs: selectedTagIDs,
+      remoteId: place.remoteId
     )
 
     Task {
       do {
-        try await placeStore.update(place: place)
+        try await placeStore.update(place: newPlace)
       } catch {
         print(error)
       }
