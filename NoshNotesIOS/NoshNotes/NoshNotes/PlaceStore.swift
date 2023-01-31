@@ -61,6 +61,10 @@ class PlaceStore: ObservableObject {
 
   @Published var allPlaces: [Place] = []
 
+  public func update(place: Place) async throws {
+
+  }
+
   // We have to put this on the @MainActor so the SwiftUI Views can observe the tags property.
   @MainActor
   public func reloadPlaces() async {

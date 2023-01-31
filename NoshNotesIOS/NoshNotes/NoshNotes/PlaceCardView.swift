@@ -45,13 +45,3 @@ struct PlaceCardView_Previews: PreviewProvider {
   }
 }
 
-struct PlaceImageStoreKey: EnvironmentKey {
-  static let defaultValue = PlaceImageStore()
-}
-
-extension EnvironmentValues {
-  var imageLoader: PlaceImageStore {
-    get { self[PlaceImageStoreKey.self] }
-    set { self[PlaceImageStoreKey.self ] = newValue}
-  }
-}

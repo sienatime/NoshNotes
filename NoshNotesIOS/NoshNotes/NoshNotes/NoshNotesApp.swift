@@ -12,11 +12,13 @@ struct NoshNotesApp: App {
 
   var body: some Scene {
     WindowGroup {
-      PlacesListView(tags: tagStore.tags, places: placeStore.allPlaces).task {
-        await tagStore.reloadTags()
-      }.task {
-        await placeStore.reloadPlaces()
-      }
+      PlacesListView(tags: tagStore.tags, places: placeStore.allPlaces)
+        .environmentObject(placeStore)
+        .task {
+          await tagStore.reloadTags()
+        }.task {
+          await placeStore.reloadPlaces()
+        }
     }
   }
 }

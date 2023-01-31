@@ -11,7 +11,6 @@ struct GooglePlaceImage: View {
 
   @Environment(\.imageLoader) private var imageLoader
 
-
   let height: CGFloat = 180
   let width: CGFloat = 330
 
@@ -49,5 +48,17 @@ struct GooglePlaceImage: View {
 struct GooglePlaceImage_Previews: PreviewProvider {
   static var previews: some View {
     GooglePlaceImage(imageMetadata: nil)
+  }
+}
+
+
+struct PlaceImageStoreKey: EnvironmentKey {
+  static let defaultValue = PlaceImageStore()
+}
+
+extension EnvironmentValues {
+  var imageLoader: PlaceImageStore {
+    get { self[PlaceImageStoreKey.self] }
+    set { self[PlaceImageStoreKey.self ] = newValue}
   }
 }

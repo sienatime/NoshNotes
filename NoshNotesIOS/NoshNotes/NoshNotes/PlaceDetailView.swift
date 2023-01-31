@@ -10,6 +10,8 @@ struct PlaceDetailView: View {
   @State private var updatedNote: String
   @State private var selectedTagIDs: Set<String>
 
+  @EnvironmentObject var placeStore: PlaceStore
+
   init(place: Place, tags: [TagWithID]) {
     self.place = place
     self.tags = tags
@@ -33,11 +35,27 @@ struct PlaceDetailView: View {
             // TODO: launch the tag creation dialog. Gonna need to have a way to reload all tags after creating a tag though.
           }
           Button("Save") {
-            print("save!")
-            // TODO: write to the Firebase backend
+            save()
           }.buttonStyle(.borderedProminent)
         }
       }.padding(.horizontal)
+    }
+  }
+
+  private func save() {
+    let newPlace = Place(
+      id: place.id,
+      name: place.name,
+      note: updatedNote,
+      tagIDs: selectedTagIDs
+    )
+
+    Task {
+      do {
+        try await placeStore.update(place: place)
+      } catch {
+        print(error)
+      }
     }
   }
 }
