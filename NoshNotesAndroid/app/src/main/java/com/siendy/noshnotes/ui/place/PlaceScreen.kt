@@ -241,7 +241,7 @@ fun PlaceDetails(
               }.map { tagState ->
                 tagState.tag
               },
-              noteValue.value.text,
+              noteValue.value.text.trim(),
               placeUiState.originalTags
             )
             rootNavController?.navigateUp()

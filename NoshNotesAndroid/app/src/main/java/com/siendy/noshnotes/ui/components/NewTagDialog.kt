@@ -53,7 +53,7 @@ fun NewTagDialog(
   Dialog(
     onConfirm = {
       placeViewModel.addTag(
-        name = nameValue.value.text,
+        name = nameValue.value.text.trim(),
         backgroundColor = selectedColor.value.toHexString(),
         icon = selectedIcon.value.iconName
       )
