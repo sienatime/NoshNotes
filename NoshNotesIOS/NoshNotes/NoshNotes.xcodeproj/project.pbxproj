@@ -38,6 +38,7 @@
 		DD8C5C5B29760BBF00727119 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = DD8C5C5A29760BBF00727119 /* FirebaseDatabase */; };
 		DD8C5C5D29760BBF00727119 /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DD8C5C5C29760BBF00727119 /* FirebaseDatabaseSwift */; };
 		DD8C5C5F29760C3900727119 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8C5C5E29760C3900727119 /* AppDelegate.swift */; };
+		DD95FDA22989D43C00BD130E /* CreatePlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD95FDA12989D43C00BD130E /* CreatePlaceView.swift */; };
 		DDE680522975E32D00E418AB /* NoshNotesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE680512975E32D00E418AB /* NoshNotesApp.swift */; };
 		DDE680542975E32D00E418AB /* PlacesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE680532975E32D00E418AB /* PlacesListView.swift */; };
 		DDE680562975E32D00E418AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDE680552975E32D00E418AB /* Assets.xcassets */; };
@@ -93,6 +94,7 @@
 		DD765F24298331FA00C75D63 /* PlaceImageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceImageStore.swift; sourceTree = "<group>"; };
 		DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DD8C5C5E29760C3900727119 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DD95FDA12989D43C00BD130E /* CreatePlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePlaceView.swift; sourceTree = "<group>"; };
 		DDE6804E2975E32D00E418AB /* NoshNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoshNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDE680512975E32D00E418AB /* NoshNotesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoshNotesApp.swift; sourceTree = "<group>"; };
 		DDE680532975E32D00E418AB /* PlacesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesListView.swift; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 				DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */,
 				DDE680512975E32D00E418AB /* NoshNotesApp.swift */,
 				DD33B8F429872D1A0085DFA2 /* PlaceDetailView.swift */,
+				DD95FDA12989D43C00BD130E /* CreatePlaceView.swift */,
 				DD33B8F829888BC80085DFA2 /* TagView.swift */,
 				DD8C5C5E29760C3900727119 /* AppDelegate.swift */,
 				DD41D85F29760EDB00A13095 /* TagStore.swift */,
@@ -371,6 +374,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD95FDA22989D43C00BD130E /* CreatePlaceView.swift in Sources */,
 				DD3A433E297A3DF800A0DE77 /* TagSelectorView.swift in Sources */,
 				DD765F232980841400C75D63 /* PlaceCardView.swift in Sources */,
 				DD33B8F929888BC80085DFA2 /* TagView.swift in Sources */,

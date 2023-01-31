@@ -19,6 +19,7 @@ struct PlacesListView: View {
   private let tagsByID: [String: String]
 
   @State private var selectedTagIDs: Set<String> = []
+  @State private var showingCreateModal: Bool = false
 
   private var filteredPlaces: [Place] {
     places.filter { place in
@@ -35,20 +36,52 @@ struct PlacesListView: View {
 
   var body: some View {
     NavigationStack {
-      VStack {
-        TagSelectorView(tags: tags, selectedTagIDs: $selectedTagIDs)
-          .padding(.horizontal)
-          .frame(maxHeight: 120)
-        List(filteredPlaces) { place in
-          PlaceCardView(place: place, tagNames: tagNames(for: place.tagIDs))
-          // Background + opacity hack to avoid arrow and annoying layout
-            .background(
-              NavigationLink("", destination: PlaceDetailView(place: place, tags: tags))
-                .opacity(0)
-            )
+      ZStack {
+        VStack {
+          tagSelectorView
+          placesList
         }
+        VStack {
+          Spacer()
+
+          HStack {
+            Spacer()
+            newPlaceButton
+          }.padding(.horizontal)
+        }.padding(.vertical)
+
       }
     }
+  }
+
+  var tagSelectorView: some View {
+    TagSelectorView(tags: tags, selectedTagIDs: $selectedTagIDs)
+      .padding(.horizontal)
+      .frame(maxHeight: 120)
+  }
+
+  var placesList: some View {
+    List(filteredPlaces) { place in
+      PlaceCardView(place: place, tagNames: tagNames(for: place.tagIDs))
+      // Background + opacity hack to avoid arrow and annoying layout
+        .background(
+          NavigationLink("", destination: PlaceDetailView(place: place, tags: tags))
+            .opacity(0)
+        )
+    }
+  }
+
+  var newPlaceButton: some View {
+    Button("+") {
+      showingCreateModal.toggle()
+    }
+    .sheet(isPresented: $showingCreateModal) {
+      CreatePlaceView()
+    }.font(.system(.largeTitle))
+      .frame(width: 54, height: 54)
+      .background(Color.blue)
+      .foregroundColor(.white)
+      .cornerRadius(27)
   }
 }
 

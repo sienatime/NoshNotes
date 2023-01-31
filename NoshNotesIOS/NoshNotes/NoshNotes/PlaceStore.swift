@@ -125,7 +125,7 @@ class PlaceStore: ObservableObject {
   }
 
   // Map from DataSnapshot to [Place] asynchronously
-  // This AsyncThrowingMapSequence type is irritating
+  // This AsyncThrowingMapSequence type is irritating. 
   private func streamPlaces() -> AsyncThrowingMapSequence<AsyncStream<DataSnapshot>, [Place]> {
     streamData().map { data in
       // This requires explicit self because we are wrapping the block in the returned sequence. Except if you in-line this method in observeChanges it still requires it :shrug:
