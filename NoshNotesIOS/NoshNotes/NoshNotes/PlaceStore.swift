@@ -10,17 +10,21 @@ struct Place: Identifiable, Hashable {
   init(
     id: String,
     name: String,
+    remoteId: String,
     note: String? = nil,
     tagIDs: Set<String> = [],
-    imageMetadata: GMSPlacePhotoMetadata? = nil,
-    remoteId: String = "")
+    imageMetadata: GMSPlacePhotoMetadata? = nil)
   {
     self.id = id
     self.name = name
+    self.remoteId = remoteId
     self.note = note
     self.tagIDs = tagIDs
     self.imageMetadata = imageMetadata
-    self.remoteId = remoteId
+  }
+
+  static func forPreview(id: String = UUID().uuidString, name: String, note: String? = nil, tagIDs: Set<String> = []) -> Place {
+    Place(id: id, name: name, remoteId: "", note: note, tagIDs: tagIDs)
   }
 
   let id: String // The Firebase ID
@@ -144,10 +148,10 @@ class PlaceStore: ObservableObject {
     return Place(
       id: firebasePlace.id,
       name: googlePlace.name,
+      remoteId: googlePlace.id,
       note: firebasePlace.note,
       tagIDs: Set(firebasePlace.tags.keys),
-      imageMetadata: googlePlace.imageMetadata,
-      remoteId: googlePlace.id)
+      imageMetadata: googlePlace.imageMetadata)
   }
 
   private func fetchPlaceData(ids: [String]) async throws -> [String: GooglePlace] {

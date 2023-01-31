@@ -59,11 +59,11 @@ struct PlacesListView_Previews: PreviewProvider {
         TagWithID(id: "7", tag: Tag(name: "Japanese")),
       ],
       places: [
-        Place(id: "1", name: "Super Cool Place", note: "it's cool", tagIDs: ["1", "4"]),
-        Place(id: "2", name: "Another Cool Place", note: "it's also cool", tagIDs: ["1", "4"]),
+        Place.forPreview(name: "Super Cool Place", note: "it's cool", tagIDs: ["1", "4"]),
+        Place.forPreview(name: "Another Cool Place", note: "it's also cool", tagIDs: ["1", "4"]),
       ])
     PlacesListView(tags: [], places: [
-      Place(id: "1", name: "Super Cool Place", note: nil, tagIDs: []),
+      Place.forPreview(name: "Super Cool Place", note: nil, tagIDs: []),
     ])
   }
 }

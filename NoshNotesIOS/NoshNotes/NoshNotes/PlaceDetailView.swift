@@ -46,9 +46,9 @@ struct PlaceDetailView: View {
     let newPlace = Place(
       id: place.id,
       name: place.name,
+      remoteId: place.remoteId,
       note: updatedNote,
-      tagIDs: selectedTagIDs,
-      remoteId: place.remoteId
+      tagIDs: selectedTagIDs
     )
 
     Task {
@@ -64,7 +64,7 @@ struct PlaceDetailView: View {
 struct PlaceDetailView_Previews: PreviewProvider {
   static var previews: some View {
     PlaceDetailView(
-      place: Place(id: "123", name: "Cool Place", note: "it's cool", tagIDs: ["1", "4"]),
+      place: Place.forPreview(name: "Cool Place", note: "it's cool", tagIDs: ["1", "4"]),
       tags: [
         TagWithID(id: "1", tag: Tag(name: "Dinner")),
         TagWithID(id: "2", tag: Tag(name: "Lunch")),

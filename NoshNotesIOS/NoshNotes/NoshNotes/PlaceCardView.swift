@@ -32,14 +32,12 @@ struct PlaceCardView: View {
 struct PlaceCardView_Previews: PreviewProvider {
   static var previews: some View {
     PlaceCardView(
-      place: Place(
-        id: "1",
+      place: Place.forPreview(
         name: "Cool Place",
         note: "it's cool"),
       tagNames: ["cool", "place"])
     PlaceCardView(
-      place: Place(
-        id: "2",
+      place: Place.forPreview(
         name: "Other Place"),
       tagNames: ["other", "place"])
   }
