@@ -9,7 +9,7 @@ struct CreatePlaceView: View {
 
   @State private var searchText: String = ""
   @State private var searchResults: [GMSAutocompletePrediction] = []
-  private let token = GMSAutocompleteSessionToken.init()
+  private let autocompleteToken = GMSAutocompleteSessionToken.init()
 
   @EnvironmentObject var placeStore: PlaceStore
 
@@ -19,7 +19,8 @@ struct CreatePlaceView: View {
         NavigationLink(result.attributedFullText.string)  {
           CreatePlaceFromGooglePlaceView(
             isPresented: $shown,
-            googlePlaceID: result.placeID)
+            googlePlaceID: result.placeID,
+            autocompleteToken: autocompleteToken)
         }
       }
     }.searchable(text: $searchText, prompt: "Search Google Places")
@@ -32,7 +33,7 @@ struct CreatePlaceView: View {
   private func search(text: String) {
     Task {
       do {
-        let results = try await placeStore.search(text: text, token: token)
+        let results = try await placeStore.search(text: text, token: autocompleteToken)
         self.searchResults = results
       } catch {
         print("Autocomplete error: \(error)")

@@ -252,14 +252,14 @@ class PlaceStore: ObservableObject {
     })
   }
 
-  private func fetchPlaceData(id: String) async throws -> GooglePlace {
-    let gmsPlace = try await fetchGMSPlaceDetails(id: id)
+  public func fetchPlaceData(id: String, sessionToken: GMSAutocompleteSessionToken? = nil) async throws -> GooglePlace {
+    let gmsPlace = try await fetchGMSPlaceDetails(id: id, sessionToken: sessionToken)
     return try GooglePlace(gmsPlace: gmsPlace)
   }
 
-  private func fetchGMSPlaceDetails(id: String) async throws -> GMSPlace {
+  private func fetchGMSPlaceDetails(id: String, sessionToken: GMSAutocompleteSessionToken?) async throws -> GMSPlace {
     try await withCheckedThrowingContinuation { continuation in
-      fetchGMSPlaceDetails(id: id) { result in
+      fetchGMSPlaceDetails(id: id, sessionToken: sessionToken) { result in
         switch result {
         case .failure(let error):
           continuation.resume(throwing: error)
@@ -270,12 +270,12 @@ class PlaceStore: ObservableObject {
     }
   }
 
-  private func fetchGMSPlaceDetails(id: String, completion: @escaping (Result<GMSPlace, Error>) -> Void) {
+  private func fetchGMSPlaceDetails(id: String, sessionToken: GMSAutocompleteSessionToken?, completion: @escaping (Result<GMSPlace, Error>) -> Void) {
     let fields: GMSPlaceField = [.name, .placeID, .photos]
     placesClient.fetchPlace(
       fromPlaceID: id,
       placeFields: fields,
-      sessionToken: nil) { placeData, error in
+      sessionToken: sessionToken) { placeData, error in
         if let error {
           completion(.failure(error))
         } else if let placeData {
