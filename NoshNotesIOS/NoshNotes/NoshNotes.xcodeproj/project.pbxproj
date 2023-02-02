@@ -201,12 +201,12 @@
 			children = (
 				DD765F2129806B9700C75D63 /* Info.plist */,
 				DD8C5C5629760A0C00727119 /* GoogleService-Info.plist */,
+				DD8C5C5E29760C3900727119 /* AppDelegate.swift */,
 				DDE680512975E32D00E418AB /* NoshNotesApp.swift */,
 				DD95FDA3298B3A7400BD130E /* CreatePlaceFromGooglePlaceView.swift */,
 				DD33B8F429872D1A0085DFA2 /* PlaceDetailView.swift */,
 				DD95FDA12989D43C00BD130E /* CreatePlaceView.swift */,
 				DD33B8F829888BC80085DFA2 /* TagView.swift */,
-				DD8C5C5E29760C3900727119 /* AppDelegate.swift */,
 				DD41D85F29760EDB00A13095 /* TagStore.swift */,
 				DD765EEE297CD6A600C75D63 /* PlaceStore.swift */,
 				DD765F24298331FA00C75D63 /* PlaceImageStore.swift */,

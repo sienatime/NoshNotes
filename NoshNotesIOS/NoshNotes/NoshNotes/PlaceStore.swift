@@ -41,6 +41,13 @@ struct Place: Identifiable, Hashable {
   let remoteId: String // The Google Place ID
 }
 
+// A Place that hasn't been created on the backend yet so it doesn't have an id
+struct NewPlace {
+  var note: String?
+  var remoteId: String
+  var tagIDs: Set<String>
+}
+
 struct FirebasePlace: Codable, Identifiable {
   var id: String { uid }
 
@@ -79,13 +86,6 @@ struct GooglePlace {
   }
 }
 
-// A Place that hasn't been created on the backend yet so it doesn't have an id
-struct NewPlace {
-  var note: String?
-  var remoteId: String
-  var tagIDs: Set<String>
-}
-
 extension Set {
   func toDictionaryKeysWithTrueValues() -> [Element: Bool] {
     let keyValuePairs = map { ($0, true) }
@@ -111,9 +111,6 @@ class PlaceStore: ObservableObject {
       uid: newKey)
 
     try await update(firebasePlace: newFirebasePlace)
-  }
-
-  private func createNewFirebasePlaceID() async throws {
   }
 
   public func update(place: Place) async throws {
@@ -143,7 +140,8 @@ class PlaceStore: ObservableObject {
     }
   }
 
-  // On the Main Actor because it updates a @Published property observed by SwiftUI
+  // On the Main Actor because it updates a @Published property observed by SwiftUI.
+  // Note that this method is not intended to terminate - it should stay in the for await loop as long as the app is running.
   @MainActor
   func observeChanges() async {
     do {
@@ -153,6 +151,29 @@ class PlaceStore: ObservableObject {
     } catch {
       print(error)
       self.allPlaces = []
+    }
+  }
+
+  public func search(text: String, token: GMSAutocompleteSessionToken) async throws -> [GMSAutocompletePrediction] {
+    let filter = GMSAutocompleteFilter()
+    filter.types = [kGMSPlaceTypeBakery, kGMSPlaceTypeMealTakeaway, kGMSPlaceTypeRestaurant]
+    filter.locationBias = GMSPlaceRectangularLocationOption(
+      CLLocationCoordinate2D(latitude: 34.156319, longitude: -117.831394),
+      CLLocationCoordinate2D(latitude: 33.706586, longitude: -118.606194))
+
+    return try await withCheckedThrowingContinuation { continuation in
+      placesClient.findAutocompletePredictions(
+        fromQuery: text,
+        filter: filter,
+        sessionToken: token,
+        callback: { (results, error) in
+          if let error {
+            continuation.resume(throwing: error)
+          }
+          if let results {
+            continuation.resume(returning: results)
+          }
+        })
     }
   }
 
