@@ -3,7 +3,6 @@ package com.siendy.noshnotes.ui.main
 import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.data.repositories.PlacesRepository
@@ -88,10 +87,6 @@ class MainViewModel @Inject constructor(
         mapLocation = latLng
       )
     }
-  }
-
-  fun onMapLoaded(map: GoogleMap) {
-    // idk put some places on here i guess?
   }
 
   private var filterJob: Job? = null

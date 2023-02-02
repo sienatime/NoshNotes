@@ -47,6 +47,7 @@ import androidx.navigation.navArgument
 import com.siendy.noshnotes.R
 import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.components.ConfirmDeletePlaceDialog
+import com.siendy.noshnotes.ui.main.map.PlacesMap
 import com.siendy.noshnotes.ui.navigation.Routes
 import com.siendy.noshnotes.ui.place.PlaceScreen
 import com.siendy.noshnotes.ui.theme.NoshNotesTheme
