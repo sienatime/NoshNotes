@@ -4,7 +4,7 @@
 import GooglePlaces
 import SwiftUI
 
-struct CreatePlaceFromGooglePlaceView: View {
+struct NewPlaceView: View {
   @Binding var isPresented: Bool
 
   let googlePlaceID: String
@@ -65,9 +65,9 @@ struct CreatePlaceFromGooglePlaceView: View {
   }
 }
 
-struct CreatePlaceFromGooglePlaceView_Previews: PreviewProvider {
+struct NewPlaceView_Previews: PreviewProvider {
   static var previews: some View {
-    CreatePlaceFromGooglePlaceView(
+    NewPlaceView(
       isPresented: .constant(true),
       googlePlaceID: "123",
       autocompleteToken: GMSAutocompleteSessionToken())

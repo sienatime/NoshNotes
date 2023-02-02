@@ -81,7 +81,7 @@ struct PlacesListView: View {
     .foregroundColor(.white)
     .cornerRadius(27)
     .sheet(isPresented: $showingCreateModal) {
-      CreatePlaceView(shown: $showingCreateModal)
+      SearchPlacesView(shown: $showingCreateModal)
     }
 
   }
