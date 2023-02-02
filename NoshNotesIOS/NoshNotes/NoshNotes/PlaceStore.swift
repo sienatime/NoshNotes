@@ -60,6 +60,12 @@ struct GooglePlace {
   let name: String
   let imageMetadata: GMSPlacePhotoMetadata?
 
+  init(id: String, name: String, imageMetadata: GMSPlacePhotoMetadata?) {
+    self.id = id
+    self.name = name
+    self.imageMetadata = imageMetadata
+  }
+
   init(gmsPlace: GMSPlace) throws {
     guard let name = gmsPlace.name else {
       throw DataError.dataMissing(field: "name")
@@ -73,6 +79,20 @@ struct GooglePlace {
   }
 }
 
+// A Place that hasn't been created on the backend yet so it doesn't have an id
+struct NewPlace {
+  var note: String?
+  var remoteId: String
+  var tagIDs: Set<String>
+}
+
+extension Set {
+  func toDictionaryKeysWithTrueValues() -> [Element: Bool] {
+    let keyValuePairs = map { ($0, true) }
+    return Dictionary(keyValuePairs, uniquingKeysWith: { first, _ in first })
+  }
+}
+
 class PlaceStore: ObservableObject {
   init() {
     placesClient = GMSPlacesClient.shared()
@@ -80,16 +100,28 @@ class PlaceStore: ObservableObject {
 
   @Published var allPlaces: [Place] = []
 
-  public func update(place: Place) async throws {
-    var tagsDict: [String: Bool] = [:]
-    for tagId in place.tagIDs {
-      tagsDict[tagId] = true
+  public func create(newPlace: NewPlace) async throws {
+    guard let newKey = ref.childByAutoId().key else {
+      throw FirebaseError.noKey
     }
+    let newFirebasePlace = FirebasePlace(
+      note: newPlace.note,
+      remoteId: newPlace.remoteId,
+      tags: newPlace.tagIDs.toDictionaryKeysWithTrueValues(),
+      uid: newKey)
+
+    try await update(firebasePlace: newFirebasePlace)
+  }
+
+  private func createNewFirebasePlaceID() async throws {
+  }
+
+  public func update(place: Place) async throws {
 
     let firebasePlace = FirebasePlace(
       note: place.note,
       remoteId: place.remoteId,
-      tags: tagsDict,
+      tags: place.tagIDs.toDictionaryKeysWithTrueValues(),
       uid: place.id)
 
     try await update(firebasePlace: firebasePlace)
@@ -234,3 +266,4 @@ class PlaceStore: ObservableObject {
   private lazy var ref: DatabaseReference = Database.database().reference(withPath: "places")
   private let placesClient: GMSPlacesClient
 }
+

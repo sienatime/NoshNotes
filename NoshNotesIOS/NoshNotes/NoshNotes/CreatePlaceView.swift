@@ -5,9 +5,7 @@ import GooglePlaces
 import SwiftUI
 
 struct CreatePlaceView: View {
-  // This doesn't feel totally right.
-  // Probably we should have some sort of bound variable representing the flow being complete.
-  @Environment(\.presentationMode) var presentationMode
+  @Binding var shown: Bool
 
   @State private var searchText: String = ""
   @State private var searchResults: [GMSAutocompletePrediction] = []
@@ -16,7 +14,11 @@ struct CreatePlaceView: View {
   var body: some View {
     NavigationStack {
       List(searchResults, id: \.placeID) { result in
-        Text(result.attributedFullText.string)
+        NavigationLink(result.attributedFullText.string)  {
+          CreatePlaceFromGooglePlaceView(
+            isPresented: $shown,
+            googlePlaceID: result.placeID)
+        }
       }
     }.searchable(text: $searchText, prompt: "Search Google Places")
       .onChange(of: searchText) { newValue in
@@ -24,14 +26,6 @@ struct CreatePlaceView: View {
         search(text: newValue)
       }
 
-  }
-
-  // TODO: put this back in the UI
-  var saveButton: some View {
-    Button("Save") {
-      presentationMode.wrappedValue.dismiss()
-    }
-    .buttonStyle(.borderedProminent)
   }
 
   @MainActor
@@ -50,15 +44,14 @@ struct CreatePlaceView: View {
   @MainActor
   func doSearch(searchText: String) async throws -> [GMSAutocompletePrediction] {
     let filter = GMSAutocompleteFilter()
-//    filter.types = ["restaurant"]
-//    filter.locationBias = GMSPlaceRectangularLocationOption(
-//      northEastBounds,
-//      southWestBounds)
+    filter.types = [kGMSPlaceTypeBakery, kGMSPlaceTypeMealTakeaway, kGMSPlaceTypeRestaurant]
+    filter.locationBias = GMSPlaceRectangularLocationOption(
+      CLLocationCoordinate2D(latitude: 34.156319, longitude: -117.831394),
+      CLLocationCoordinate2D(latitude: 33.706586, longitude: -118.606194))
 
     return try await withCheckedThrowingContinuation { continuation in
       GMSPlacesClient.shared().findAutocompletePredictions(
         fromQuery: searchText,
-
         filter: filter,
         sessionToken: token,
         callback: { (results, error) in

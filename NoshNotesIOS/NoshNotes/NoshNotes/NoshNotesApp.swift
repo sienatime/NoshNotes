@@ -14,6 +14,7 @@ struct NoshNotesApp: App {
     WindowGroup {
       PlacesListView(tags: tagStore.tags, places: placeStore.allPlaces)
         .environmentObject(placeStore)
+        .environmentObject(tagStore)
         .task {
           await tagStore.reloadTags()
         }.task {

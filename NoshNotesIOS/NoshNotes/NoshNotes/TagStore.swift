@@ -18,6 +18,7 @@ struct Tag: Codable {
 
 enum FirebaseError: Error {
   case childrenType
+  case noKey
 }
 
 class TagStore: ObservableObject {
