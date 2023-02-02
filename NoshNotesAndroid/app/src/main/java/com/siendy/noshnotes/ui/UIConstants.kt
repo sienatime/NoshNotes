@@ -1,6 +1,7 @@
 package com.siendy.noshnotes.ui
 
 import androidx.compose.ui.graphics.Color
+import com.google.android.gms.maps.model.LatLng
 import com.siendy.noshnotes.ui.theme.Gray
 
 object UIConstants {
@@ -20,4 +21,8 @@ object UIConstants {
     Color(0xFFBBDEFB),
     Color(0xFFE1BEE7),
   )
+
+  val DEFAULT_LOCATION = LatLng(34.083444, -118.361784)
+  // a float between 2 and 21. bigger numbers are more zoomed in.
+  val DEFAULT_ZOOM = 14f
 }

@@ -1,10 +1,10 @@
 package com.siendy.noshnotes.ui.main
 
 import android.app.Activity
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
 import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.data.repositories.PlacesRepository
 import com.siendy.noshnotes.data.repositories.TagsRepository
@@ -81,11 +81,11 @@ class MainViewModel @Inject constructor(
     }
   }
 
-  fun onLocationPermissionGranted() {
-    Log.d("SIENALOG", "got ya permission")
+  fun onLocationPermissionGranted(latLng: LatLng) {
     _uiState.update { currentUiState ->
       currentUiState.copy(
-        locationPermissionGranted = true
+        locationPermissionGranted = true,
+        mapLocation = latLng
       )
     }
   }

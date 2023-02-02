@@ -1,6 +1,7 @@
 package com.siendy.noshnotes.ui.main
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -14,9 +15,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.siendy.noshnotes.R
+import com.siendy.noshnotes.ui.UIConstants.DEFAULT_LOCATION
 import com.siendy.noshnotes.ui.navigation.Routes
 import com.siendy.noshnotes.ui.navigation.Routes.AUTOCOMPLETE_REQUEST_CODE
 import com.siendy.noshnotes.ui.navigation.Routes.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
@@ -27,6 +31,10 @@ class MainActivity : FragmentActivity() {
   private var rootNavController: NavHostController? = null
 
   private val mainViewModel: MainViewModel by viewModels()
+
+  private val fusedLocationProviderClient by lazy {
+    LocationServices.getFusedLocationProviderClient(this)
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -55,7 +63,7 @@ class MainActivity : FragmentActivity() {
         if (grantResults.isNotEmpty() &&
           grantResults[0] == PackageManager.PERMISSION_GRANTED
         ) {
-          mainViewModel.onLocationPermissionGranted()
+          onLocationPermissionGranted()
         }
       }
       else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -99,13 +107,33 @@ class MainActivity : FragmentActivity() {
     val locationPermission = ContextCompat.checkSelfPermission(this.applicationContext, Manifest.permission.ACCESS_FINE_LOCATION)
 
     if (locationPermission == PackageManager.PERMISSION_GRANTED) {
-      mainViewModel.onLocationPermissionGranted()
+      onLocationPermissionGranted()
     } else {
       ActivityCompat.requestPermissions(
         this,
         arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
         PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
       )
+    }
+  }
+
+  @SuppressLint("MissingPermission")
+  private fun onLocationPermissionGranted() {
+    val locationResult = fusedLocationProviderClient.lastLocation
+
+    locationResult.addOnCompleteListener(this) { task ->
+      val latLng: LatLng = if (task.isSuccessful) {
+        (task.result)?.let {
+          LatLng(
+            it.latitude,
+            it.longitude
+          )
+        } ?: DEFAULT_LOCATION
+      } else {
+        DEFAULT_LOCATION
+      }
+
+      mainViewModel.onLocationPermissionGranted(latLng)
     }
   }
 }
