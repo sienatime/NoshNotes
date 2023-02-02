@@ -11,5 +11,6 @@ object Routes {
   const val ADD_NEW_PLACE = "new_place"
   const val ADD_NEW_TAG = "new_tag"
 
-  const val AUTOCOMPLETE_REQUEST_CODE = 1
+  const val AUTOCOMPLETE_REQUEST_CODE = 91
+  const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 92
 }

@@ -54,7 +54,7 @@ import com.siendy.noshnotes.ui.theme.NoshNotesTheme
 @Composable
 fun App(
   rootNavController: NavHostController,
-  mainViewModel: MainViewModel = hiltViewModel()
+  mainViewModel: MainViewModel
 ) {
   NoshNotesTheme {
     NavHost(
