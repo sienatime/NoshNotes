@@ -71,5 +71,7 @@ struct CreatePlaceFromGooglePlaceView_Previews: PreviewProvider {
       isPresented: .constant(true),
       googlePlaceID: "123",
       autocompleteToken: GMSAutocompleteSessionToken())
+    .environmentObject(TagStore())
+    .environmentObject(PlaceStore())
   }
 }
