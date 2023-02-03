@@ -17,18 +17,33 @@ struct SearchPlacesView: View {
 
   var body: some View {
     NavigationStack {
+      // TODO: add a dismiss button somewhere
       List(searchResults, id: \.placeID) { result in
-        NavigationLink(result.attributedFullText.string)  {
-          NewPlaceView(
-            isPresented: $shown,
-            googlePlaceID: result.placeID,
-            autocompleteToken: autocompleteToken)
+        listItem(for: result)
+      }.navigationDestination(for: GMSAutocompletePrediction.self) { result in
+        NewPlaceView(
+          isPresented: $shown,
+          googlePlaceID: result.placeID,
+          autocompleteToken: autocompleteToken)
+      }
+    }
+    .searchable(text: $searchText, prompt: "Search Google Places")
+    .onChange(of: searchText) { newValue in
+      search(text: newValue)
+    }
+  }
+
+  private func listItem(for result: GMSAutocompletePrediction) -> some View {
+    NavigationLink(value: result) {
+      VStack(alignment: .leading) {
+        Text(result.attributedPrimaryText.string)
+          .font(.system(.body))
+        if let secondaryText = result.attributedSecondaryText?.string {
+          Text(secondaryText)
+            .font(.system(.caption))
         }
       }
-    }.searchable(text: $searchText, prompt: "Search Google Places")
-      .onChange(of: searchText) { newValue in
-        search(text: newValue)
-      }
+    }
   }
 
   private func search(text: String) {

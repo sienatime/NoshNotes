@@ -44,7 +44,7 @@ struct NewPlaceView: View {
       } catch {
         print(error)
       }
-    }
+    }.navigationTitle("Add New Place")
   }
 
   private func save() {

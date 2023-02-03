@@ -5,21 +5,30 @@ import Foundation
 import SwiftUI
 
 struct TagSelectorView: View {
-  var tags: [TagWithID]
+  let tags: [TagWithID]
   @Binding var selectedTagIDs: Set<String>
 
-  let rows = (0..<3).map { _ in
-    GridItem(.flexible(minimum: 34, maximum: 36), alignment: .leading)
+  // We divvy up each tag to one of three rows using modulo arithmetic
+  private func tags(atIndex rowIndex: Int) -> [TagWithID] {
+    tags.enumerated().filter { index, _ in
+      index % 3 == rowIndex
+    }.map { index, tag in
+      tag
+    }
   }
 
   var body: some View {
     ScrollView(.horizontal) {
-      LazyHGrid(rows: rows, alignment: .top) {
-        ForEach(tags) { tag in
-          ChipButton(
-            tag: tag,
-            isSelected: selectedTagIDs.contains(tag.id),
-            onSelect: onSelect)
+      VStack(alignment: .leading) {
+        ForEach(0..<3) { rowIndex in
+          HStack {
+            ForEach(tags(atIndex: rowIndex)) { tag in
+              ChipButton(
+                tag: tag,
+                isSelected: selectedTagIDs.contains(tag.id),
+                onSelect: onSelect)
+            }
+          }
         }
       }
     }
