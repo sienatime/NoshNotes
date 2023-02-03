@@ -1,6 +1,8 @@
 package com.siendy.noshnotes.ui.main.map
 
 import android.annotation.SuppressLint
+import android.view.View
+import android.widget.ProgressBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.viewinterop.AndroidViewBinding
@@ -28,10 +30,11 @@ fun PlacesMap(
 
   AndroidViewBinding(MapFragmentBinding::inflate) {
     val mapFragment = this.mapFragment.getFragment<SupportMapFragment>()
+    val loadingView = this.mapLoading
     mapFragment.getMapAsync { map ->
       scope.launch {
         mainViewModel.uiState.collect { mainUiState ->
-          updateMapForState(mainUiState, map)
+          updateMapForState(mainUiState, map, loadingView)
         }
       }
     }
@@ -39,8 +42,14 @@ fun PlacesMap(
 }
 
 @SuppressLint("MissingPermission")
-fun updateMapForState(mainUiState: MainUiState, map: GoogleMap?) {
+fun updateMapForState(
+  mainUiState: MainUiState,
+  map: GoogleMap?,
+  loadingView: ProgressBar
+) {
   if (map == null) return
+
+  loadingView.visibility = if (mainUiState.loading) View.VISIBLE else View.GONE
 
   map.isMyLocationEnabled = mainUiState.locationPermissionGranted
   map.uiSettings?.isMyLocationButtonEnabled = mainUiState.locationPermissionGranted
