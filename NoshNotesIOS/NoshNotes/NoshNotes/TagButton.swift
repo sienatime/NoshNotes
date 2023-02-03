@@ -11,13 +11,18 @@ struct TagButton: View {
 
   var body: some View {
     Button(action: { onSelect(tag) }) {
-      Text(tag.name)
-        .padding(.horizontal, 16)
-        .padding(.vertical, 4)
+      Label(tag.name, systemImage: "fork.knife")
+        .padding(.horizontal, 12)
+        .padding(.vertical, 6)
     }
-    .frame(height: 32)
+    .tint(.black)
     .background(Color(white: 0.8))
     .cornerRadius(16)
   }
 }
 
+struct TagButton_Previews: PreviewProvider {
+  static var previews: some View {
+    TagButton(tag: TagWithID(id: "123", tag: Tag(name: "Dinner")), isSelected: false) { _ in }
+  }
+}
