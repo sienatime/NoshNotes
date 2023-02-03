@@ -84,7 +84,7 @@ class MainViewModel @Inject constructor(
     _uiState.update { currentUiState ->
       currentUiState.copy(
         locationPermissionGranted = true,
-        mapLocation = latLng
+        defaultMapLocation = latLng
       )
     }
   }

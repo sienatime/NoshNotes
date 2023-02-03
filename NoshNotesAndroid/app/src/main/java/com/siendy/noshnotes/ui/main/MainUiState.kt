@@ -10,5 +10,5 @@ data class MainUiState(
   val allTagsState: AllTagsState? = null,
   val loading: Boolean = true,
   val locationPermissionGranted: Boolean = false,
-  val mapLocation: LatLng = DEFAULT_LOCATION
+  val defaultMapLocation: LatLng = DEFAULT_LOCATION
 )
