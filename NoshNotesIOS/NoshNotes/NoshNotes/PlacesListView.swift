@@ -37,27 +37,22 @@ struct PlacesListView: View {
   var body: some View {
     NavigationStack {
       ZStack {
-        VStack {
+        VStack(spacing: 28) {
           tagSelectorView
           placesList
         }
-        VStack {
-          Spacer()
-
-          HStack {
-            Spacer()
-            newPlaceButton
-          }.padding(.horizontal)
-        }.padding(.vertical)
-
+        buttonFloater
+          .sheet(isPresented: $showingCreateModal) {
+            SearchPlacesView(shown: $showingCreateModal)
+          }
       }
     }
   }
 
   var tagSelectorView: some View {
     TagSelectorView(tags: tags, selectedTagIDs: $selectedTagIDs)
-      .padding(.horizontal)
       .frame(maxHeight: 120)
+      .padding(.horizontal)
   }
 
   var placesList: some View {
@@ -68,7 +63,19 @@ struct PlacesListView: View {
           NavigationLink("", destination: PlaceDetailView(place: place, tags: tags))
             .opacity(0)
         )
-    }
+    }.listStyle(.plain)
+  }
+
+  var buttonFloater: some View {
+    VStack {
+      Spacer()
+
+      HStack {
+        Spacer()
+        newPlaceButton
+
+      }.padding(.horizontal)
+    }.padding(.vertical)
   }
 
   var newPlaceButton: some View {
@@ -80,10 +87,6 @@ struct PlacesListView: View {
     .background(Color.blue)
     .foregroundColor(.white)
     .cornerRadius(27)
-    .sheet(isPresented: $showingCreateModal) {
-      SearchPlacesView(shown: $showingCreateModal)
-    }
-
   }
 }
 

@@ -23,7 +23,7 @@ struct TagSelectorView: View {
         ForEach(0..<3) { rowIndex in
           HStack {
             ForEach(tags(atIndex: rowIndex)) { tag in
-              ChipButton(
+              TagButton(
                 tag: tag,
                 isSelected: selectedTagIDs.contains(tag.id),
                 onSelect: onSelect)
@@ -40,20 +40,6 @@ struct TagSelectorView: View {
     } else {
       selectedTagIDs.insert(tag.id)
     }
-  }
-}
-
-struct ChipButton: View {
-  let tag: TagWithID
-  let isSelected: Bool
-  let onSelect: (TagWithID) -> Void
-
-  var body: some View {
-    Button(tag.name) {
-      onSelect(tag)
-    }
-    .buttonStyle(.bordered)
-    .tint(isSelected ? Color.purple : Color.blue)
   }
 }
 
