@@ -9,10 +9,10 @@ struct TagView: View {
   var body: some View {
     Text(text)
       .fontWeight(.light)
-      .padding(.horizontal, 10)
+      .padding(.horizontal, 16)
       .padding(.vertical, 4)
       .background(Color(white: 0.8))
-      .cornerRadius(20)
+      .cornerRadius(16)
   }
 }
 
