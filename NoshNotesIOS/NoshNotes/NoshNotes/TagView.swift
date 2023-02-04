@@ -4,21 +4,19 @@
 import Foundation
 import SwiftUI
 
-struct TagButton: View {
+struct TagView: View {
   init(
     name: String,
     icon: String? = nil,
     textColor: String? = nil,
     backgroundColor: String? = nil,
-    isSelected: Bool = false,
-    onSelect: (() -> Void)? = nil)
+    isSelected: Bool = false)
   {
     self.name = name
     self.icon = icon
     self.textColor = textColor ?? "#444444"
     self.backgroundColor = backgroundColor ?? "#EDEDED"
     self.isSelected = isSelected
-    self.onSelect = onSelect ?? {}
   }
 
   let name: String
@@ -26,19 +24,15 @@ struct TagButton: View {
   let textColor: String
   let backgroundColor: String
   let isSelected: Bool
-  let onSelect: () -> Void
 
   var body: some View {
-    // TODO: extract label for tags on cards
-    Button(action: onSelect) {
-      Label(name, systemImage: systemImage(for: icon))
-        .fontWeight(.semibold)
-        .padding(.horizontal, 12)
-        .padding(.vertical, 6)
-        .tint(Color.makeColor(withRgbHexString: textColor))
-        .background(background)
-        .cornerRadius(16)
-    }
+    Label(name, systemImage: systemImage(for: icon))
+      .fontWeight(.semibold)
+      .padding(.horizontal, 12)
+      .padding(.vertical, 6)
+      .tint(Color.makeColor(withRgbHexString: textColor))
+      .background(background)
+      .cornerRadius(16)
   }
 
   var background: some View {
@@ -66,10 +60,10 @@ struct TagButton: View {
   }
 }
 
-struct TagButton_Previews: PreviewProvider {
+struct TagView_Previews: PreviewProvider {
   static var previews: some View {
-    TagButton(name: "Dinner")
-    TagButton(name: "Dinner", isSelected: true)
-    TagButton(name: "Lunch", backgroundColor: "#E1BEE7")
+    TagView(name: "Dinner")
+    TagView(name: "Dinner", isSelected: true)
+    TagView(name: "Lunch", backgroundColor: "#E1BEE7")
   }
 }

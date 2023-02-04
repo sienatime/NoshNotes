@@ -20,7 +20,7 @@ struct Tag: Codable {
   let textColor: String?
 
   static func makeForPreview(name: String) -> Tag {
-    Tag(name: name, icon: "fork.knife", backgroundColor: "#FFF95D", textColor: "#444444")
+    Tag(name: name, icon: "fork.knife", backgroundColor: "#EDEDED", textColor: "#444444")
   }
 }
 

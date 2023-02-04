@@ -10,7 +10,7 @@
 		DD33B8F529872D1A0085DFA2 /* PlaceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD33B8F429872D1A0085DFA2 /* PlaceDetailView.swift */; };
 		DD33B8F7298738070085DFA2 /* GooglePlaceImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD33B8F6298738070085DFA2 /* GooglePlaceImage.swift */; };
 		DD3A433E297A3DF800A0DE77 /* TagSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3A433D297A3DF800A0DE77 /* TagSelectorView.swift */; };
-		DD3F4275298D7C150022206B /* TagButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3F4274298D7C150022206B /* TagButton.swift */; };
+		DD3F4275298D7C150022206B /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3F4274298D7C150022206B /* TagView.swift */; };
 		DD3F4277298E0E650022206B /* HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3F4276298E0E650022206B /* HexColor.swift */; };
 		DD41D86029760EDB00A13095 /* TagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD41D85F29760EDB00A13095 /* TagStore.swift */; };
 		DD765EEF297CD6A600C75D63 /* PlaceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD765EEE297CD6A600C75D63 /* PlaceStore.swift */; };
@@ -69,7 +69,7 @@
 		DD33B8F429872D1A0085DFA2 /* PlaceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetailView.swift; sourceTree = "<group>"; };
 		DD33B8F6298738070085DFA2 /* GooglePlaceImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooglePlaceImage.swift; sourceTree = "<group>"; };
 		DD3A433D297A3DF800A0DE77 /* TagSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSelectorView.swift; sourceTree = "<group>"; };
-		DD3F4274298D7C150022206B /* TagButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagButton.swift; sourceTree = "<group>"; };
+		DD3F4274298D7C150022206B /* TagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
 		DD3F4276298E0E650022206B /* HexColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexColor.swift; sourceTree = "<group>"; };
 		DD41D85F29760EDB00A13095 /* TagStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagStore.swift; sourceTree = "<group>"; };
 		DD765EEE297CD6A600C75D63 /* PlaceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceStore.swift; sourceTree = "<group>"; };
@@ -215,7 +215,7 @@
 				DD765F222980841400C75D63 /* PlaceCardView.swift */,
 				DD33B8F6298738070085DFA2 /* GooglePlaceImage.swift */,
 				DD3A433D297A3DF800A0DE77 /* TagSelectorView.swift */,
-				DD3F4274298D7C150022206B /* TagButton.swift */,
+				DD3F4274298D7C150022206B /* TagView.swift */,
 				DD3F4276298E0E650022206B /* HexColor.swift */,
 				DDE680552975E32D00E418AB /* Assets.xcassets */,
 				DDE680572975E32D00E418AB /* Preview Content */,
@@ -385,7 +385,7 @@
 				DD765F232980841400C75D63 /* PlaceCardView.swift in Sources */,
 				DD8C5C5F29760C3900727119 /* AppDelegate.swift in Sources */,
 				DD41D86029760EDB00A13095 /* TagStore.swift in Sources */,
-				DD3F4275298D7C150022206B /* TagButton.swift in Sources */,
+				DD3F4275298D7C150022206B /* TagView.swift in Sources */,
 				DD33B8F7298738070085DFA2 /* GooglePlaceImage.swift in Sources */,
 				DD3F4277298E0E650022206B /* HexColor.swift in Sources */,
 				DD95FDA4298B3A7400BD130E /* NewPlaceView.swift in Sources */,
@@ -554,7 +554,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"NoshNotes/Preview Content\"";
-				DEVELOPMENT_TEAM = KBDAQ88SVF;
+				DEVELOPMENT_TEAM = 27W29GE6L5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NoshNotes/Info.plist;
@@ -584,7 +584,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"NoshNotes/Preview Content\"";
-				DEVELOPMENT_TEAM = KBDAQ88SVF;
+				DEVELOPMENT_TEAM = 27W29GE6L5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NoshNotes/Info.plist;

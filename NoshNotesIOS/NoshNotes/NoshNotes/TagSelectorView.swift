@@ -23,18 +23,24 @@ struct TagSelectorView: View {
         ForEach(0..<3) { rowIndex in
           HStack {
             ForEach(tags(atIndex: rowIndex)) { tag in
-              TagButton(
-                name: tag.name,
-                icon: tag.icon,
-                textColor: tag.tag.textColor,
-                backgroundColor: tag.tag.backgroundColor,
-                isSelected: selectedTagIDs.contains(tag.id)) {
-                  onSelect(tag: tag)
-                }
+              tagButton(tag: tag)
             }
           }
         }
       }
+    }
+  }
+
+  private func tagButton(tag: TagWithID) -> some View {
+    Button {
+      onSelect(tag: tag)
+    } label: {
+      TagView(
+        name: tag.name,
+        icon: tag.icon,
+        textColor: tag.tag.textColor,
+        backgroundColor: tag.tag.backgroundColor,
+        isSelected: selectedTagIDs.contains(tag.id))
     }
   }
 
