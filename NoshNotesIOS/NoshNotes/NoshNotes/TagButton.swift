@@ -8,29 +8,42 @@ struct TagButton: View {
   init(
     name: String,
     icon: String? = nil,
+    textColor: String? = nil,
+    backgroundColor: String? = nil,
     isSelected: Bool = false,
     onSelect: (() -> Void)? = nil)
   {
     self.name = name
     self.icon = icon
+    self.textColor = textColor ?? "#444444"
+    self.backgroundColor = backgroundColor ?? "#EDEDED"
     self.isSelected = isSelected
     self.onSelect = onSelect ?? {}
   }
 
   let name: String
   let icon: String?
+  let textColor: String
+  let backgroundColor: String
   let isSelected: Bool
   let onSelect: () -> Void
 
   var body: some View {
+    // TODO: extract label for tags on cards
     Button(action: onSelect) {
       Label(name, systemImage: systemImage(for: icon))
+        .fontWeight(.semibold)
         .padding(.horizontal, 12)
         .padding(.vertical, 6)
-        .tint(.black)
+        .tint(Color.makeColor(withRgbHexString: textColor))
+        .background(background)
+        .cornerRadius(16)
     }
-    .background(Color(white: 0.8))
-    .cornerRadius(16)
+  }
+
+  var background: some View {
+    Color.makeColor(withRgbHexString: backgroundColor)
+      .brightness(isSelected ? -0.1 : 0.0)
   }
 
   private func systemImage(for iconName: String?) -> String {
@@ -56,5 +69,7 @@ struct TagButton: View {
 struct TagButton_Previews: PreviewProvider {
   static var previews: some View {
     TagButton(name: "Dinner")
+    TagButton(name: "Dinner", isSelected: true)
+    TagButton(name: "Lunch", backgroundColor: "#E1BEE7")
   }
 }

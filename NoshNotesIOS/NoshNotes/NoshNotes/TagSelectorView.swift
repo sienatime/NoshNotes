@@ -26,6 +26,8 @@ struct TagSelectorView: View {
               TagButton(
                 name: tag.name,
                 icon: tag.icon,
+                textColor: tag.tag.textColor,
+                backgroundColor: tag.tag.backgroundColor,
                 isSelected: selectedTagIDs.contains(tag.id)) {
                   onSelect(tag: tag)
                 }

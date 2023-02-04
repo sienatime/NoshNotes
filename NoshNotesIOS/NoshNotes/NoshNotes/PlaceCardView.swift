@@ -22,7 +22,7 @@ struct PlaceCardView: View {
       }
       HStack {
         ForEach(tagNames, id: \.self) {
-          TagButton(name: $0, icon: "dinner")
+          TagButton(name: $0)
         }
       }
     }
