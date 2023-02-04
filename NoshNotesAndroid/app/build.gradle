@@ -12,10 +12,6 @@ android {
   namespace 'com.siendy.noshnotes'
   compileSdk 33
 
-  buildFeatures {
-    viewBinding = true
-  }
-
   defaultConfig {
     applicationId "com.siendy.noshnotes"
     minSdk 23
@@ -71,6 +67,9 @@ dependencies {
   // Compose nav
   def nav_version = "2.5.3"
   implementation "androidx.navigation:navigation-compose:$nav_version"
+
+  implementation "com.google.maps.android:maps-compose:1.0.0"
+  implementation "com.google.android.gms:play-services-maps:18.1.0"
 
   // Google Places
   implementation 'com.google.android.libraries.places:places:3.0.0'

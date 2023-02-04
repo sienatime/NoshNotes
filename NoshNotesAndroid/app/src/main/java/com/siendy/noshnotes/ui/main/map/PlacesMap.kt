@@ -1,110 +1,88 @@
 package com.siendy.noshnotes.ui.main.map
 
-import android.annotation.SuppressLint
-import android.view.View
-import android.widget.ProgressBar
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.viewinterop.AndroidViewBinding
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.SupportMapFragment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.rememberCameraPositionState
 import com.siendy.noshnotes.data.models.Place
-import com.siendy.noshnotes.databinding.MapFragmentBinding
 import com.siendy.noshnotes.ui.UIConstants
-import com.siendy.noshnotes.ui.main.MainUiState
 import com.siendy.noshnotes.ui.main.MainViewModel
-import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 import kotlin.math.max
 
-@SuppressLint("MissingPermission")
 @Composable
 fun PlacesMap(
   mainViewModel: MainViewModel
 ) {
-  val scope = rememberCoroutineScope()
+  val mainUiState by mainViewModel.uiState.collectAsState()
 
-  AndroidViewBinding(MapFragmentBinding::inflate) {
-    val mapFragment = this.mapFragment.getFragment<SupportMapFragment>()
-    val loadingView = this.mapLoading
-    mapFragment.getMapAsync { map ->
-      scope.launch {
-        mainViewModel.uiState.collect { mainUiState ->
-          updateMapForState(mainUiState, map, loadingView)
+  val cameraPositionState = rememberCameraPositionState()
+
+  GoogleMap(
+    modifier = Modifier.fillMaxSize(),
+    cameraPositionState = cameraPositionState,
+    uiSettings = MapUiSettings(
+      myLocationButtonEnabled = mainUiState.locationPermissionGranted,
+    ),
+    properties = MapProperties(
+      isMyLocationEnabled = mainUiState.locationPermissionGranted
+    )
+  ) {
+    val places = mainUiState.filteredPlaces
+    if (mainUiState.filteredPlaces.isEmpty()) {
+      cameraPositionState.position = CameraPosition.fromLatLngZoom(
+        mainUiState.defaultMapLocation, UIConstants.DEFAULT_ZOOM
+      )
+    } else {
+
+      val boundsBuilder = LatLngBounds.Builder()
+
+      places.forEach { place ->
+        val lat = place.latLong?.latitude
+        val long = place.latLong?.longitude
+
+        if (lat != null && long != null) {
+          val latLong = LatLng(lat, long)
+          boundsBuilder.include(latLong)
+
+          Marker(
+            position = latLong,
+            title = place.name,
+            snippet = buildSnippet(place)
+          )
         }
       }
-    }
-  }
-}
 
-@SuppressLint("MissingPermission")
-fun updateMapForState(
-  mainUiState: MainUiState,
-  map: GoogleMap?,
-  loadingView: ProgressBar
-) {
-  if (map == null) return
+      val bounds = boundsBuilder.build()
 
-  loadingView.visibility = if (mainUiState.loading) View.VISIBLE else View.GONE
-
-  map.isMyLocationEnabled = mainUiState.locationPermissionGranted
-  map.uiSettings?.isMyLocationButtonEnabled = mainUiState.locationPermissionGranted
-
-  updatePlacesOnMap(
-    mainUiState.filteredPlaces,
-    map,
-    mainUiState.defaultMapLocation
-  )
-}
-
-private fun updatePlacesOnMap(
-  places: List<Place>,
-  map: GoogleMap,
-  defaultLocation: LatLng
-) {
-  map.clear()
-
-  if (places.isEmpty()) {
-    map.moveCamera(
-      CameraUpdateFactory.newLatLngZoom(
-        defaultLocation,
-        UIConstants.DEFAULT_ZOOM
-      )
-    )
-    return
-  }
-
-  val boundsBuilder = LatLngBounds.Builder()
-
-  places.forEach { place ->
-    val lat = place.latLong?.latitude
-    val long = place.latLong?.longitude
-
-    if (lat != null && long != null) {
-      val latLong = LatLng(lat, long)
-      boundsBuilder.include(latLong)
-
-      map.addMarker(
-        MarkerOptions()
-          .title(place.name)
-          .position(latLong)
-          .snippet(place.address)
+      cameraPositionState.position = CameraPosition.fromLatLngZoom(
+        bounds.center, getZoomLevel(bounds)
       )
     }
   }
-  val bounds = boundsBuilder.build()
 
-  map.setLatLngBoundsForCameraTarget(bounds)
-  map.moveCamera(
-    CameraUpdateFactory.newLatLngZoom(
-      bounds.center,
-      getZoomLevel(bounds)
-    )
-  )
+  if (mainUiState.loading) {
+    Column(
+      modifier = Modifier.fillMaxSize(),
+      verticalArrangement = Arrangement.Center,
+      horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+      CircularProgressIndicator()
+    }
+  }
 }
 
 /**
@@ -127,4 +105,26 @@ private fun getZoomLevel(bounds: LatLngBounds): Float {
   } else {
     UIConstants.DEFAULT_ZOOM - (maxDiff / step).toFloat()
   }
+}
+
+private fun buildSnippet(place: Place): String {
+  val builder = java.lang.StringBuilder()
+//  val address = place.address.orEmpty()
+//  val commaIndex = address.indexOfFirst { it == ',' }
+//
+//  if (commaIndex != -1) {
+//    builder.append(address.substring(0, commaIndex))
+//    builder.append("\n")
+//  } else {
+//    builder.append(address)
+//    builder.append("\n")
+//  }
+//
+  builder.append(place.tags.mapNotNull { it.name }.joinToString(", "))
+
+  place.note?.takeIf { it.isNotEmpty() }?.let {
+    builder.append(" | $it")
+  }
+
+  return builder.toString()
 }
