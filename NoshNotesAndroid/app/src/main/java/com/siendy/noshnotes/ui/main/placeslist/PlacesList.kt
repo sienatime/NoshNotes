@@ -32,6 +32,7 @@ import com.siendy.noshnotes.R.string
 import com.siendy.noshnotes.data.models.LatLong
 import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.data.models.Rating
+import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.components.AllTagsState
 import com.siendy.noshnotes.ui.components.FullScreenLoading
@@ -92,7 +93,7 @@ fun PlaceRow(
       ) {
         PlacePhoto(
           place,
-          height = 120.dp,
+          height = 180.dp,
           attributionEndPadding = 8.dp
         )
 
@@ -104,7 +105,11 @@ fun PlaceRow(
       }
 
       Column(
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier.padding(
+          start = 8.dp,
+          end = 8.dp,
+          bottom = 16.dp
+        )
       ) {
         PlaceName(place.name)
         place.rating?.rating?.let {
@@ -119,6 +124,7 @@ fun PlaceRow(
           }
 
           AllTags(
+            modifier = Modifier.padding(top = 12.dp),
             allTagsState = AllTagsState(
               place.tags.map { tag ->
                 TagState(tag)
@@ -141,7 +147,21 @@ fun PlaceRowPreview() {
     address = "5610 San Vicente Blvd, Los Angeles, CA 90019, USA",
     rating = Rating(total = 76, rating = 4.7),
     note = "My favorite place!!!",
-    priceLevel = 1
+    priceLevel = 1,
+    tags = listOf(
+      Tag(
+        name = "Lunch"
+      ),
+      Tag(
+        name = "Dinner"
+      ),
+      Tag(
+        name = "Tacos"
+      ),
+      Tag(
+        name = "Mexican"
+      )
+    )
   )
   PlaceRow(place)
 }

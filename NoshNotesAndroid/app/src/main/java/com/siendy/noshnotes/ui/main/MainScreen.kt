@@ -155,10 +155,12 @@ fun MainContent(
     ) {
       mainUiState.allTagsState?.let {
         AllTags(
-          it
-        ) { tagState ->
-          mainViewModel.onTagSelected(tagState)
-        }
+          modifier = Modifier.padding(bottom = 8.dp),
+          allTagsState = it,
+          onTagSelected = { tagState ->
+            mainViewModel.onTagSelected(tagState)
+          }
+        )
       }
 
       BottomBarNavigationHost(

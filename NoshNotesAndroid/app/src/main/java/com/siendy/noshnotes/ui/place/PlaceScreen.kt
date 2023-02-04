@@ -159,7 +159,7 @@ fun PlaceContent(
 @Composable
 fun PlaceDetails(
   placeUiState: PlaceUiState,
-  placeViewModel: PlaceViewModel = hiltViewModel(),
+  placeViewModel: PlaceViewModel? = null,
   navController: NavHostController? = null,
   rootNavController: NavHostController? = null
 ) {
@@ -224,17 +224,17 @@ fun PlaceDetails(
               ),
               onTagSelected = {
                 navController?.navigate(Routes.ADD_NEW_TAG)
-              }
+              },
             )
           },
           onTagSelected = { tagState ->
-            placeViewModel.onTagSelected(tagState)
-          }
+            placeViewModel?.onTagSelected(tagState)
+          },
         )
 
         Button(
           onClick = {
-            placeViewModel.addPlace(
+            placeViewModel?.addPlace(
               place,
               it.tagStates.filter {
                 it.selected
@@ -312,7 +312,7 @@ fun PlaceContentPreview() {
           tag = Tag(
             name = "Dinner",
             backgroundColor = "#FFCC80",
-            textColor = "#757575",
+            textColor = "#444444",
             icon = "dinner",
           )
         ),
@@ -320,7 +320,7 @@ fun PlaceContentPreview() {
           tag = Tag(
             name = "Lunch",
             backgroundColor = "#FFF59D",
-            textColor = "#757575",
+            textColor = "#444444",
             icon = "lunch",
           )
         )

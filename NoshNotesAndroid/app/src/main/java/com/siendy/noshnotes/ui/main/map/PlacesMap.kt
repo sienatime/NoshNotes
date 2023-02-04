@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -21,7 +22,10 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.MarkerInfoWindow
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.siendy.noshnotes.data.models.LatLong
 import com.siendy.noshnotes.data.models.Place
+import com.siendy.noshnotes.data.models.Rating
+import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.ui.UIConstants
 import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.components.AllTagsState
@@ -114,15 +118,23 @@ fun CustomInfoWindow(place: Place) {
     Text(addressText)
 
     AllTags(
+      modifier = Modifier.padding(top = 4.dp),
       allTagsState = AllTagsState(
         place.tags.map { tag ->
           TagState(tag)
         }
       ),
+      gapSize = 4.dp,
+      style = MaterialTheme.typography.labelMedium,
+      height = 24.dp,
+      iconSize = 12.dp
     )
 
     place.note?.takeIf { it.isNotEmpty() }?.let {
-      Text(place.note)
+      Text(
+        place.note,
+        Modifier.padding(top = 4.dp)
+      )
     }
   }
 }
@@ -158,4 +170,33 @@ private fun getZoomLevel(bounds: LatLngBounds): Float {
   } else {
     UIConstants.DEFAULT_ZOOM - (maxDiff / step).toFloat()
   }
+}
+
+@Preview
+@Composable
+fun MarkerWindowPreview() {
+  val place = Place(
+    remoteId = "ChIJDwOJGqu5woAR3tTmF6s8bfE",
+    name = "Sonoratown",
+    latLong = LatLong(34.0539254, -118.3553033),
+    address = "5610 San Vicente Blvd, Los Angeles, CA 90019, USA",
+    rating = Rating(total = 76, rating = 4.7),
+    note = "My favorite place!!!",
+    priceLevel = 1,
+    tags = listOf(
+      Tag(
+        name = "Lunch"
+      ),
+      Tag(
+        name = "Dinner"
+      ),
+      Tag(
+        name = "Tacos"
+      ),
+      Tag(
+        name = "Mexican"
+      )
+    )
+  )
+  CustomInfoWindow(place)
 }

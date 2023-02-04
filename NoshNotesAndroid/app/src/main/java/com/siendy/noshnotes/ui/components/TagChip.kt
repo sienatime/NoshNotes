@@ -3,6 +3,7 @@ package com.siendy.noshnotes.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -12,6 +13,7 @@ import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,7 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.siendy.noshnotes.R
 import com.siendy.noshnotes.R.string
@@ -30,24 +34,35 @@ import com.siendy.noshnotes.utils.applySelectedStyle
 import com.siendy.noshnotes.utils.fromHex
 import com.siendy.noshnotes.utils.orEmpty
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllTags(
+  modifier: Modifier = Modifier,
   allTagsState: AllTagsState,
+  gapSize: Dp = 8.dp,
   additionalTag: @Composable () -> Unit = {},
-  onTagSelected: (TagState) -> Unit = {}
+  onTagSelected: (TagState) -> Unit = {},
+  style: TextStyle = MaterialTheme.typography.titleSmall,
+  height: Dp = 32.dp,
+  iconSize: Dp = AssistChipDefaults.IconSize
 ) {
-  FlowRow(
-    horizontalGap = 8.dp,
-    verticalGap = 0.dp,
-    alignment = Alignment.Start,
-  ) {
-    allTagsState.tagStates.forEach { tag ->
-      TagChip(
-        tag,
-        onTagSelected = onTagSelected
-      )
+  Box(modifier) {
+    FlowRow(
+      horizontalGap = gapSize,
+      verticalGap = gapSize,
+      alignment = Alignment.Start,
+    ) {
+      allTagsState.tagStates.forEach { tag ->
+        TagChip(
+          tag,
+          onTagSelected,
+          style,
+          height,
+          iconSize
+        )
+      }
+      additionalTag()
     }
-    additionalTag()
   }
 }
 
@@ -55,8 +70,10 @@ fun AllTags(
 @Composable
 fun TagChip(
   tagState: TagState,
-  modifier: Modifier = Modifier,
-  onTagSelected: (TagState) -> Unit = {}
+  onTagSelected: (TagState) -> Unit = {},
+  style: TextStyle = MaterialTheme.typography.titleSmall,
+  height: Dp = 32.dp,
+  iconSize: Dp = AssistChipDefaults.IconSize
 ) {
   val tag = tagState.tag
 
@@ -72,8 +89,13 @@ fun TagChip(
 
   Box {
     AssistChip(
-      modifier = modifier,
-      label = { Text(tag.name.orEmpty()) },
+      modifier = Modifier.padding(0.dp).height(height),
+      label = {
+        Text(
+          text = tag.name.orEmpty(),
+          style = style
+        )
+      },
       colors = AssistChipDefaults.assistChipColors(
         containerColor = backgroundColor,
         labelColor = contentColor,
@@ -84,7 +106,7 @@ fun TagChip(
         Icon(
           painterResource(TagIcon.drawableForName(tag.icon)),
           contentDescription = null,
-          Modifier.size(AssistChipDefaults.IconSize)
+          Modifier.size(iconSize)
         )
       },
       trailingIcon = {
@@ -92,7 +114,7 @@ fun TagChip(
           Icon(
             Filled.Close,
             contentDescription = stringResource(id = string.unselect),
-            Modifier.size(AssistChipDefaults.IconSize)
+            Modifier.size(iconSize)
           )
         }
       },
@@ -107,8 +129,8 @@ fun TagChip(
         painterResource(id = R.drawable.ic_selected_circle),
         contentDescription = null,
         Modifier
-          .padding(top = 14.dp, start = 7.dp)
-          .size(AssistChipDefaults.IconSize + 2.dp)
+          .padding(top = 6.dp, start = 7.dp)
+          .size(iconSize + 2.dp)
       )
     }
   }
@@ -151,6 +173,7 @@ fun TagChipPreview() {
 
   Column(Modifier.width(320.dp)) {
     AllTags(
+      modifier = Modifier.padding(4.dp),
       allTagsState = AllTagsState(
         tagStates = tags.map { tag ->
           TagState(tag = tag)
