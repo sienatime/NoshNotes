@@ -5,13 +5,19 @@ import Foundation
 import SwiftUI
 
 struct TagButton: View {
-  let tag: TagWithID
+  init(name: String, isSelected: Bool = false, onSelect: (() -> Void)? = nil) {
+    self.name = name
+    self.isSelected = isSelected
+    self.onSelect = onSelect ?? {}
+  }
+
+  let name: String
   let isSelected: Bool
-  let onSelect: (TagWithID) -> Void
+  let onSelect: () -> Void
 
   var body: some View {
-    Button(action: { onSelect(tag) }) {
-      Label(tag.name, systemImage: "fork.knife")
+    Button(action: onSelect) {
+      Label(name, systemImage: "fork.knife")
         .padding(.horizontal, 12)
         .padding(.vertical, 6)
     }
@@ -23,6 +29,6 @@ struct TagButton: View {
 
 struct TagButton_Previews: PreviewProvider {
   static var previews: some View {
-    TagButton(tag: TagWithID(id: "123", tag: Tag(name: "Dinner")), isSelected: false) { _ in }
+    TagButton(name: "Dinner")
   }
 }

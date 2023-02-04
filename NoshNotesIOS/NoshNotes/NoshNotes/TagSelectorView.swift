@@ -24,9 +24,10 @@ struct TagSelectorView: View {
           HStack {
             ForEach(tags(atIndex: rowIndex)) { tag in
               TagButton(
-                tag: tag,
-                isSelected: selectedTagIDs.contains(tag.id),
-                onSelect: onSelect)
+                name: tag.name,
+                isSelected: selectedTagIDs.contains(tag.id)) {
+                  onSelect(tag: tag)
+                }
             }
           }
         }
