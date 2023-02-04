@@ -174,11 +174,7 @@ fun TagChipPreview() {
   Column(Modifier.width(320.dp)) {
     AllTags(
       modifier = Modifier.padding(4.dp),
-      allTagsState = AllTagsState(
-        tagStates = tags.map { tag ->
-          TagState(tag = tag)
-        }
-      )
+      allTagsState = AllTagsState.fromTags(tags)
     )
 
     AllTags(

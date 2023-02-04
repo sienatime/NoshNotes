@@ -31,14 +31,10 @@ class PlaceViewModel @Inject constructor(
           currentUiState.copy(
             place = place,
             originalTags = emptyList(),
-            allTagsState = AllTagsState(
-              tagStates = tags.map { tag ->
-                TagState(
-                  tag,
-                  selected = false,
-                  clickable = true
-                )
-              }
+            allTagsState = AllTagsState.fromTags(
+              tags,
+              selected = false,
+              clickable = true
             ),
             loading = false
           )

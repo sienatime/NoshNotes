@@ -37,7 +37,6 @@ import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.components.AllTagsState
 import com.siendy.noshnotes.ui.components.FullScreenLoading
 import com.siendy.noshnotes.ui.components.PlacePhoto
-import com.siendy.noshnotes.ui.components.TagState
 import com.siendy.noshnotes.ui.navigation.Routes
 import com.siendy.noshnotes.ui.place.PlaceName
 import com.siendy.noshnotes.ui.place.PlaceRating
@@ -125,11 +124,7 @@ fun PlaceRow(
 
           AllTags(
             modifier = Modifier.padding(top = 12.dp),
-            allTagsState = AllTagsState(
-              place.tags.map { tag ->
-                TagState(tag)
-              }
-            )
+            allTagsState = AllTagsState.fromPlace(place)
           )
         }
       }

@@ -33,14 +33,10 @@ class MainViewModel @Inject constructor(
       tagsRepository.getTags().collect { tags ->
         _uiState.update { currentUiState ->
           currentUiState.copy(
-            allTagsState = AllTagsState(
-              tagStates = tags.map { tag ->
-                TagState(
-                  tag,
-                  selected = false,
-                  clickable = true
-                )
-              }
+            allTagsState = AllTagsState.fromTags(
+              tags,
+              selected = false,
+              clickable = true
             ),
             loading = false
           )

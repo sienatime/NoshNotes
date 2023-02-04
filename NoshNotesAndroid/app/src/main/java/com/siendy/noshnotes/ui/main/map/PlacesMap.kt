@@ -30,7 +30,6 @@ import com.siendy.noshnotes.ui.UIConstants
 import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.components.AllTagsState
 import com.siendy.noshnotes.ui.components.FullScreenLoading
-import com.siendy.noshnotes.ui.components.TagState
 import com.siendy.noshnotes.ui.main.MainViewModel
 import kotlin.math.absoluteValue
 import kotlin.math.max
@@ -119,11 +118,7 @@ fun CustomInfoWindow(place: Place) {
 
     AllTags(
       modifier = Modifier.padding(top = 4.dp),
-      allTagsState = AllTagsState(
-        place.tags.map { tag ->
-          TagState(tag)
-        }
-      ),
+      allTagsState = AllTagsState.fromPlace(place),
       gapSize = 4.dp,
       style = MaterialTheme.typography.labelMedium,
       height = 24.dp,
