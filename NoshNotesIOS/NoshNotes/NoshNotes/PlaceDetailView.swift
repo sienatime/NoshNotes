@@ -70,13 +70,13 @@ struct PlaceDetailView_Previews: PreviewProvider {
     PlaceDetailView(
       place: Place.forPreview(name: "Cool Place", note: "it's cool", tagIDs: ["1", "4"]),
       tags: [
-        TagWithID(id: "1", tag: Tag(name: "Dinner")),
-        TagWithID(id: "2", tag: Tag(name: "Lunch")),
-        TagWithID(id: "3", tag: Tag(name: "Brunch")),
-        TagWithID(id: "4", tag: Tag(name: "Sushi")),
-        TagWithID(id: "5", tag: Tag(name: "Bar")),
-        TagWithID(id: "6", tag: Tag(name: "Mediterranean")),
-        TagWithID(id: "7", tag: Tag(name: "Japanese")),
+        TagWithID(id: "1", tag: Tag.makeForPreview(name: "Dinner")),
+        TagWithID(id: "2", tag: Tag.makeForPreview(name: "Lunch")),
+        TagWithID(id: "3", tag: Tag.makeForPreview(name: "Brunch")),
+        TagWithID(id: "4", tag: Tag.makeForPreview(name: "Sushi")),
+        TagWithID(id: "5", tag: Tag.makeForPreview(name: "Bar")),
+        TagWithID(id: "6", tag: Tag.makeForPreview(name: "Mediterranean")),
+        TagWithID(id: "7", tag: Tag.makeForPreview(name: "Japanese")),
       ]
     )
   }

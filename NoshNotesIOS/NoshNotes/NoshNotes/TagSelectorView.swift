@@ -25,6 +25,7 @@ struct TagSelectorView: View {
             ForEach(tags(atIndex: rowIndex)) { tag in
               TagButton(
                 name: tag.name,
+                icon: tag.icon,
                 isSelected: selectedTagIDs.contains(tag.id)) {
                   onSelect(tag: tag)
                 }
@@ -62,18 +63,18 @@ struct TagSelectorView_Previews: PreviewProvider {
 
   static var previews: some View {
     PreviewHost(tags: [
-      Tag(name: "Dinner"),
-      Tag(name: "Lunch"),
-      Tag(name: "Brunch"),
-      Tag(name: "Sushi"),
-      Tag(name: "Bar"),
-      Tag(name: "Mediterranean"),
-      Tag(name: "Japanese"),
+      Tag.makeForPreview(name: "Dinner"),
+      Tag.makeForPreview(name: "Lunch"),
+      Tag.makeForPreview(name: "Brunch"),
+      Tag.makeForPreview(name: "Sushi"),
+      Tag.makeForPreview(name: "Bar"),
+      Tag.makeForPreview(name: "Mediterranean"),
+      Tag.makeForPreview(name: "Japanese"),
     ])
     PreviewHost(tags: [
-      Tag(name: "TODO"),
-      Tag(name: "Fix"),
-      Tag(name: "Flows"),
+      Tag.makeForPreview(name: "TODO"),
+      Tag.makeForPreview(name: "Fix"),
+      Tag.makeForPreview(name: "Flows"),
     ])
   }
 }

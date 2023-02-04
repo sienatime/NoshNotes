@@ -10,10 +10,18 @@ struct TagWithID: Codable, Identifiable {
   let tag: Tag
 
   var name: String { tag.name }
+  var icon: String? { tag.icon }
 }
 
 struct Tag: Codable {
   let name: String
+  let icon: String?
+  let backgroundColor: String?
+  let textColor: String?
+
+  static func makeForPreview(name: String) -> Tag {
+    Tag(name: name, icon: "fork.knife", backgroundColor: "#FFF95D", textColor: "#444444")
+  }
 }
 
 enum FirebaseError: Error {

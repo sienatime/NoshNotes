@@ -5,25 +5,51 @@ import Foundation
 import SwiftUI
 
 struct TagButton: View {
-  init(name: String, isSelected: Bool = false, onSelect: (() -> Void)? = nil) {
+  init(
+    name: String,
+    icon: String? = nil,
+    isSelected: Bool = false,
+    onSelect: (() -> Void)? = nil)
+  {
     self.name = name
+    self.icon = icon
     self.isSelected = isSelected
     self.onSelect = onSelect ?? {}
   }
 
   let name: String
+  let icon: String?
   let isSelected: Bool
   let onSelect: () -> Void
 
   var body: some View {
     Button(action: onSelect) {
-      Label(name, systemImage: "fork.knife")
+      Label(name, systemImage: systemImage(for: icon))
         .padding(.horizontal, 12)
         .padding(.vertical, 6)
+        .tint(.black)
     }
-    .tint(.black)
     .background(Color(white: 0.8))
     .cornerRadius(16)
+  }
+
+  private func systemImage(for iconName: String?) -> String {
+    guard let iconName else {
+      return "fork.knife"
+    }
+    let mapping = [
+      "pin" : "mappin",
+      "dinner" : "fork.knife",
+      "lunch" : "carrot",
+      "breakfast" : "takeoutbag.and.cup.and.straw",
+      "bar" : "wineglass",
+      "coffee" : "cup.and.saucer",
+      "restaurant" : "fork.knife",
+      "dessert" : "birthday.cake",
+      "heart" : "heart",
+    ]
+
+    return mapping[iconName] ?? "fork.knife"
   }
 }
 

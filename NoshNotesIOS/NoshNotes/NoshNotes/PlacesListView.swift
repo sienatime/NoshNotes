@@ -56,14 +56,15 @@ struct PlacesListView: View {
   }
 
   var placesList: some View {
-    List(filteredPlaces) { place in
-      PlaceCardView(place: place, tagNames: tagNames(for: place.tagIDs))
-      // Background + opacity hack to avoid arrow and annoying layout
-        .background(
-          NavigationLink("", destination: PlaceDetailView(place: place, tags: tags))
-            .opacity(0)
-        )
-    }.listStyle(.plain)
+    ScrollView {
+      LazyVStack(spacing: 20) {
+        ForEach(filteredPlaces) { place in
+          NavigationLink(destination: PlaceDetailView(place: place, tags: tags)) {
+            PlaceCardView(place: place, tagNames: tagNames(for: place.tagIDs))
+          }.tint(.black)
+        }
+      }
+    }
   }
 
   var buttonFloater: some View {
@@ -94,13 +95,13 @@ struct PlacesListView_Previews: PreviewProvider {
   static var previews: some View {
     PlacesListView(
       tags: [
-        TagWithID(id: "1", tag: Tag(name: "Dinner")),
-        TagWithID(id: "2", tag: Tag(name: "Lunch")),
-        TagWithID(id: "3", tag: Tag(name: "Brunch")),
-        TagWithID(id: "4", tag: Tag(name: "Sushi")),
-        TagWithID(id: "5", tag: Tag(name: "Bar")),
-        TagWithID(id: "6", tag: Tag(name: "Mediterranean")),
-        TagWithID(id: "7", tag: Tag(name: "Japanese")),
+        TagWithID(id: "1", tag: Tag.makeForPreview(name: "Dinner")),
+        TagWithID(id: "2", tag: Tag.makeForPreview(name: "Lunch")),
+        TagWithID(id: "3", tag: Tag.makeForPreview(name: "Brunch")),
+        TagWithID(id: "4", tag: Tag.makeForPreview(name: "Sushi")),
+        TagWithID(id: "5", tag: Tag.makeForPreview(name: "Bar")),
+        TagWithID(id: "6", tag: Tag.makeForPreview(name: "Mediterranean")),
+        TagWithID(id: "7", tag: Tag.makeForPreview(name: "Japanese")),
       ],
       places: [
         Place.forPreview(name: "Super Cool Place", note: "it's cool", tagIDs: ["1", "4"]),
