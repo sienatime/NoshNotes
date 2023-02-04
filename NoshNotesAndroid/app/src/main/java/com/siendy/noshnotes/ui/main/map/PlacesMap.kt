@@ -1,21 +1,32 @@
 package com.siendy.noshnotes.ui.main.map
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerInfoWindow
+import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.ui.UIConstants
+import com.siendy.noshnotes.ui.components.AllTags
+import com.siendy.noshnotes.ui.components.AllTagsState
 import com.siendy.noshnotes.ui.components.FullScreenLoading
+import com.siendy.noshnotes.ui.components.TagState
 import com.siendy.noshnotes.ui.main.MainViewModel
 import kotlin.math.absoluteValue
 import kotlin.math.max
@@ -62,11 +73,13 @@ private fun mapMarkers(places: List<Place>): CameraPosition {
     placeToLatLng(place)?.let { latLong ->
       boundsBuilder.include(latLong)
 
-      Marker(
-        position = latLong,
-        title = place.name,
-        snippet = buildSnippet(place)
-      )
+      MarkerInfoWindow(
+        state = MarkerState(
+          position = latLong
+        )
+      ) {
+        CustomInfoWindow(place)
+      }
     }
   }
 
@@ -74,6 +87,44 @@ private fun mapMarkers(places: List<Place>): CameraPosition {
   return CameraPosition.fromLatLngZoom(
     bounds.center, getZoomLevel(bounds)
   )
+}
+
+@Composable
+fun CustomInfoWindow(place: Place) {
+  Column(
+    Modifier
+      .background(MaterialTheme.colorScheme.surface)
+      .width(280.dp)
+      .padding(8.dp)
+  ) {
+    Text(
+      place.name.orEmpty(),
+      style = MaterialTheme.typography.titleMedium
+    )
+
+    val address = place.address.orEmpty()
+    val commaIndex = address.indexOfFirst { it == ',' }
+
+    val addressText = if (commaIndex != -1) {
+      address.substring(0, commaIndex)
+    } else {
+      address
+    }
+
+    Text(addressText)
+
+    AllTags(
+      allTagsState = AllTagsState(
+        place.tags.map { tag ->
+          TagState(tag)
+        }
+      ),
+    )
+
+    place.note?.takeIf { it.isNotEmpty() }?.let {
+      Text(place.note)
+    }
+  }
 }
 
 private fun placeToLatLng(place: Place): LatLng? {
@@ -107,26 +158,4 @@ private fun getZoomLevel(bounds: LatLngBounds): Float {
   } else {
     UIConstants.DEFAULT_ZOOM - (maxDiff / step).toFloat()
   }
-}
-
-private fun buildSnippet(place: Place): String {
-  val builder = java.lang.StringBuilder()
-//  val address = place.address.orEmpty()
-//  val commaIndex = address.indexOfFirst { it == ',' }
-//
-//  if (commaIndex != -1) {
-//    builder.append(address.substring(0, commaIndex))
-//    builder.append("\n")
-//  } else {
-//    builder.append(address)
-//    builder.append("\n")
-//  }
-//
-  builder.append(place.tags.mapNotNull { it.name }.joinToString(", "))
-
-  place.note?.takeIf { it.isNotEmpty() }?.let {
-    builder.append(" | $it")
-  }
-
-  return builder.toString()
 }
