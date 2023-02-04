@@ -35,8 +35,8 @@ enum class TagIcon(
     "restaurant",
     R.drawable.ic_baseline_restaurant_24
   ),
-  ICE_CREAM(
-    "ice_cream",
+  DESSERT(
+    "dessert",
     R.drawable.ic_baseline_icecream_24
   ),
   HEART(
