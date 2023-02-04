@@ -1,13 +1,9 @@
 package com.siendy.noshnotes.ui.main.map
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -19,6 +15,7 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.ui.UIConstants
+import com.siendy.noshnotes.ui.components.FullScreenLoading
 import com.siendy.noshnotes.ui.main.MainViewModel
 import kotlin.math.absoluteValue
 import kotlin.math.max
@@ -42,46 +39,51 @@ fun PlacesMap(
     )
   ) {
     val places = mainUiState.filteredPlaces
-    if (mainUiState.filteredPlaces.isEmpty()) {
-      cameraPositionState.position = CameraPosition.fromLatLngZoom(
+
+    cameraPositionState.position = if (places.isEmpty()) {
+      CameraPosition.fromLatLngZoom(
         mainUiState.defaultMapLocation, UIConstants.DEFAULT_ZOOM
       )
     } else {
-
-      val boundsBuilder = LatLngBounds.Builder()
-
-      places.forEach { place ->
-        val lat = place.latLong?.latitude
-        val long = place.latLong?.longitude
-
-        if (lat != null && long != null) {
-          val latLong = LatLng(lat, long)
-          boundsBuilder.include(latLong)
-
-          Marker(
-            position = latLong,
-            title = place.name,
-            snippet = buildSnippet(place)
-          )
-        }
-      }
-
-      val bounds = boundsBuilder.build()
-
-      cameraPositionState.position = CameraPosition.fromLatLngZoom(
-        bounds.center, getZoomLevel(bounds)
-      )
+      mapMarkers(places)
     }
   }
 
   if (mainUiState.loading) {
-    Column(
-      modifier = Modifier.fillMaxSize(),
-      verticalArrangement = Arrangement.Center,
-      horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-      CircularProgressIndicator()
+    FullScreenLoading()
+  }
+}
+
+@Composable
+private fun mapMarkers(places: List<Place>): CameraPosition {
+  val boundsBuilder = LatLngBounds.Builder()
+
+  places.forEach { place ->
+    placeToLatLng(place)?.let { latLong ->
+      boundsBuilder.include(latLong)
+
+      Marker(
+        position = latLong,
+        title = place.name,
+        snippet = buildSnippet(place)
+      )
     }
+  }
+
+  val bounds = boundsBuilder.build()
+  return CameraPosition.fromLatLngZoom(
+    bounds.center, getZoomLevel(bounds)
+  )
+}
+
+private fun placeToLatLng(place: Place): LatLng? {
+  val lat = place.latLong?.latitude
+  val long = place.latLong?.longitude
+
+  return if (lat != null && long != null) {
+    LatLng(lat, long)
+  } else {
+    null
   }
 }
 

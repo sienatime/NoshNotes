@@ -2,10 +2,8 @@ package com.siendy.noshnotes.ui.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,7 +15,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +34,7 @@ import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.data.models.Rating
 import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.components.AllTagsState
+import com.siendy.noshnotes.ui.components.FullScreenLoading
 import com.siendy.noshnotes.ui.components.PlacePhoto
 import com.siendy.noshnotes.ui.components.TagState
 import com.siendy.noshnotes.ui.navigation.Routes
@@ -49,13 +47,7 @@ fun PlacesList(
   rootNavController: NavHostController?
 ) {
   if (mainUiState.loading) {
-    Column(
-      modifier = Modifier.fillMaxSize(),
-      verticalArrangement = Arrangement.Center,
-      horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-      CircularProgressIndicator()
-    }
+    FullScreenLoading()
   } else {
     val places = mainUiState.filteredPlaces
     if (places.isEmpty()) {
