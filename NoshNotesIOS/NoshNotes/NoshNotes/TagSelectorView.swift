@@ -79,11 +79,6 @@ struct TagSelectorView_Previews: PreviewProvider {
       Tag.makeForPreview(name: "Mediterranean"),
       Tag.makeForPreview(name: "Japanese"),
     ])
-    PreviewHost(tags: [
-      Tag.makeForPreview(name: "TODO"),
-      Tag.makeForPreview(name: "Fix"),
-      Tag.makeForPreview(name: "Flows"),
-    ])
   }
 }
 

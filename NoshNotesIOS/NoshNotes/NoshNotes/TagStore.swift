@@ -13,7 +13,7 @@ struct TagWithID: Codable, Identifiable {
   var icon: String? { tag.icon }
 }
 
-struct Tag: Codable {
+struct Tag: Codable, Hashable {
   let name: String
   let icon: String?
   let backgroundColor: String?

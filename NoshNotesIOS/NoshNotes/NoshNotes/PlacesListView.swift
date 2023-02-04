@@ -13,10 +13,10 @@ struct PlacesListView: View {
     self.places = places
 
     tagsByID = tags.reduce(into: [:]) { partialResult, tagWithId in
-      partialResult[tagWithId.id] = tagWithId.name
+      partialResult[tagWithId.id] = tagWithId.tag
     }
   }
-  private let tagsByID: [String: String]
+  private let tagsByID: [String: Tag]
 
   @State private var selectedTagIDs: Set<String> = []
   @State private var showingCreateModal: Bool = false
@@ -28,10 +28,11 @@ struct PlacesListView: View {
     }
   }
 
-  // TODO: move this logic outside this view. It might not know about all the tags on places.
-  func tagNames(for ids: Set<String>) -> [String] {
-    let names = ids.compactMap { tagsByID[$0] }
-    return names.sorted()
+  func tags(for ids: Set<String>) -> [Tag] {
+    let tags = ids.compactMap { tagsByID[$0] }
+    return tags.sorted { lhs, rhs in
+      lhs.name < rhs.name
+    }
   }
 
   var body: some View {
@@ -60,7 +61,7 @@ struct PlacesListView: View {
       LazyVStack(spacing: 20) {
         ForEach(filteredPlaces) { place in
           NavigationLink(destination: PlaceDetailView(place: place, tags: tags)) {
-            PlaceCardView(place: place, tagNames: tagNames(for: place.tagIDs))
+            PlaceCardView(place: place, tags: tags(for: place.tagIDs))
           }.tint(.black)
         }
       }

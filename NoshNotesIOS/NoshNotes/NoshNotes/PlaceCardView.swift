@@ -5,8 +5,8 @@ import SwiftUI
 
 struct PlaceCardView: View {
   let place: Place
-  // we ignore place.tagIds and instead display these tag names. is that bad? I didn't want to talk to the tag store in this view.
-  let tagNames: [String]
+  // we ignore place.tagIds and instead display these tags. is that bad? I didn't want to talk to the tag store in this view.
+  let tags: [Tag]
 
   @State private var image: UIImage?
 
@@ -21,8 +21,12 @@ struct PlaceCardView: View {
           .font(.body.italic())
       }
       HStack {
-        ForEach(tagNames, id: \.self) {
-          TagView(name: $0)
+        ForEach(tags, id: \.self) { tag in
+          TagView(
+            name: tag.name,
+            icon: tag.icon,
+            textColor: tag.textColor,
+            backgroundColor: tag.backgroundColor)
         }
       }
     }
@@ -35,11 +39,11 @@ struct PlaceCardView_Previews: PreviewProvider {
       place: Place.forPreview(
         name: "Cool Place",
         note: "it's cool"),
-      tagNames: ["cool", "place"])
+      tags: ["cool", "place"].map { Tag.makeForPreview(name: $0) })
     PlaceCardView(
       place: Place.forPreview(
         name: "Other Place"),
-      tagNames: ["other", "place"])
+      tags: ["other", "place"].map { Tag.makeForPreview(name: $0) })
   }
 }
 
