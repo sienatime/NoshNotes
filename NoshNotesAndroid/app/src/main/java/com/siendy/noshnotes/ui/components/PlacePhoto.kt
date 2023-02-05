@@ -1,5 +1,6 @@
 package com.siendy.noshnotes.ui.components
 
+import android.graphics.Bitmap
 import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.view.ViewGroup
@@ -11,26 +12,39 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
 import coil.compose.rememberAsyncImagePainter
 import com.siendy.noshnotes.R
-import com.siendy.noshnotes.data.models.Place
 
 @Composable
 fun PlacePhoto(
-  place: Place,
   height: Dp,
-  attributionEndPadding: Dp = 0.dp
+  attributionEndPadding: Dp = 0.dp,
+  photo: Bitmap?,
+  attributionHtml: String?
 ) {
-  if (place.photo != null) {
+
+  val painter: Painter? = if (LocalInspectionMode.current) {
+    painterResource(id = R.drawable.sonoratown)
+  } else if (photo != null) {
+    rememberAsyncImagePainter(photo)
+  } else {
+    null
+  }
+
+  if (painter != null) {
     Column(modifier = Modifier.fillMaxWidth()) {
       Image(
-        painter = rememberAsyncImagePainter(place.photo),
+        painter = painter,
         contentDescription = null,
         contentScale = ContentScale.Crop,
         modifier = Modifier
@@ -38,10 +52,10 @@ fun PlacePhoto(
           .height(height)
       )
 
-      if (place.photoAttributionHtml != null) {
+      if (attributionHtml != null) {
         val attribution = String.format(
           stringResource(id = R.string.photo_attribution),
-          place.photoAttributionHtml
+          attributionHtml
         )
 
         HtmlText(
@@ -64,5 +78,15 @@ fun HtmlText(html: String, modifier: Modifier = Modifier) {
       it.gravity = Gravity.END
       it.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
+  )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PlacePhotoPreview() {
+  PlacePhoto(
+    height = 180.dp,
+    photo = null,
+    attributionHtml = "<a href=''>Some Bloke</a>"
   )
 }

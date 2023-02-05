@@ -29,10 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.siendy.noshnotes.R.string
-import com.siendy.noshnotes.data.models.LatLong
 import com.siendy.noshnotes.data.models.Place
-import com.siendy.noshnotes.data.models.Rating
-import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.components.AllTagsState
 import com.siendy.noshnotes.ui.components.FullScreenLoading
@@ -40,6 +37,7 @@ import com.siendy.noshnotes.ui.components.PlacePhoto
 import com.siendy.noshnotes.ui.navigation.Routes
 import com.siendy.noshnotes.ui.place.PlaceName
 import com.siendy.noshnotes.ui.place.PlaceRating
+import com.siendy.noshnotes.ui.previews.PreviewData
 
 @Composable
 fun PlacesList(
@@ -91,9 +89,10 @@ fun PlaceRow(
         modifier = Modifier.fillMaxWidth()
       ) {
         PlacePhoto(
-          place,
           height = 180.dp,
-          attributionEndPadding = 8.dp
+          attributionEndPadding = 8.dp,
+          photo = place.photo,
+          attributionHtml = place.photoAttributionHtml
         )
 
         RemoveButton(
@@ -135,30 +134,7 @@ fun PlaceRow(
 @Preview(showBackground = true)
 @Composable
 fun PlaceRowPreview() {
-  val place = Place(
-    remoteId = "ChIJDwOJGqu5woAR3tTmF6s8bfE",
-    name = "Sonoratown",
-    latLong = LatLong(34.0539254, -118.3553033),
-    address = "5610 San Vicente Blvd, Los Angeles, CA 90019, USA",
-    rating = Rating(total = 76, rating = 4.7),
-    note = "My favorite place!!!",
-    priceLevel = 1,
-    tags = listOf(
-      Tag(
-        name = "Lunch"
-      ),
-      Tag(
-        name = "Dinner"
-      ),
-      Tag(
-        name = "Tacos"
-      ),
-      Tag(
-        name = "Mexican"
-      )
-    )
-  )
-  PlaceRow(place)
+  PlaceRow(PreviewData.previewPlace)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

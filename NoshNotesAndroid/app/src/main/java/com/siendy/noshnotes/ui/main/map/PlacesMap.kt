@@ -22,15 +22,13 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.MarkerInfoWindow
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
-import com.siendy.noshnotes.data.models.LatLong
 import com.siendy.noshnotes.data.models.Place
-import com.siendy.noshnotes.data.models.Rating
-import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.ui.UIConstants
 import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.components.AllTagsState
 import com.siendy.noshnotes.ui.components.FullScreenLoading
 import com.siendy.noshnotes.ui.main.MainViewModel
+import com.siendy.noshnotes.ui.previews.PreviewData
 import kotlin.math.absoluteValue
 import kotlin.math.max
 
@@ -170,28 +168,5 @@ private fun getZoomLevel(bounds: LatLngBounds): Float {
 @Preview
 @Composable
 fun MarkerWindowPreview() {
-  val place = Place(
-    remoteId = "ChIJDwOJGqu5woAR3tTmF6s8bfE",
-    name = "Sonoratown",
-    latLong = LatLong(34.0539254, -118.3553033),
-    address = "5610 San Vicente Blvd, Los Angeles, CA 90019, USA",
-    rating = Rating(total = 76, rating = 4.7),
-    note = "My favorite place!!!",
-    priceLevel = 1,
-    tags = listOf(
-      Tag(
-        name = "Lunch"
-      ),
-      Tag(
-        name = "Dinner"
-      ),
-      Tag(
-        name = "Tacos"
-      ),
-      Tag(
-        name = "Mexican"
-      )
-    )
-  )
-  CustomInfoWindow(place)
+  CustomInfoWindow(PreviewData.previewPlace)
 }
