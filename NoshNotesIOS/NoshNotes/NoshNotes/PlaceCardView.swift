@@ -5,7 +5,8 @@ import SwiftUI
 
 struct PlaceCardView: View {
   let place: Place
-  // we ignore place.tagIds and instead display these tags. is that bad? I didn't want to talk to the tag store in this view.
+  // We ignore place.tagIds and instead display these tags. is that bad?
+  // We could always add the tag models to each Place inside the Store.
   let tags: [Tag]
 
   @State private var image: UIImage?

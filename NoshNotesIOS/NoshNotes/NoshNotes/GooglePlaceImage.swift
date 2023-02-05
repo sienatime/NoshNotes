@@ -12,7 +12,7 @@ struct GooglePlaceImage: View {
   @Environment(\.imageLoader) private var imageLoader
 
   let height: CGFloat = 180
-  let width: CGFloat = 330
+  let width: CGFloat = 360
 
   var body: some View {
     if let image {
