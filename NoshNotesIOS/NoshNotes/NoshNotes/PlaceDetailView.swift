@@ -9,6 +9,7 @@ struct PlaceDetailView: View {
 
   @State private var updatedNote: String
   @State private var selectedTagIDs: Set<String>
+  @State private var newTagModalIsPresented: Bool
 
   @EnvironmentObject var placeStore: PlaceStore
   @Environment(\.dismiss) var dismiss: DismissAction
@@ -20,6 +21,7 @@ struct PlaceDetailView: View {
     // When we added the DismissAction we had to start using the underscore versions of these State properties
     self._updatedNote = State(initialValue: place.note ?? "")
     self._selectedTagIDs = State(initialValue: place.tagIDs)
+    self._newTagModalIsPresented = State(initialValue: false)
   }
 
   var body: some View {
@@ -27,22 +29,37 @@ struct PlaceDetailView: View {
       VStack(spacing: 16) {
         GooglePlaceImage(imageMetadata: place.imageMetadata)
         VStack(alignment: .leading, spacing: 16) {
-          HStack {
-            Text("Note")
-            TextField("Note", text: $updatedNote, prompt: Text("What looks good about this place?"))
-              .textFieldStyle(.roundedBorder)
-          }
-          Text("Tags")
+          noteField
+          Text("Tags:")
           TagSelectorView(tags: tags, selectedTagIDs: $selectedTagIDs)          .frame(maxHeight: 120)
-          Button("Add Tag") {
-            // TODO: launch the tag creation dialog. Gonna need to have a way to reload all tags after creating a tag though.
+          HStack {
+            addTagButton
+            Spacer()
+            Button("Save") {
+              save()
+            }.buttonStyle(.borderedProminent)
           }
-          Button("Save") {
-            save()
-          }.buttonStyle(.borderedProminent)
         }
       }.padding(.horizontal)
     }
+  }
+
+  private var noteField: some View {
+    HStack {
+      Text("Note:")
+      TextField("Note", text: $updatedNote, prompt: Text("What looks good about this place?"))
+        .textFieldStyle(.roundedBorder)
+    }
+  }
+
+  private var addTagButton: some View {
+    Button("Add Tag") {
+      newTagModalIsPresented = true
+    }.sheet(isPresented: $newTagModalIsPresented) {
+      NewTagView()
+        .presentationDetents([.fraction(0.3)])
+      // hard-coding this sheet to be 1/3 of the screen :P
+    }.padding(.vertical, 10)
   }
 
   private func save() {

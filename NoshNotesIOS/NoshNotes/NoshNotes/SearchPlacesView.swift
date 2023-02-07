@@ -51,7 +51,7 @@ struct SearchPlacesView: View {
     searchTask?.cancel()
     searchTask = Task {
       do {
-        try await Task.sleep(nanoseconds: 275 * 1_000_000) // 275 milliseconds
+        try await Task.sleep(for: .milliseconds(275))
 
         let results = try await placeStore.search(text: text, token: autocompleteToken)
         self.searchResults = results

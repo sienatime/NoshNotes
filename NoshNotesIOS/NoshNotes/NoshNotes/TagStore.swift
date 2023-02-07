@@ -45,6 +45,15 @@ class TagStore: ObservableObject {
     }
   }
 
+  @MainActor
+  public func createTag() async {
+    do {
+      try await Task.sleep(for: .seconds(2))
+    } catch {
+      print("error saving tag: \(error)")
+    }
+  }
+
   // Fetches the tags and returns them asynchronously.
   // We could try to separate the state changes from the API later on.
   private func fetchTags() async throws -> [TagWithID] {

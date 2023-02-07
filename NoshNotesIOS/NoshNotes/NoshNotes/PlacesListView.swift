@@ -62,7 +62,7 @@ struct PlacesListView: View {
         ForEach(filteredPlaces) { place in
           NavigationLink(destination: PlaceDetailView(place: place, tags: tags)) {
             PlaceCardView(place: place, tags: tags(for: place.tagIDs))
-          }.tint(.black)
+          }.tint(.primary)
         }
       }
     }
