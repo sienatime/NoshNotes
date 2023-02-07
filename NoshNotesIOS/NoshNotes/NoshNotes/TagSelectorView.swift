@@ -5,13 +5,21 @@ import Foundation
 import SwiftUI
 
 struct TagSelectorView: View {
+
+  init(tags: [TagWithID], selectedTagIDs: Binding<Set<String>>, numRows: Int = 3) {
+    self.tags = tags
+    self.numRows = numRows
+    self._selectedTagIDs = selectedTagIDs
+  }
+
   let tags: [TagWithID]
+  let numRows: Int
   @Binding var selectedTagIDs: Set<String>
 
-  // We divvy up each tag to one of three rows using modulo arithmetic
+  // We divvy up each tag to a row using modulo arithmetic
   private func tags(atIndex rowIndex: Int) -> [TagWithID] {
     tags.enumerated().filter { index, _ in
-      index % 3 == rowIndex
+      index % numRows == rowIndex
     }.map { index, tag in
       tag
     }
@@ -20,15 +28,20 @@ struct TagSelectorView: View {
   var body: some View {
     ScrollView(.horizontal) {
       VStack(alignment: .leading) {
-        ForEach(0..<3) { rowIndex in
-          HStack {
-            ForEach(tags(atIndex: rowIndex)) { tag in
-              tagButton(tag: tag)
-            }
-          }
+        ForEach(0..<numRows, id: \.self) { rowIndex in
+          tagRow(at: rowIndex)
         }
       }
     }
+  }
+
+  func tagRow(at rowIndex: Int) -> some View {
+    HStack {
+      ForEach(tags(atIndex: rowIndex)) { tag in
+        tagButton(tag: tag)
+      }
+    }
+
   }
 
   private func tagButton(tag: TagWithID) -> some View {
@@ -56,6 +69,7 @@ struct TagSelectorView: View {
 struct TagSelectorView_Previews: PreviewProvider {
   struct PreviewHost: View {
     let tags: [Tag]
+    let numRows: Int
     @State var selectedTagIDs: Set<String> = []
 
     var tagsWithId: [TagWithID] {
@@ -65,7 +79,7 @@ struct TagSelectorView_Previews: PreviewProvider {
     }
 
     var body: some View {
-      TagSelectorView(tags: tagsWithId, selectedTagIDs: $selectedTagIDs)
+      TagSelectorView(tags: tagsWithId, selectedTagIDs: $selectedTagIDs, numRows: numRows)
     }
   }
 
@@ -78,7 +92,16 @@ struct TagSelectorView_Previews: PreviewProvider {
       Tag.makeForPreview(name: "Bar"),
       Tag.makeForPreview(name: "Mediterranean"),
       Tag.makeForPreview(name: "Japanese"),
-    ])
+    ], numRows: 3)
+    PreviewHost(tags: [
+      Tag.makeForPreview(name: "Dinner"),
+      Tag.makeForPreview(name: "Lunch"),
+      Tag.makeForPreview(name: "Brunch"),
+      Tag.makeForPreview(name: "Sushi"),
+      Tag.makeForPreview(name: "Bar"),
+      Tag.makeForPreview(name: "Mediterranean"),
+      Tag.makeForPreview(name: "Japanese")
+    ], numRows: 4)
   }
 }
 

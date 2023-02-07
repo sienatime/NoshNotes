@@ -60,7 +60,7 @@ struct PlacesListView: View {
     ScrollView {
       LazyVStack(spacing: 20) {
         ForEach(filteredPlaces) { place in
-          NavigationLink(destination: PlaceDetailView(place: place, tags: tags)) {
+          NavigationLink(destination: PlaceDetailView(place: place, allTags: tags)) {
             PlaceCardView(place: place, tags: tags(for: place.tagIDs))
           }.tint(.primary)
         }

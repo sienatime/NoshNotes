@@ -5,7 +5,7 @@ import SwiftUI
 
 struct PlaceDetailView: View {
   let place: Place
-  let tags: [TagWithID]
+  let allTags: [TagWithID]
 
   @State private var updatedNote: String
   @State private var selectedTagIDs: Set<String>
@@ -14,9 +14,9 @@ struct PlaceDetailView: View {
   @EnvironmentObject var placeStore: PlaceStore
   @Environment(\.dismiss) var dismiss: DismissAction
 
-  init(place: Place, tags: [TagWithID]) {
+  init(place: Place, allTags: [TagWithID]) {
     self.place = place
-    self.tags = tags
+    self.allTags = allTags
 
     // When we added the DismissAction we had to start using the underscore versions of these State properties
     self._updatedNote = State(initialValue: place.note ?? "")
@@ -32,7 +32,7 @@ struct PlaceDetailView: View {
         VStack(alignment: .leading, spacing: 16) {
           noteField
           Text("Tags:")
-          TagSelectorView(tags: tags, selectedTagIDs: $selectedTagIDs)          .frame(maxHeight: 120)
+          TagSelectorView(tags: allTags, selectedTagIDs: $selectedTagIDs, numRows: 4)
         }
         Spacer()
         HStack {
@@ -88,7 +88,7 @@ struct PlaceDetailView_Previews: PreviewProvider {
   static var previews: some View {
     PlaceDetailView(
       place: Place.forPreview(name: "Cool Place", note: "it's cool", tagIDs: ["1", "4"]),
-      tags: [
+      allTags: [
         TagWithID(id: "1", tag: Tag.makeForPreview(name: "Dinner")),
         TagWithID(id: "2", tag: Tag.makeForPreview(name: "Lunch")),
         TagWithID(id: "3", tag: Tag.makeForPreview(name: "Brunch")),
