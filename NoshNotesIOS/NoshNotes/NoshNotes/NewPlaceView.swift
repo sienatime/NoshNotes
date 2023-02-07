@@ -66,12 +66,14 @@ struct NewPlaceView: View {
 }
 
 struct NewPlaceView_Previews: PreviewProvider {
+  static let tagStore = TagStore()
+
   static var previews: some View {
     NewPlaceView(
       isPresented: .constant(true),
       googlePlaceID: "123",
       autocompleteToken: GMSAutocompleteSessionToken())
-    .environmentObject(TagStore())
-    .environmentObject(PlaceStore())
+    .environmentObject(tagStore)
+    .environmentObject(PlaceStore(tagStore: tagStore))
   }
 }

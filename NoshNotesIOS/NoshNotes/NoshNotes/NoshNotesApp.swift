@@ -7,8 +7,14 @@ import SwiftUI
 struct NoshNotesApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
-  @StateObject private var tagStore = TagStore()
-  @StateObject private var placeStore = PlaceStore()
+  init() {
+    let tagStore = TagStore()
+    self._tagStore = StateObject(wrappedValue: tagStore)
+    self._placeStore = StateObject(wrappedValue: PlaceStore(tagStore: tagStore))
+  }
+
+  @StateObject private var tagStore: TagStore
+  @StateObject private var placeStore: PlaceStore
 
   var body: some Scene {
     WindowGroup {

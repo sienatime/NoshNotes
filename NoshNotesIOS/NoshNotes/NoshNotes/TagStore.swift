@@ -5,7 +5,7 @@ import Foundation
 import FirebaseDatabase
 import FirebaseDatabaseSwift
 
-struct TagWithID: Codable, Identifiable {
+struct TagWithID: Codable, Identifiable, Hashable {
   let id: String
   let tag: Tag
 

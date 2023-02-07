@@ -65,12 +65,18 @@ struct PlaceDetailView: View {
   }
 
   private func save() {
+    let selectedTags = selectedTagIDs.compactMap { id in
+      allTags.first { tag in
+        tag.id == id
+      }
+    }
+
     let newPlace = Place(
       id: place.id,
       name: place.name,
       remoteId: place.remoteId,
       note: updatedNote,
-      tagIDs: selectedTagIDs
+      tags: selectedTags
     )
 
     Task {
@@ -87,7 +93,13 @@ struct PlaceDetailView: View {
 struct PlaceDetailView_Previews: PreviewProvider {
   static var previews: some View {
     PlaceDetailView(
-      place: Place.forPreview(name: "Cool Place", note: "it's cool", tagIDs: ["1", "4"]),
+      place: Place.forPreview(
+        name: "Cool Place",
+        note: "it's cool",
+        tags: [
+          TagWithID(id: "1", tag: Tag.makeForPreview(name: "Dinner")),
+          TagWithID(id: "4", tag: Tag.makeForPreview(name: "Sushi")),
+        ]),
       allTags: [
         TagWithID(id: "1", tag: Tag.makeForPreview(name: "Dinner")),
         TagWithID(id: "2", tag: Tag.makeForPreview(name: "Lunch")),

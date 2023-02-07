@@ -11,12 +11,7 @@ struct PlacesListView: View {
   init(tags: [TagWithID], places: [Place]) {
     self.tags = tags
     self.places = places
-
-    tagsByID = tags.reduce(into: [:]) { partialResult, tagWithId in
-      partialResult[tagWithId.id] = tagWithId.tag
-    }
   }
-  private let tagsByID: [String: Tag]
 
   @State private var selectedTagIDs: Set<String> = []
   @State private var showingCreateModal: Bool = false
@@ -25,13 +20,6 @@ struct PlacesListView: View {
     places.filter { place in
       // TODO: This feels like business logic that should live somewhere else.
       selectedTagIDs.isSubset(of: place.tagIDs)
-    }
-  }
-
-  func tags(for ids: Set<String>) -> [Tag] {
-    let tags = ids.compactMap { tagsByID[$0] }
-    return tags.sorted { lhs, rhs in
-      lhs.name < rhs.name
     }
   }
 
@@ -61,7 +49,7 @@ struct PlacesListView: View {
       LazyVStack(spacing: 20) {
         ForEach(filteredPlaces) { place in
           NavigationLink(destination: PlaceDetailView(place: place, allTags: tags)) {
-            PlaceCardView(place: place, tags: tags(for: place.tagIDs))
+            PlaceCardView(place: place)
           }.tint(.primary)
         }
       }
@@ -105,11 +93,25 @@ struct PlacesListView_Previews: PreviewProvider {
         TagWithID(id: "7", tag: Tag.makeForPreview(name: "Japanese")),
       ],
       places: [
-        Place.forPreview(name: "Super Cool Place", note: "it's cool", tagIDs: ["1", "4"]),
-        Place.forPreview(name: "Another Cool Place", note: "it's also cool", tagIDs: ["1", "4"]),
+        Place.forPreview(
+          name: "Super Cool Place",
+          note: "it's cool",
+          tags: [
+            TagWithID(id: "1", tag: Tag.makeForPreview(name: "Dinner")),
+            TagWithID(id: "4", tag: Tag.makeForPreview(name: "Sushi")),
+          ]
+        ),
+        Place.forPreview(
+          name: "Another Cool Place",
+          note: "it's also cool",
+          tags: [
+            TagWithID(id: "1", tag: Tag.makeForPreview(name: "Dinner")),
+            TagWithID(id: "4", tag: Tag.makeForPreview(name: "Sushi")),
+          ]
+        ),
       ])
     PlacesListView(tags: [], places: [
-      Place.forPreview(name: "Super Cool Place", note: nil, tagIDs: []),
+      Place.forPreview(name: "Super Cool Place", note: nil, tags: []),
     ])
   }
 }

@@ -12,33 +12,36 @@ struct Place: Identifiable, Hashable {
     name: String,
     remoteId: String,
     note: String? = nil,
-    tagIDs: Set<String> = [],
+    tags: [TagWithID],
     imageMetadata: GMSPlacePhotoMetadata? = nil)
   {
     self.id = id
     self.name = name
     self.remoteId = remoteId
     self.note = note
-    self.tagIDs = tagIDs
+    self.tags = tags
     self.imageMetadata = imageMetadata
+    tagIDs = Set(tags.map(\.id))
   }
 
   static func forPreview(
     id: String = UUID().uuidString,
     name: String,
     note: String? = nil,
-    tagIDs: Set<String> = []
+    tags: [TagWithID] = []
   ) -> Place
   {
-    Place(id: id, name: name, remoteId: "", note: note, tagIDs: tagIDs)
+    Place(id: id, name: name, remoteId: "", note: note, tags: tags)
   }
 
   let id: String // The Firebase ID
   let name: String
   let note: String?
-  let tagIDs: Set<String>
+  let tags: [TagWithID]
   let imageMetadata: GMSPlacePhotoMetadata?
   let remoteId: String // The Google Place ID
+
+  let tagIDs: Set<String>
 }
 
 // A Place that hasn't been created on the backend yet so it doesn't have an id
@@ -86,7 +89,7 @@ struct GooglePlace {
   }
 }
 
-extension Set {
+extension Sequence where Element: Hashable {
   func toDictionaryKeysWithTrueValues() -> [Element: Bool] {
     let keyValuePairs = map { ($0, true) }
     return Dictionary(keyValuePairs, uniquingKeysWith: { first, _ in first })
@@ -94,12 +97,14 @@ extension Set {
 }
 
 class PlaceStore: ObservableObject {
-  init() {
+  init(tagStore: TagStore) {
     placesClient = GMSPlacesClient.shared()
+    self.tagStore = tagStore
   }
 
   @Published var allPlaces: [Place] = []
 
+  // Create a new place on the back end. The backend will automatically update the allPlaces property on success.
   public func create(newPlace: NewPlace) async throws {
     guard let newKey = ref.childByAutoId().key else {
       throw FirebaseError.noKey
@@ -113,6 +118,7 @@ class PlaceStore: ObservableObject {
     try await update(firebasePlace: newFirebasePlace)
   }
 
+  // Create a place on the back end. The backend will automatically update the allPlaces property on success.
   public func update(place: Place) async throws {
 
     let firebasePlace = FirebasePlace(
@@ -124,26 +130,10 @@ class PlaceStore: ObservableObject {
     try await update(firebasePlace: firebasePlace)
   }
 
-  private func update(firebasePlace: FirebasePlace) async throws {
-    try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
-      do {
-        try ref.child(firebasePlace.id).setValue(from: firebasePlace) { error in
-          if let error {
-            continuation.resume(throwing: error)
-          } else {
-            continuation.resume(returning: ())
-          }
-        }
-      } catch {
-        continuation.resume(throwing: error)
-      }
-    }
-  }
-
   // On the Main Actor because it updates a @Published property observed by SwiftUI.
   // Note that this method is not intended to terminate - it should stay in the for await loop as long as the app is running.
   @MainActor
-  func observeChanges() async {
+  public func observeChanges() async {
     do {
       for try await places in streamPlaces() {
         self.allPlaces = places
@@ -175,6 +165,13 @@ class PlaceStore: ObservableObject {
           }
         })
     }
+  }
+
+  // Fetch additional data for a Place from Google Places.
+  // The id param is the google place id, not the firebase id.
+  public func fetchPlaceData(id: String, sessionToken: GMSAutocompleteSessionToken? = nil) async throws -> GooglePlace {
+    let gmsPlace = try await fetchGMSPlaceDetails(id: id, sessionToken: sessionToken)
+    return try GooglePlace(gmsPlace: gmsPlace)
   }
 
   // Map from DataSnapshot to [Place] asynchronously
@@ -213,8 +210,12 @@ class PlaceStore: ObservableObject {
 
     let placeData = try await fetchPlaceData(ids: firebasePlaces.map(\.remoteId))
 
+    let tagsByID = tagStore.tags.reduce(into: [:]) { partialResult, tagWithId in
+      partialResult[tagWithId.id] = tagWithId
+    }
+
     let places = firebasePlaces.compactMap { firebasePlace in
-      buildPlace(from: firebasePlace, with: placeData)
+      makePlace(from: firebasePlace, with: placeData, tagsByID: tagsByID)
     }
     return places
   }
@@ -224,17 +225,25 @@ class PlaceStore: ObservableObject {
     return try await makePlaces(from: data)
   }
 
-  private func buildPlace(from firebasePlace: FirebasePlace, with placeData: [String: GooglePlace]) -> Place? {
+  // Keep this a pure function - get any external data in makePlaces and pass it in. 
+  private func makePlace(from firebasePlace: FirebasePlace, with placeData: [String: GooglePlace], tagsByID: [String: TagWithID]) -> Place? {
     guard let googlePlace = placeData[firebasePlace.remoteId] else {
       print("Google place ID \(firebasePlace.remoteId) not found")
       return nil
     }
+
+    let tags = firebasePlace.tags.keys
+      .compactMap { tagsByID[$0] }
+      .sorted { lhs, rhs in
+        lhs.name < rhs.name
+      }
+
     return Place(
       id: firebasePlace.id,
       name: googlePlace.name,
       remoteId: googlePlace.id,
       note: firebasePlace.note,
-      tagIDs: Set(firebasePlace.tags.keys),
+      tags: tags,
       imageMetadata: googlePlace.imageMetadata)
   }
 
@@ -250,11 +259,6 @@ class PlaceStore: ObservableObject {
         partialResult[resultTuple.0] = resultTuple.1
       })
     })
-  }
-
-  public func fetchPlaceData(id: String, sessionToken: GMSAutocompleteSessionToken? = nil) async throws -> GooglePlace {
-    let gmsPlace = try await fetchGMSPlaceDetails(id: id, sessionToken: sessionToken)
-    return try GooglePlace(gmsPlace: gmsPlace)
   }
 
   private func fetchGMSPlaceDetails(id: String, sessionToken: GMSAutocompleteSessionToken?) async throws -> GMSPlace {
@@ -284,7 +288,24 @@ class PlaceStore: ObservableObject {
       }
   }
 
+  private func update(firebasePlace: FirebasePlace) async throws {
+    try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) -> Void in
+      do {
+        try ref.child(firebasePlace.id).setValue(from: firebasePlace) { error in
+          if let error {
+            continuation.resume(throwing: error)
+          } else {
+            continuation.resume(returning: ())
+          }
+        }
+      } catch {
+        continuation.resume(throwing: error)
+      }
+    }
+  }
+
   private lazy var ref: DatabaseReference = Database.database().reference(withPath: "places")
   private let placesClient: GMSPlacesClient
+  private let tagStore: TagStore
 }
 

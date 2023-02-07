@@ -5,9 +5,6 @@ import SwiftUI
 
 struct PlaceCardView: View {
   let place: Place
-  // We ignore place.tagIds and instead display these tags. is that bad?
-  // We could always add the tag models to each Place inside the Store.
-  let tags: [Tag]
 
   @State private var image: UIImage?
 
@@ -22,12 +19,12 @@ struct PlaceCardView: View {
           .font(.body.italic())
       }
       HStack {
-        ForEach(tags, id: \.self) { tag in
+        ForEach(place.tags) { tag in
           TagView(
             name: tag.name,
             icon: tag.icon,
-            textColor: tag.textColor,
-            backgroundColor: tag.backgroundColor)
+            textColor: tag.tag.textColor,
+            backgroundColor: tag.tag.backgroundColor)
         }
       }
     }
@@ -39,12 +36,18 @@ struct PlaceCardView_Previews: PreviewProvider {
     PlaceCardView(
       place: Place.forPreview(
         name: "Cool Place",
-        note: "it's cool"),
-      tags: ["cool", "place"].map { Tag.makeForPreview(name: $0) })
+        note: "it's cool",
+        tags: ["cool", "place"].map {
+          TagWithID(id: UUID().uuidString, tag: Tag.makeForPreview(name: $0))
+        })
+    )
     PlaceCardView(
       place: Place.forPreview(
-        name: "Other Place"),
-      tags: ["other", "place"].map { Tag.makeForPreview(name: $0) })
+        name: "Other Place",
+        tags: ["other", "place"].map {
+          TagWithID(id: UUID().uuidString, tag: Tag.makeForPreview(name: $0))
+        })
+    )
   }
 }
 
