@@ -27,6 +27,7 @@ struct PlaceDetailView: View {
   var body: some View {
     ScrollView {
       VStack(spacing: 16) {
+        Text(place.name).font(.title)
         GooglePlaceImage(imageMetadata: place.imageMetadata)
         VStack(alignment: .leading, spacing: 16) {
           noteField
