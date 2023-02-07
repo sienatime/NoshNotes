@@ -25,7 +25,7 @@ struct PlaceDetailView: View {
   }
 
   var body: some View {
-    ScrollView {
+    VStack {
       VStack(spacing: 16) {
         Text(place.name).font(.title)
         GooglePlaceImage(imageMetadata: place.imageMetadata)
@@ -33,13 +33,14 @@ struct PlaceDetailView: View {
           noteField
           Text("Tags:")
           TagSelectorView(tags: tags, selectedTagIDs: $selectedTagIDs)          .frame(maxHeight: 120)
-          HStack {
-            addTagButton
-            Spacer()
-            Button("Save") {
-              save()
-            }.buttonStyle(.borderedProminent)
-          }
+        }
+        Spacer()
+        HStack {
+          addTagButton
+          Spacer()
+          Button("Save") {
+            save()
+          }.buttonStyle(.borderedProminent)
         }
       }.padding(.horizontal)
     }
