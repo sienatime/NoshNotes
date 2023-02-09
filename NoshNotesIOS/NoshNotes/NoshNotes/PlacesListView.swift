@@ -26,7 +26,7 @@ struct PlacesListView: View {
   var body: some View {
     NavigationStack {
       ZStack {
-        VStack(spacing: 28) {
+        VStack(spacing: 16) {
           tagSelectorView
           placesList
         }
