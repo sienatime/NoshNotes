@@ -42,6 +42,7 @@
 		DD8C5C5F29760C3900727119 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8C5C5E29760C3900727119 /* AppDelegate.swift */; };
 		DD95FDA22989D43C00BD130E /* SearchPlacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD95FDA12989D43C00BD130E /* SearchPlacesView.swift */; };
 		DD95FDA4298B3A7400BD130E /* NewPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD95FDA3298B3A7400BD130E /* NewPlaceView.swift */; };
+		DDCF1287299567D400C21EF3 /* EditPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCF1286299567D400C21EF3 /* EditPlaceView.swift */; };
 		DDE680522975E32D00E418AB /* NoshNotesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE680512975E32D00E418AB /* NoshNotesApp.swift */; };
 		DDE680542975E32D00E418AB /* PlacesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE680532975E32D00E418AB /* PlacesListView.swift */; };
 		DDE680562975E32D00E418AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDE680552975E32D00E418AB /* Assets.xcassets */; };
@@ -101,6 +102,7 @@
 		DD8C5C5E29760C3900727119 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD95FDA12989D43C00BD130E /* SearchPlacesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlacesView.swift; sourceTree = "<group>"; };
 		DD95FDA3298B3A7400BD130E /* NewPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlaceView.swift; sourceTree = "<group>"; };
+		DDCF1286299567D400C21EF3 /* EditPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlaceView.swift; sourceTree = "<group>"; };
 		DDE6804E2975E32D00E418AB /* NoshNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoshNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDE680512975E32D00E418AB /* NoshNotesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoshNotesApp.swift; sourceTree = "<group>"; };
 		DDE680532975E32D00E418AB /* PlacesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesListView.swift; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 				DD8C5C5E29760C3900727119 /* AppDelegate.swift */,
 				DDE680512975E32D00E418AB /* NoshNotesApp.swift */,
 				DD95FDA3298B3A7400BD130E /* NewPlaceView.swift */,
+				DDCF1286299567D400C21EF3 /* EditPlaceView.swift */,
 				DD33B8F429872D1A0085DFA2 /* PlaceDetailView.swift */,
 				DD95FDA12989D43C00BD130E /* SearchPlacesView.swift */,
 				DD41D85F29760EDB00A13095 /* TagStore.swift */,
@@ -387,6 +390,7 @@
 				DD3A433E297A3DF800A0DE77 /* TagSelectorView.swift in Sources */,
 				DD765F232980841400C75D63 /* PlaceCardView.swift in Sources */,
 				DD8C5C5F29760C3900727119 /* AppDelegate.swift in Sources */,
+				DDCF1287299567D400C21EF3 /* EditPlaceView.swift in Sources */,
 				DD41D86029760EDB00A13095 /* TagStore.swift in Sources */,
 				DD3F4275298D7C150022206B /* TagView.swift in Sources */,
 				DD33B8F7298738070085DFA2 /* GooglePlaceImage.swift in Sources */,

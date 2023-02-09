@@ -26,32 +26,21 @@ struct PlaceDetailView: View {
 
   var body: some View {
     VStack {
-      VStack(spacing: 16) {
-        Text(place.name).font(.title)
-        GooglePlaceImage(imageMetadata: place.imageMetadata)
-        VStack(alignment: .leading, spacing: 16) {
-          noteField
-          Text("Tags:")
-          TagSelectorView(tags: allTags, selectedTagIDs: $selectedTagIDs, numRows: 4)
-        }
+      EditPlaceView(
+        name: place.name,
+        imageMetadata: place.imageMetadata,
+        allTags: allTags,
+        note: $updatedNote,
+        selectedTagIDs: $selectedTagIDs)
+      Spacer()
+      HStack {
+        addTagButton
         Spacer()
-        HStack {
-          addTagButton
-          Spacer()
-          Button("Save") {
-            save()
-          }.buttonStyle(.borderedProminent)
-        }
-      }.padding(.horizontal)
-    }
-  }
-
-  private var noteField: some View {
-    HStack {
-      Text("Note:")
-      TextField("Note", text: $updatedNote, prompt: Text("What looks good about this place?"))
-        .textFieldStyle(.roundedBorder)
-    }
+        Button("Save") {
+          save()
+        }.buttonStyle(.borderedProminent)
+      }
+    }.padding(.horizontal)
   }
 
   private var addTagButton: some View {
