@@ -33,7 +33,7 @@ struct GooglePlaceImage: View {
   }
 
   private func loadImage() async {
-    guard let imageMetadata = imageMetadata else {
+    guard let imageMetadata else {
       return
     }
     do {

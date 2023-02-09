@@ -23,8 +23,8 @@ struct NewPlaceView: View {
       inputForm
       buttonFloater
     }
-    .padding(.horizontal)
     .navigationTitle(googlePlace?.name ?? "")
+    .padding(.horizontal)
     .task {
       do {
         googlePlace = try await placeStore.fetchPlaceData(id: googlePlaceID, sessionToken: autocompleteToken)
@@ -35,24 +35,12 @@ struct NewPlaceView: View {
   }
 
   private var inputForm: some View {
-    ScrollView {
-      VStack(spacing: 16) {
-        GooglePlaceImage(imageMetadata: googlePlace?.imageMetadata)
-        VStack(alignment: .leading, spacing: 16) {
-          noteField
-          Text("Tags")
-          TagSelectorView(tags: tagStore.tags, selectedTagIDs: $selectedTagIDs, numRows: 4)
-        }
-      }
-    }
-  }
-
-  private var noteField: some View {
-    HStack {
-      Text("Note:")
-      TextField("Note", text: $note, prompt: Text("What looks good about this place?"))
-        .textFieldStyle(.roundedBorder)
-    }
+    EditPlaceView(
+      name: nil, // we put the name in the navigation title instead
+      imageMetadata: googlePlace?.imageMetadata,
+      allTags: tagStore.tags,
+      note: $note,
+      selectedTagIDs: $selectedTagIDs)
   }
 
   private var buttonFloater: some View {

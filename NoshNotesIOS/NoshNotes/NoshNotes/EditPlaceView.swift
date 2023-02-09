@@ -6,7 +6,7 @@ import GooglePlaces
 
 struct EditPlaceView: View {
 
-  let name: String
+  let name: String?
   let imageMetadata: GMSPlacePhotoMetadata?
   let allTags: [TagWithID]
 
@@ -16,7 +16,9 @@ struct EditPlaceView: View {
   var body: some View {
     ScrollView {
       VStack(spacing: 16) {
-        Text(name).font(.title)
+        if let name {
+          Text(name).font(.title)
+        }
         GooglePlaceImage(imageMetadata: imageMetadata)
         VStack(alignment: .leading, spacing: 16) {
           noteField
