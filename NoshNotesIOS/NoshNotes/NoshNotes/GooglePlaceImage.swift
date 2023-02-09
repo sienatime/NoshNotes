@@ -26,7 +26,7 @@ struct GooglePlaceImage: View {
         .blue
         .opacity(0.2)
         .frame(width: width, height: height)
-        .task {
+        .task(id: imageMetadata) {
           await loadImage()
         }
     }
