@@ -13,16 +13,12 @@ struct NewPlaceView: View {
   @State private var note: String = ""
   @State private var selectedTagIDs: Set<String> = []
   @State private var googlePlace: GooglePlace?
-  @State private var newTagModalIsPresented: Bool = false
 
   @EnvironmentObject var placeStore: PlaceStore
   @EnvironmentObject var tagStore: TagStore
 
   var body: some View {
-    ZStack {
-      inputForm
-      buttonFloater
-    }
+    inputForm
     .navigationTitle(googlePlace?.name ?? "")
     .padding(.horizontal)
     .task {
@@ -40,34 +36,8 @@ struct NewPlaceView: View {
       imageMetadata: googlePlace?.imageMetadata,
       allTags: tagStore.tags,
       note: $note,
-      selectedTagIDs: $selectedTagIDs)
-  }
-
-  private var buttonFloater: some View {
-    VStack {
-      Spacer()
-      buttonBar
-    }
-  }
-
-  private var buttonBar: some View {
-    HStack {
-      addTagButton
-      Spacer()
-      Button("Save") {
-        save()
-      }.buttonStyle(.borderedProminent)
-    }
-  }
-
-  private var addTagButton: some View {
-    Button("Add Tag") {
-      newTagModalIsPresented = true
-    }.sheet(isPresented: $newTagModalIsPresented) {
-      NewTagView()
-        .presentationDetents([.fraction(0.3)])
-      // hard-coding this sheet to be 1/3 of the screen :P
-    }.padding(.vertical, 10)
+      selectedTagIDs: $selectedTagIDs,
+      saveAction: save)
   }
 
   private func save() {

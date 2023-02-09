@@ -9,7 +9,6 @@ struct PlaceDetailView: View {
 
   @State private var updatedNote: String
   @State private var selectedTagIDs: Set<String>
-  @State private var newTagModalIsPresented: Bool
 
   @EnvironmentObject var placeStore: PlaceStore
   @Environment(\.dismiss) var dismiss: DismissAction
@@ -21,36 +20,16 @@ struct PlaceDetailView: View {
     // When we added the DismissAction we had to start using the underscore versions of these State properties
     self._updatedNote = State(initialValue: place.note ?? "")
     self._selectedTagIDs = State(initialValue: place.tagIDs)
-    self._newTagModalIsPresented = State(initialValue: false)
   }
 
   var body: some View {
-    VStack {
-      EditPlaceView(
-        name: place.name,
-        imageMetadata: place.imageMetadata,
-        allTags: allTags,
-        note: $updatedNote,
-        selectedTagIDs: $selectedTagIDs)
-      Spacer()
-      HStack {
-        addTagButton
-        Spacer()
-        Button("Save") {
-          save()
-        }.buttonStyle(.borderedProminent)
-      }
-    }.padding(.horizontal)
-  }
-
-  private var addTagButton: some View {
-    Button("Add Tag") {
-      newTagModalIsPresented = true
-    }.sheet(isPresented: $newTagModalIsPresented) {
-      NewTagView()
-        .presentationDetents([.fraction(0.3)])
-      // hard-coding this sheet to be 1/3 of the screen :P
-    }.padding(.vertical, 10)
+    EditPlaceView(
+      name: place.name,
+      imageMetadata: place.imageMetadata,
+      allTags: allTags,
+      note: $updatedNote,
+      selectedTagIDs: $selectedTagIDs,
+      saveAction: save)
   }
 
   private func save() {
