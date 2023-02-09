@@ -26,12 +26,12 @@ struct TagSelectorView: View {
   }
 
   var body: some View {
-    ScrollView(.horizontal) {
+    ScrollView(.horizontal, showsIndicators: false) {
       VStack(alignment: .leading) {
         ForEach(0..<numRows, id: \.self) { rowIndex in
           tagRow(at: rowIndex)
         }
-      }.padding(.horizontal)
+      }
     }
   }
 

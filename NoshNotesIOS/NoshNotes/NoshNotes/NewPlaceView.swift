@@ -13,38 +13,73 @@ struct NewPlaceView: View {
   @State private var note: String = ""
   @State private var selectedTagIDs: Set<String> = []
   @State private var googlePlace: GooglePlace?
+  @State private var newTagModalIsPresented: Bool = false
 
   @EnvironmentObject var placeStore: PlaceStore
   @EnvironmentObject var tagStore: TagStore
 
   var body: some View {
-    ScrollView {
-      // TODO: re-use place editing views from PlaceDetailView
-      VStack(alignment: .leading, spacing: 16) {
-        if let googlePlace {
-          Text(googlePlace.name)
-          GooglePlaceImage(imageMetadata: googlePlace.imageMetadata)
-        }
-
-        HStack {
-          Text("Note")
-          TextField("Note", text: $note, prompt: Text("What looks good about this place?"))
-            .textFieldStyle(.roundedBorder)
-        }
-        Text("Tags")
-        TagSelectorView(tags: tagStore.tags, selectedTagIDs: $selectedTagIDs)
-          .frame(maxHeight: 120)
-        Button("Save") {
-          save()
-        }.buttonStyle(.borderedProminent)
-      }.padding(.horizontal)
-    }.task {
+    ZStack {
+      inputForm
+      buttonFloater
+    }
+    .padding(.horizontal)
+    .navigationTitle(googlePlace?.name ?? "")
+    .task {
       do {
         googlePlace = try await placeStore.fetchPlaceData(id: googlePlaceID, sessionToken: autocompleteToken)
       } catch {
         print(error)
       }
-    }.navigationTitle("Add New Place")
+    }
+  }
+
+  private var inputForm: some View {
+    ScrollView {
+      VStack(spacing: 16) {
+        GooglePlaceImage(imageMetadata: googlePlace?.imageMetadata)
+        VStack(alignment: .leading, spacing: 16) {
+          noteField
+          Text("Tags")
+          TagSelectorView(tags: tagStore.tags, selectedTagIDs: $selectedTagIDs, numRows: 4)
+        }
+      }
+    }
+  }
+
+  private var noteField: some View {
+    HStack {
+      Text("Note:")
+      TextField("Note", text: $note, prompt: Text("What looks good about this place?"))
+        .textFieldStyle(.roundedBorder)
+    }
+  }
+
+  private var buttonFloater: some View {
+    VStack {
+      Spacer()
+      buttonBar
+    }
+  }
+
+  private var buttonBar: some View {
+    HStack {
+      addTagButton
+      Spacer()
+      Button("Save") {
+        save()
+      }.buttonStyle(.borderedProminent)
+    }
+  }
+
+  private var addTagButton: some View {
+    Button("Add Tag") {
+      newTagModalIsPresented = true
+    }.sheet(isPresented: $newTagModalIsPresented) {
+      NewTagView()
+        .presentationDetents([.fraction(0.3)])
+      // hard-coding this sheet to be 1/3 of the screen :P
+    }.padding(.vertical, 10)
   }
 
   private func save() {

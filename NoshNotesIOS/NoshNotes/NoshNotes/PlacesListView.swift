@@ -41,6 +41,7 @@ struct PlacesListView: View {
   var tagSelectorView: some View {
     TagSelectorView(tags: tags, selectedTagIDs: $selectedTagIDs)
       .frame(maxHeight: 120)
+      .padding(.horizontal)
   }
 
   var placesList: some View {

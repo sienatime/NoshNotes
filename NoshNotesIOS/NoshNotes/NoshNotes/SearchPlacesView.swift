@@ -28,6 +28,7 @@ struct SearchPlacesView: View {
       }
     }
     .searchable(text: $searchText, prompt: "Search Google Places")
+    .autocorrectionDisabled()
     .onChange(of: searchText) { newValue in
       search(text: newValue)
     }
