@@ -31,7 +31,7 @@ struct TagSelectorView: View {
         ForEach(0..<numRows, id: \.self) { rowIndex in
           tagRow(at: rowIndex)
         }
-      }
+      }.padding(.horizontal)
     }
   }
 
