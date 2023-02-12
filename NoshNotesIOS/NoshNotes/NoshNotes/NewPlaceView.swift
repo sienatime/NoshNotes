@@ -20,7 +20,6 @@ struct NewPlaceView: View {
   var body: some View {
     inputForm
     .navigationTitle(googlePlace?.name ?? "")
-    .padding(.horizontal)
     .task {
       do {
         googlePlace = try await placeStore.fetchPlaceData(id: googlePlaceID, sessionToken: autocompleteToken)
@@ -32,7 +31,7 @@ struct NewPlaceView: View {
 
   private var inputForm: some View {
     EditPlaceView(
-      name: nil, // we put the name in the navigation title instead
+      name: nil, // We put the name in the navigation title instead
       imageMetadata: googlePlace?.imageMetadata,
       allTags: tagStore.tags,
       note: $note,

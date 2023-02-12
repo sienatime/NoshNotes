@@ -102,7 +102,7 @@ class PlaceStore: ObservableObject {
     self.tagStore = tagStore
   }
 
-  @Published var allPlaces: [Place] = []
+  @Published var allPlaces: LoadState<[Place]> = .loading
 
   // Create a new place on the back end. The backend will automatically update the allPlaces property on success.
   public func create(newPlace: NewPlace) async throws {
@@ -136,11 +136,11 @@ class PlaceStore: ObservableObject {
   public func observeChanges() async {
     do {
       for try await places in streamPlaces() {
-        self.allPlaces = places
+        self.allPlaces = .loaded(places)
       }
     } catch {
       print(error)
-      self.allPlaces = []
+      self.allPlaces = .failed(error)
     }
   }
 

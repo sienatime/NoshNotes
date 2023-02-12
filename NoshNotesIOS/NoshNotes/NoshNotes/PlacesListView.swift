@@ -6,9 +6,9 @@ import SwiftUI
 struct PlacesListView: View {
   // The tags you can select in order to filter the places
   let tags: [TagWithID]
-  let places: [Place]
+  let places: LoadState<[Place]>
 
-  init(tags: [TagWithID], places: [Place]) {
+  init(tags: [TagWithID], places: LoadState<[Place]>) {
     self.tags = tags
     self.places = places
   }
@@ -16,10 +16,12 @@ struct PlacesListView: View {
   @State private var selectedTagIDs: Set<String> = []
   @State private var showingCreateModal: Bool = false
 
-  private var filteredPlaces: [Place] {
-    places.filter { place in
-      // TODO: This feels like business logic that should live somewhere else.
-      selectedTagIDs.isSubset(of: place.tagIDs)
+  private var filteredPlaces: LoadState<[Place]> {
+    places.map { loadedPlaces in
+      loadedPlaces.filter { place in
+        // TODO: This feels like business logic that should live somewhere else.
+        selectedTagIDs.isSubset(of: place.tagIDs)
+      }
     }
   }
 
@@ -28,7 +30,8 @@ struct PlacesListView: View {
       ZStack {
         VStack(spacing: 16) {
           tagSelectorView
-          placesList
+          listView
+          Spacer()
         }
         buttonFloater
           .sheet(isPresented: $showingCreateModal) {
@@ -44,10 +47,22 @@ struct PlacesListView: View {
       .padding(.horizontal)
   }
 
-  var placesList: some View {
+  @ViewBuilder
+  var listView: some View {
+    switch filteredPlaces {
+    case .loading:
+      ProgressView()
+    case .loaded(let loadedPlaces):
+      listView(places: loadedPlaces)
+    case .failed(let error):
+      Text(error.localizedDescription).foregroundColor(.red)
+    }
+  }
+
+  func listView(places: [Place]) -> some View {
     ScrollView {
       LazyVStack(spacing: 20) {
-        ForEach(filteredPlaces) { place in
+        ForEach(places) { place in
           NavigationLink(destination: PlaceDetailView(place: place, allTags: tags)) {
             PlaceCardView(place: place)
           }.tint(.primary)
@@ -92,7 +107,7 @@ struct PlacesListView_Previews: PreviewProvider {
         TagWithID(id: "6", tag: Tag.makeForPreview(name: "Mediterranean")),
         TagWithID(id: "7", tag: Tag.makeForPreview(name: "Japanese")),
       ],
-      places: [
+      places: .loaded([
         Place.forPreview(
           name: "Super Cool Place",
           note: "it's cool",
@@ -109,9 +124,16 @@ struct PlacesListView_Previews: PreviewProvider {
             TagWithID(id: "4", tag: Tag.makeForPreview(name: "Sushi")),
           ]
         ),
-      ])
-    PlacesListView(tags: [], places: [
+      ]))
+    PlacesListView(tags: [
+    ], places: .loaded([
       Place.forPreview(name: "Super Cool Place", note: nil, tags: []),
-    ])
+    ]))
+    PlacesListView(tags: [
+      TagWithID(id: "1", tag: Tag.makeForPreview(name: "Dinner")),
+    ], places: .loading)
+    PlacesListView(tags: [
+      TagWithID(id: "1", tag: Tag.makeForPreview(name: "Dinner")),
+    ], places: .failed(FirebaseError.childrenType))
   }
 }
