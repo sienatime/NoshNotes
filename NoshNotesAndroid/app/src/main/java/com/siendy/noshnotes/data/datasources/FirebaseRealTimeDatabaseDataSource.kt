@@ -58,7 +58,7 @@ class FirebaseRealTimeDatabaseDataSource {
       override fun onDataChange(dataSnapshot: DataSnapshot) {
         val items = dataSnapshot.children.map { childDataSnapshot ->
           childDataSnapshot.getValue(FirebasePlace::class.java)
-        }
+        }.reversed()
         this@callbackFlow.trySendBlocking(items.filterNotNull())
       }
     }

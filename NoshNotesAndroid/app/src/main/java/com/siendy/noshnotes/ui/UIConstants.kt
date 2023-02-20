@@ -24,5 +24,6 @@ object UIConstants {
 
   val DEFAULT_LOCATION = LatLng(34.083444, -118.361784)
   // a float between 2 and 21. bigger numbers are more zoomed in.
-  val DEFAULT_ZOOM = 14f
+  const val DEFAULT_ZOOM = 14f
+  const val MAX_ZOOM = 10f
 }

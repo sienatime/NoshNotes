@@ -161,7 +161,7 @@ private fun getZoomLevel(bounds: LatLngBounds): Float {
   return if (maxDiff < 0.02) {
     UIConstants.DEFAULT_ZOOM
   } else {
-    UIConstants.DEFAULT_ZOOM - (maxDiff / step).toFloat()
+    max(UIConstants.DEFAULT_ZOOM - (maxDiff / step).toFloat(), UIConstants.MAX_ZOOM)
   }
 }
 
