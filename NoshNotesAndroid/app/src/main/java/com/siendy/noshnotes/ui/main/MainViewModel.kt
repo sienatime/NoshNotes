@@ -28,18 +28,23 @@ class MainViewModel @Inject constructor(
   private val _uiState = MutableStateFlow(MainUiState())
   val uiState: StateFlow<MainUiState> = _uiState
 
+  private lateinit var allTagsMap: Map<String, Tag>
+
   init {
     viewModelScope.launch {
       tagsRepository.getTags().collect { tags ->
-        placesRepository.getPlacesByTagIds(emptyList(), allTagsMap()).collect { filteredPlaces ->
+        val allTagsState = AllTagsState.fromTags(
+          tags,
+          selected = false,
+          clickable = true
+        )
+        allTagsMap = initAllTagsMap(allTagsState.tagStates)
+
+        placesRepository.getPlacesByTagIds(emptyList(), allTagsMap).collect { filteredPlaces ->
           _uiState.update { currentUiState ->
             currentUiState.copy(
               filteredPlaces = filteredPlaces,
-              allTagsState = AllTagsState.fromTags(
-                tags,
-                selected = false,
-                clickable = true
-              ),
+              allTagsState = allTagsState,
               loading = false
             )
           }
@@ -100,7 +105,7 @@ class MainViewModel @Inject constructor(
     filterJob?.cancel()
 
     filterJob = viewModelScope.launch {
-      placesRepository.getPlacesByTagIds(selectedTagIds, allTagsMap()).collect { filteredPlaces ->
+      placesRepository.getPlacesByTagIds(selectedTagIds, allTagsMap).collect { filteredPlaces ->
         _uiState.update { currentUiState ->
           currentUiState.copy(
             filteredPlaces = filteredPlaces,
@@ -111,11 +116,11 @@ class MainViewModel @Inject constructor(
     }
   }
 
-  private fun allTagsMap(): Map<String, Tag> {
-    return uiState.value.allTagsState?.tagStates?.mapNotNull {
+  private fun initAllTagsMap(tagStates: List<TagState>): Map<String, Tag> {
+    return tagStates.mapNotNull {
       it.tag.uid?.let { uid ->
         uid to it.tag
       }
-    }.orEmpty().toMap()
+    }.toMap()
   }
 }
