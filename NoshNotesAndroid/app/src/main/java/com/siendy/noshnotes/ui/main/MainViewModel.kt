@@ -33,6 +33,10 @@ class MainViewModel @Inject constructor(
   init {
     viewModelScope.launch {
       tagsRepository.getTags().collect { tags ->
+        // this is weird but can't figure out how to do it interal to tagsrepo
+        // cache needs to be initialized before the flow returns
+        tagsRepository.initCache(tags)
+
         val allTagsState = AllTagsState.fromTags(
           tags,
           selected = false,
@@ -40,7 +44,7 @@ class MainViewModel @Inject constructor(
         )
         allTagsMap = initAllTagsMap(allTagsState.tagStates)
 
-        placesRepository.getPlacesByTagIds(emptyList(), allTagsMap).collect { filteredPlaces ->
+        placesRepository.getPlacesByTagIds(emptyList()).collect { filteredPlaces ->
           _uiState.update { currentUiState ->
             currentUiState.copy(
               filteredPlaces = filteredPlaces,
@@ -105,7 +109,7 @@ class MainViewModel @Inject constructor(
     filterJob?.cancel()
 
     filterJob = viewModelScope.launch {
-      placesRepository.getPlacesByTagIds(selectedTagIds, allTagsMap).collect { filteredPlaces ->
+      placesRepository.getPlacesByTagIds(selectedTagIds).collect { filteredPlaces ->
         _uiState.update { currentUiState ->
           currentUiState.copy(
             filteredPlaces = filteredPlaces,

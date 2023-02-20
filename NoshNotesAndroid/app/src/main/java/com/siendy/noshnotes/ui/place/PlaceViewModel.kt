@@ -46,7 +46,7 @@ class PlaceViewModel @Inject constructor(
   fun getPlaceById(placeId: String?) {
     viewModelScope.launch {
       tagsRepository.getTags().collect { tags ->
-        val place = placesRepository.getPlaceById(placeId, allTagsMap(tags))
+        val place = placesRepository.getPlaceById(placeId)
 
         val placeTagIds = place?.tags?.map { it.uid }.orEmpty()
 
@@ -109,13 +109,5 @@ class PlaceViewModel @Inject constructor(
         icon = icon
       )
     )
-  }
-
-  private fun allTagsMap(tags: List<Tag>): Map<String, Tag> {
-    return tags.mapNotNull {
-      it.uid?.let { uid ->
-        uid to it
-      }
-    }.toMap()
   }
 }

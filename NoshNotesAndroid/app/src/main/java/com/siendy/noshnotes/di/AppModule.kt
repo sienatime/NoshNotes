@@ -5,6 +5,7 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.siendy.noshnotes.data.datasources.FirebaseRealTimeDatabaseDataSource
 import com.siendy.noshnotes.data.datasources.GooglePlacesDataSource
+import com.siendy.noshnotes.data.repositories.TagsRepository
 import com.siendy.noshnotes.domain.ConvertPlaceUseCase
 import dagger.Module
 import dagger.Provides
@@ -16,6 +17,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+  @Singleton
+  @Provides
+  fun provideTagsRepository(databaseDataSource: FirebaseRealTimeDatabaseDataSource): TagsRepository {
+    return TagsRepository(databaseDataSource)
+  }
 
   @Singleton
   @Provides
