@@ -5,9 +5,11 @@ import com.siendy.noshnotes.data.datasources.GooglePlacesDataSource
 import com.siendy.noshnotes.data.models.FirebasePlace
 import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.data.models.Tag
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -55,28 +57,39 @@ class PlacesRepository @Inject constructor(
   ): Flow<List<Place>> {
     val tagsSet = tagIds.toSet()
 
-    if (tagsSet.isEmpty()) {
-      return flowOf(emptyList())
-    }
-
-    return getPlaces().map {
-      it.filter { firebasePlace ->
-        firebasePlace.hasAllTags(tagsSet)
-      }
-    }.map {
-      it.mapNotNull { firebasePlace ->
-        firebasePlace.remoteId?.let { googleMapsId ->
-          val placeWithGoogle = googlePlacesDataSource.getPlaceById(googleMapsId)
-          placeWithGoogle.copy(
-            uid = firebasePlace.uid,
-            note = firebasePlace.note,
-            tags = firebasePlace.tags.keys.mapNotNull { tagId ->
-              allTagsMap[tagId]
-            }
-          )
+    val places = if (tagsSet.isEmpty()) {
+      getPlaces()
+    } else {
+      getPlaces().map {
+        it.filter { firebasePlace ->
+          firebasePlace.hasAllTags(tagsSet) && firebasePlace.remoteId != null
         }
       }
     }
+
+    return places.map {
+      coroutineScope {
+        it.map {
+          async {
+            getPlaceForFirebasePlace(it, allTagsMap)
+          }
+        }.awaitAll()
+      }
+    }
+  }
+
+  private suspend fun getPlaceForFirebasePlace(
+    firebasePlace: FirebasePlace,
+    allTagsMap: Map<String, Tag>
+  ): Place {
+    val placeWithGoogle = googlePlacesDataSource.getPlaceById(firebasePlace.remoteId!!)
+    return placeWithGoogle.copy(
+      uid = firebasePlace.uid,
+      note = firebasePlace.note,
+      tags = firebasePlace.tags.keys.mapNotNull { tagId ->
+        allTagsMap[tagId]
+      }
+    )
   }
 
   suspend fun deletePlace(placeId: String) {

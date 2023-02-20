@@ -31,15 +31,18 @@ class MainViewModel @Inject constructor(
   init {
     viewModelScope.launch {
       tagsRepository.getTags().collect { tags ->
-        _uiState.update { currentUiState ->
-          currentUiState.copy(
-            allTagsState = AllTagsState.fromTags(
-              tags,
-              selected = false,
-              clickable = true
-            ),
-            loading = false
-          )
+        placesRepository.getPlacesByTagIds(emptyList(), allTagsMap()).collect { filteredPlaces ->
+          _uiState.update { currentUiState ->
+            currentUiState.copy(
+              filteredPlaces = filteredPlaces,
+              allTagsState = AllTagsState.fromTags(
+                tags,
+                selected = false,
+                clickable = true
+              ),
+              loading = false
+            )
+          }
         }
       }
     }
