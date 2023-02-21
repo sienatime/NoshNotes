@@ -27,7 +27,6 @@ object PreviewData {
       Tag(
         name = "Mexican"
       )
-    ),
-    photoAttributionHtml = "<a href=''>Some Bloke</a>"
+    )
   )
 }

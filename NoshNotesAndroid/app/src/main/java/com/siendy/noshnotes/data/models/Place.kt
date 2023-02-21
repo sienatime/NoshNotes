@@ -1,6 +1,6 @@
 package com.siendy.noshnotes.data.models
 
-import android.graphics.Bitmap
+import com.google.android.libraries.places.api.model.PhotoMetadata
 
 data class Place(
   var uid: String? = null,
@@ -12,6 +12,5 @@ data class Place(
   val priceLevel: Int? = null,
   val note: String? = null,
   val tags: List<Tag> = emptyList(),
-  val photo: Bitmap? = null,
-  val photoAttributionHtml: String? = null
+  val photoMetadata: PhotoMetadata? = null
 )

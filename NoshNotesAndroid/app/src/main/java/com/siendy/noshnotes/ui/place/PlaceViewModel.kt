@@ -2,6 +2,8 @@ package com.siendy.noshnotes.ui.place
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.libraries.places.api.model.PhotoMetadata
+import com.siendy.noshnotes.data.models.PhotoWithAttribution
 import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.data.repositories.PlacesRepository
@@ -109,5 +111,9 @@ class PlaceViewModel @Inject constructor(
         icon = icon
       )
     )
+  }
+
+  suspend fun getPhoto(photoMetadata: PhotoMetadata): PhotoWithAttribution? {
+    return placesRepository.getPhoto(photoMetadata)
   }
 }

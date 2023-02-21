@@ -185,8 +185,10 @@ fun PlaceDetails(
 
       PlacePhoto(
         height = 180.dp,
-        photo = place.photo,
-        attributionHtml = place.photoAttributionHtml
+        photoMetadata = place.photoMetadata,
+        loadPhoto = placeViewModel?.let {
+          it::getPhoto
+        } ?: { null }
       )
 
       PlaceName(place.name)

@@ -202,7 +202,7 @@ fun BottomBarNavigationHost(
     route = "bottom"
   ) {
     composable(TabDestination.PlacesList.route) {
-      PlacesList(mainUiState, rootNavController)
+      PlacesList(mainUiState, rootNavController, mainViewModel)
     }
     composable(TabDestination.PlacesMap.route) {
       PlacesMap(mainViewModel)

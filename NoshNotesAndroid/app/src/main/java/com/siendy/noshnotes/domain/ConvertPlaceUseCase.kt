@@ -1,15 +1,12 @@
 package com.siendy.noshnotes.domain
 
-import android.graphics.Bitmap
 import com.google.android.libraries.places.api.model.Place
 import com.siendy.noshnotes.data.models.LatLong
 import com.siendy.noshnotes.data.models.Rating
 
 class ConvertPlaceUseCase {
   operator fun invoke(
-    googlePlace: Place,
-    photo: Bitmap? = null,
-    photoAttribution: String? = null
+    googlePlace: Place
   ): com.siendy.noshnotes.data.models.Place {
     return com.siendy.noshnotes.data.models.Place(
       remoteId = googlePlace.id,
@@ -24,8 +21,7 @@ class ConvertPlaceUseCase {
         total = googlePlace.userRatingsTotal
       ),
       priceLevel = googlePlace.priceLevel,
-      photo = photo,
-      photoAttributionHtml = photoAttribution
+      photoMetadata = googlePlace.photoMetadatas.orEmpty().firstOrNull()
     )
   }
 }

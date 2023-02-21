@@ -1,6 +1,5 @@
 package com.siendy.noshnotes.ui.components
 
-import android.graphics.Bitmap
 import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.view.ViewGroup
@@ -11,7 +10,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -23,39 +28,62 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
 import coil.compose.rememberAsyncImagePainter
+import com.google.android.libraries.places.api.model.PhotoMetadata
 import com.siendy.noshnotes.R
+import com.siendy.noshnotes.data.models.PhotoWithAttribution
+import com.siendy.noshnotes.ui.theme.Gray
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
 fun PlacePhoto(
   height: Dp,
   attributionEndPadding: Dp = 0.dp,
-  photo: Bitmap?,
-  attributionHtml: String?
+  photoMetadata: PhotoMetadata?,
+  loadPhoto: suspend (photoMetadata: PhotoMetadata) -> PhotoWithAttribution?
 ) {
 
-  val painter: Painter? = if (LocalInspectionMode.current) {
-    painterResource(id = R.drawable.sonoratown)
-  } else if (photo != null) {
-    rememberAsyncImagePainter(photo)
-  } else {
-    null
+  var photoWithAttribution by remember { mutableStateOf<PhotoWithAttribution?>(null) }
+
+  photoMetadata?.let { metadata ->
+    LaunchedEffect(metadata) {
+      withContext(Dispatchers.IO) {
+        photoWithAttribution = loadPhoto(metadata)
+      }
+    }
   }
 
-  if (painter != null) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-      Image(
-        painter = painter,
-        contentDescription = null,
-        contentScale = ContentScale.Crop,
-        modifier = Modifier
-          .fillMaxWidth()
-          .height(height)
-      )
+  val painter: Painter = if (LocalInspectionMode.current) {
+    painterResource(id = R.drawable.sonoratown)
+  } else if (photoWithAttribution != null && photoWithAttribution?.photo != null) {
+    rememberAsyncImagePainter(photoWithAttribution!!.photo)
+  } else {
+    ColorPainter(Gray)
+  }
 
-      if (attributionHtml != null) {
+  Column(modifier = Modifier.fillMaxWidth()) {
+    Image(
+      painter = painter,
+      contentDescription = null,
+      contentScale = ContentScale.Crop,
+      modifier = Modifier
+        .fillMaxWidth()
+        .height(height)
+    )
+
+    when {
+      photoWithAttribution == null -> {
+        // hold the space while we're loading, but don't render this
+        // if the attribution is actually null
+        HtmlText(
+          "",
+          modifier = Modifier.padding(end = attributionEndPadding)
+        )
+      }
+      photoWithAttribution?.attributionHtml != null -> {
         val attribution = String.format(
           stringResource(id = R.string.photo_attribution),
-          attributionHtml
+          photoWithAttribution?.attributionHtml
         )
 
         HtmlText(
@@ -86,7 +114,7 @@ fun HtmlText(html: String, modifier: Modifier = Modifier) {
 fun PlacePhotoPreview() {
   PlacePhoto(
     height = 180.dp,
-    photo = null,
-    attributionHtml = "<a href=''>Some Bloke</a>"
+    photoMetadata = null,
+    loadPhoto = { null }
   )
 }

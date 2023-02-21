@@ -1,8 +1,10 @@
 package com.siendy.noshnotes.data.repositories
 
+import com.google.android.libraries.places.api.model.PhotoMetadata
 import com.siendy.noshnotes.data.datasources.FirebaseRealTimeDatabaseDataSource
 import com.siendy.noshnotes.data.datasources.GooglePlacesDataSource
 import com.siendy.noshnotes.data.models.FirebasePlace
+import com.siendy.noshnotes.data.models.PhotoWithAttribution
 import com.siendy.noshnotes.data.models.Place
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -64,6 +66,15 @@ class PlacesRepository @Inject constructor(
           }
         }.awaitAll()
       }
+    }
+  }
+
+  suspend fun getPhoto(photoMetadata: PhotoMetadata): PhotoWithAttribution? {
+    return googlePlacesDataSource.getPhoto(photoMetadata)?.let { bitmap ->
+      PhotoWithAttribution(
+        bitmap,
+        photoMetadata.attributions
+      )
     }
   }
 

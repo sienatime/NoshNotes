@@ -4,6 +4,8 @@ import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.model.PhotoMetadata
+import com.siendy.noshnotes.data.models.PhotoWithAttribution
 import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.data.repositories.PlacesRepository
 import com.siendy.noshnotes.data.repositories.TagsRepository
@@ -95,6 +97,10 @@ class MainViewModel @Inject constructor(
         defaultMapLocation = latLng
       )
     }
+  }
+
+  suspend fun getPhoto(photoMetadata: PhotoMetadata): PhotoWithAttribution? {
+    return placesRepository.getPhoto(photoMetadata)
   }
 
   private var filterJob: Job? = null

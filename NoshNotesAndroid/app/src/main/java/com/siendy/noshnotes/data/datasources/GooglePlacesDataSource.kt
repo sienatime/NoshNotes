@@ -23,14 +23,8 @@ class GooglePlacesDataSource @Inject constructor(
 
   suspend fun getPlaceById(googleMapsId: String): Place {
     val googlePlace = getPlace(googleMapsId)
-    val photoMetadata = googlePlace.photoMetadatas.orEmpty().firstOrNull()
 
-    return if (photoMetadata != null) {
-      val photo = getPhoto(photoMetadata)
-      convertPlaceUseCase(googlePlace, photo, photoMetadata.attributions)
-    } else {
-      convertPlaceUseCase(googlePlace)
-    }
+    return convertPlaceUseCase(googlePlace)
   }
 
   private suspend fun getPlace(googleMapsId: String): com.google.android.libraries.places.api.model.Place {
@@ -49,7 +43,7 @@ class GooglePlacesDataSource @Inject constructor(
     }
   }
 
-  private suspend fun getPhoto(photoMetadata: PhotoMetadata): Bitmap? {
+  suspend fun getPhoto(photoMetadata: PhotoMetadata): Bitmap? {
     val photoRequest = FetchPhotoRequest.builder(photoMetadata)
       .setMaxWidth(1000)
       .setMaxHeight(600)

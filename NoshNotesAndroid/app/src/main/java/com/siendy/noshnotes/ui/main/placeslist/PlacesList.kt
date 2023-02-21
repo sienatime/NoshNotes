@@ -42,7 +42,8 @@ import com.siendy.noshnotes.ui.previews.PreviewData
 @Composable
 fun PlacesList(
   mainUiState: MainUiState,
-  rootNavController: NavHostController?
+  rootNavController: NavHostController?,
+  mainViewModel: MainViewModel
 ) {
   if (mainUiState.loading) {
     FullScreenLoading()
@@ -55,7 +56,7 @@ fun PlacesList(
     } else {
       LazyColumn {
         items(places) { place ->
-          PlaceRow(place, rootNavController)
+          PlaceRow(place, rootNavController, mainViewModel)
         }
       }
     }
@@ -66,7 +67,8 @@ fun PlacesList(
 @Composable
 fun PlaceRow(
   place: Place,
-  rootNavController: NavHostController? = null
+  rootNavController: NavHostController? = null,
+  mainViewModel: MainViewModel? = null
 ) {
   Card(
     colors = CardDefaults.cardColors(
@@ -88,11 +90,14 @@ fun PlaceRow(
       Box(
         modifier = Modifier.fillMaxWidth()
       ) {
+
         PlacePhoto(
           height = 180.dp,
           attributionEndPadding = 8.dp,
-          photo = place.photo,
-          attributionHtml = place.photoAttributionHtml
+          photoMetadata = place.photoMetadata,
+          loadPhoto = mainViewModel?.let {
+            it::getPhoto
+          } ?: { null }
         )
 
         RemoveButton(
