@@ -68,9 +68,6 @@ class GooglePlacesDataSource @Inject constructor(
       com.google.android.libraries.places.api.model.Place.Field.NAME,
       com.google.android.libraries.places.api.model.Place.Field.ADDRESS,
       com.google.android.libraries.places.api.model.Place.Field.LAT_LNG,
-      com.google.android.libraries.places.api.model.Place.Field.RATING,
-      com.google.android.libraries.places.api.model.Place.Field.USER_RATINGS_TOTAL,
-      com.google.android.libraries.places.api.model.Place.Field.PRICE_LEVEL,
       com.google.android.libraries.places.api.model.Place.Field.PHOTO_METADATAS
     )
   }

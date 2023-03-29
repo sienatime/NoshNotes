@@ -7,7 +7,6 @@
   <string name="update_place_title">Update Place</string>
   <string name="place_error">Failed to get place data.</string>
   <string name="back">Back</string>
-  <string name="total_reviews">(%d)</string>
   <string name="save">Save</string>
   <string name="unselect">Unselect</string>
   <string name="new_tag_name">New Tag Name</string>

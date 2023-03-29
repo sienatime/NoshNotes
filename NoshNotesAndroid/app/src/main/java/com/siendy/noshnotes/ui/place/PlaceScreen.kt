@@ -2,7 +2,6 @@ package com.siendy.noshnotes.ui.place
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -45,7 +44,6 @@ import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.components.AllTagsState
 import com.siendy.noshnotes.ui.components.NewTagDialog
 import com.siendy.noshnotes.ui.components.PlacePhoto
-import com.siendy.noshnotes.ui.components.RatingBar
 import com.siendy.noshnotes.ui.components.TagChip
 import com.siendy.noshnotes.ui.components.TagState
 import com.siendy.noshnotes.ui.navigation.Routes
@@ -192,9 +190,6 @@ fun PlaceDetails(
       )
 
       PlaceName(place.name)
-      place.rating?.rating?.let {
-        PlaceRating(it, place.rating.total)
-      }
 
       val noteValue = remember {
         mutableStateOf(
@@ -206,7 +201,7 @@ fun PlaceDetails(
         value = noteValue.value,
         onValueChange = { noteValue.value = it },
         placeholder = { Text(text = stringResource(id = R.string.note_placeholder)) },
-        modifier = Modifier.padding(top = 28.dp, bottom = 16.dp),
+        modifier = Modifier.padding(top = 8.dp, bottom = 16.dp),
         keyboardOptions = KeyboardOptions.Default.copy(
           capitalization = KeyboardCapitalization.Sentences
         )
@@ -265,29 +260,6 @@ fun PlaceName(name: String?) {
     text = name.orEmpty(),
     style = MaterialTheme.typography.headlineLarge
   )
-}
-
-@Composable
-fun PlaceRating(rating: Double, total: Int?) {
-  Row(
-    verticalAlignment = Alignment.CenterVertically,
-  ) {
-    Text(
-      text = "$rating",
-      style = MaterialTheme.typography.titleMedium,
-      modifier = Modifier.padding(
-        end = 4.dp
-      )
-    )
-    RatingBar(rating)
-    Text(
-      text = stringResource(id = R.string.total_reviews, total ?: 0),
-      style = MaterialTheme.typography.titleMedium,
-      modifier = Modifier.padding(
-        start = 4.dp
-      )
-    )
-  }
 }
 
 @Preview(showBackground = true)

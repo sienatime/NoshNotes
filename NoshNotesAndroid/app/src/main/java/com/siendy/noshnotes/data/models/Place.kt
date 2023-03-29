@@ -8,8 +8,6 @@ data class Place(
   val name: String? = null,
   val latLong: LatLong? = null,
   val address: String? = null,
-  val rating: Rating? = null,
-  val priceLevel: Int? = null,
   val note: String? = null,
   val tags: List<Tag> = emptyList(),
   val photoMetadata: PhotoMetadata? = null

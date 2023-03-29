@@ -11,6 +11,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -49,7 +50,7 @@ class PlacesRepository @Inject constructor(
     val tagsSet = tagIds.toSet()
 
     val places = if (tagsSet.isEmpty()) {
-      getPlaces()
+      flowOf(emptyList())
     } else {
       getPlaces().map {
         it.filter { firebasePlace ->

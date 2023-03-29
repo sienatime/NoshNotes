@@ -36,7 +36,6 @@ import com.siendy.noshnotes.ui.components.FullScreenLoading
 import com.siendy.noshnotes.ui.components.PlacePhoto
 import com.siendy.noshnotes.ui.navigation.Routes
 import com.siendy.noshnotes.ui.place.PlaceName
-import com.siendy.noshnotes.ui.place.PlaceRating
 import com.siendy.noshnotes.ui.previews.PreviewData
 
 @Composable
@@ -115,22 +114,18 @@ fun PlaceRow(
         )
       ) {
         PlaceName(place.name)
-        place.rating?.rating?.let {
-          PlaceRating(it, place.rating.total)
-
-          if (place.note?.isNotEmpty() == true) {
-            Text(
-              text = place.note,
-              fontStyle = FontStyle.Italic,
-              modifier = Modifier.padding(top = 8.dp)
-            )
-          }
-
-          AllTags(
-            modifier = Modifier.padding(top = 12.dp),
-            allTagsState = AllTagsState.fromPlace(place)
+        if (place.note?.isNotEmpty() == true) {
+          Text(
+            text = place.note,
+            fontStyle = FontStyle.Italic,
+            modifier = Modifier.padding(top = 8.dp)
           )
         }
+
+        AllTags(
+          modifier = Modifier.padding(top = 12.dp),
+          allTagsState = AllTagsState.fromPlace(place)
+        )
       }
     }
   }
