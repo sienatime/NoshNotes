@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.PhotoMetadata
 import com.siendy.noshnotes.data.models.PhotoWithAttribution
-import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.data.repositories.PlacesRepository
 import com.siendy.noshnotes.data.repositories.TagsRepository
 import com.siendy.noshnotes.domain.OpenPlacesAutocompleteUseCase
@@ -30,27 +29,29 @@ class MainViewModel @Inject constructor(
   private val _uiState = MutableStateFlow(MainUiState())
   val uiState: StateFlow<MainUiState> = _uiState
 
-  private lateinit var allTagsMap: Map<String, Tag>
-
   init {
     viewModelScope.launch {
       tagsRepository.getTags().collect { tags ->
-        // this is weird but can't figure out how to do it interal to tagsrepo
+        // this is weird but can't figure out how to do it internal to tagsrepo
         // cache needs to be initialized before the flow returns
         tagsRepository.initCache(tags)
 
-        val allTagsState = AllTagsState.fromTags(
-          tags,
-          selected = false,
-          clickable = true
-        )
-        allTagsMap = initAllTagsMap(allTagsState.tagStates)
-
         placesRepository.getPlacesByTagIds(emptyList()).collect { filteredPlaces ->
           _uiState.update { currentUiState ->
+            val oldTagStates = currentUiState.allTagsState?.tagStates.orEmpty()
             currentUiState.copy(
               filteredPlaces = filteredPlaces,
-              allTagsState = allTagsState,
+              allTagsState = AllTagsState(
+                tags.map { tag ->
+                  TagState(
+                    tag,
+                    selected = oldTagStates.firstOrNull { tagState ->
+                      tagState.tag.uid == tag.uid
+                    }?.selected ?: false,
+                    clickable = true
+                  )
+                }
+              ),
               loading = false
             )
           }
@@ -124,13 +125,5 @@ class MainViewModel @Inject constructor(
         }
       }
     }
-  }
-
-  private fun initAllTagsMap(tagStates: List<TagState>): Map<String, Tag> {
-    return tagStates.mapNotNull {
-      it.tag.uid?.let { uid ->
-        uid to it.tag
-      }
-    }.toMap()
   }
 }
