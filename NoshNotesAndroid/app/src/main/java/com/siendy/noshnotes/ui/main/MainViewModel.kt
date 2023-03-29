@@ -38,16 +38,14 @@ class MainViewModel @Inject constructor(
 
         placesRepository.getPlacesByTagIds(emptyList()).collect { filteredPlaces ->
           _uiState.update { currentUiState ->
-            val oldTagStates = currentUiState.allTagsState?.tagStates.orEmpty()
+            val oldTagState = currentUiState.allTagsState
             currentUiState.copy(
               filteredPlaces = filteredPlaces,
               allTagsState = AllTagsState(
                 tags.map { tag ->
                   TagState(
                     tag,
-                    selected = oldTagStates.firstOrNull { tagState ->
-                      tagState.tag.uid == tag.uid
-                    }?.selected ?: false,
+                    selected = oldTagState?.getStateForTagUid(tag.uid)?.selected ?: false,
                     clickable = true
                   )
                 }

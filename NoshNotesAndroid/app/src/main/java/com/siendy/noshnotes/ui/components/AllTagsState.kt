@@ -6,6 +6,13 @@ import com.siendy.noshnotes.data.models.Tag
 data class AllTagsState(
   val tagStates: List<TagState>
 ) {
+
+  private val tagStateMap: Map<String, TagState> = tagStates.mapNotNull { tagState ->
+    tagState.tag.uid?.let { uid ->
+      uid to tagState
+    }
+  }.toMap()
+
   fun updateSelectedTag(tagState: TagState): AllTagsState {
     return tagStates.indexOfFirst { it == tagState }.let { index ->
       if (index == -1) {
@@ -23,6 +30,10 @@ data class AllTagsState(
         )
       }
     }
+  }
+
+  fun getStateForTagUid(uid: String?): TagState? {
+    return tagStateMap[uid]
   }
 
   companion object {
