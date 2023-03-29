@@ -11,4 +11,6 @@ data class Place(
   val note: String? = null,
   val tags: List<Tag> = emptyList(),
   val photoMetadata: PhotoMetadata? = null
-)
+) {
+  val mapUri = "geo:${latLong?.latitude},${latLong?.longitude}?q=$name,$address"
+}

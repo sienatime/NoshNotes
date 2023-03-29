@@ -1,7 +1,10 @@
 package com.siendy.noshnotes.ui.place
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -27,6 +30,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
@@ -207,6 +211,8 @@ fun PlaceDetails(
         )
       )
 
+      val context = LocalContext.current
+
       placeUiState.allTagsState?.let {
         AllTags(
           allTagsState = it,
@@ -231,23 +237,40 @@ fun PlaceDetails(
           },
         )
 
-        Button(
-          onClick = {
-            placeViewModel?.addPlace(
-              place,
-              it.tagStates.filter {
-                it.selected
-              }.map { tagState ->
-                tagState.tag
-              },
-              noteValue.value.text.trim(),
-              placeUiState.originalTags
-            )
-            rootNavController?.navigateUp()
-          },
-          modifier = Modifier.align(Alignment.End)
+        Row(
+          modifier = Modifier
+            .padding(top = 8.dp)
+            .align(Alignment.End)
         ) {
-          Text(stringResource(id = R.string.save).uppercase())
+          Button(
+            modifier = Modifier.padding(end = 8.dp),
+            onClick = {
+              val gmmIntentUri = Uri.parse(place.mapUri)
+              val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+              mapIntent.setPackage("com.google.android.apps.maps")
+              context.startActivity(mapIntent)
+            }
+          ) {
+            Text(stringResource(id = R.string.open_in_maps).uppercase())
+          }
+
+          Button(
+            onClick = {
+              placeViewModel?.addPlace(
+                place,
+                it.tagStates.filter {
+                  it.selected
+                }.map { tagState ->
+                  tagState.tag
+                },
+                noteValue.value.text.trim(),
+                placeUiState.originalTags
+              )
+              rootNavController?.navigateUp()
+            }
+          ) {
+            Text(stringResource(id = R.string.save).uppercase())
+          }
         }
       }
     }
