@@ -1,5 +1,6 @@
 package com.siendy.noshnotes.ui.main.map
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
@@ -28,13 +30,15 @@ import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.components.AllTagsState
 import com.siendy.noshnotes.ui.components.FullScreenLoading
 import com.siendy.noshnotes.ui.main.MainViewModel
+import com.siendy.noshnotes.ui.navigation.Routes
 import com.siendy.noshnotes.ui.previews.PreviewData
 import kotlin.math.absoluteValue
 import kotlin.math.max
 
 @Composable
 fun PlacesMap(
-  mainViewModel: MainViewModel
+  mainViewModel: MainViewModel,
+  rootNavController: NavHostController?
 ) {
   val mainUiState by mainViewModel.uiState.collectAsState()
 
@@ -57,7 +61,7 @@ fun PlacesMap(
         mainUiState.defaultMapLocation, UIConstants.DEFAULT_ZOOM
       )
     } else {
-      mapMarkers(places)
+      mapMarkers(places, rootNavController)
     }
   }
 
@@ -67,7 +71,10 @@ fun PlacesMap(
 }
 
 @Composable
-private fun mapMarkers(places: List<Place>): CameraPosition {
+private fun mapMarkers(
+  places: List<Place>,
+  rootNavController: NavHostController?
+): CameraPosition {
   val boundsBuilder = LatLngBounds.Builder()
 
   places.forEach { place ->
@@ -77,7 +84,14 @@ private fun mapMarkers(places: List<Place>): CameraPosition {
       MarkerInfoWindow(
         state = MarkerState(
           position = latLong
-        )
+        ),
+        onInfoWindowClick = {
+          Log.d("SIENALOG", "bleh ${place.uid}")
+          // this is causing an ANR for some reason
+          place.uid?.let { placeId ->
+            rootNavController?.navigate(Routes.place(placeId))
+          }
+        }
       ) {
         CustomInfoWindow(place)
       }
