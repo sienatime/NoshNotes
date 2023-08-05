@@ -157,6 +157,7 @@ fun MainContent(
         AllTags(
           modifier = Modifier.padding(bottom = 8.dp),
           allTagsState = it,
+          maxRows = 3,
           onTagSelected = { tagState ->
             mainViewModel.onTagSelected(tagState)
           }

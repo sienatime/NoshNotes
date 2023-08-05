@@ -124,7 +124,8 @@ fun PlaceRow(
 
         AllTags(
           modifier = Modifier.padding(top = 12.dp),
-          allTagsState = AllTagsState.fromPlace(place)
+          allTagsState = AllTagsState.fromPlace(place),
+          maxRows = 1
         )
       }
     }

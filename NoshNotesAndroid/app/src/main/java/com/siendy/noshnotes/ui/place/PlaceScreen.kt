@@ -216,6 +216,7 @@ fun PlaceDetails(
       placeUiState.allTagsState?.let {
         AllTags(
           allTagsState = it,
+          maxRows = 3,
           additionalTag = {
             TagChip(
               tagState = TagState(

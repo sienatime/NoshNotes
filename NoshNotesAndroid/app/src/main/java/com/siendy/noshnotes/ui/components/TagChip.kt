@@ -1,12 +1,15 @@
 package com.siendy.noshnotes.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.AssistChip
@@ -33,12 +36,14 @@ import com.siendy.noshnotes.ui.theme.Gray
 import com.siendy.noshnotes.utils.applySelectedStyle
 import com.siendy.noshnotes.utils.fromHex
 import com.siendy.noshnotes.utils.orEmpty
+import com.siendy.noshnotes.utils.partitionInto
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllTags(
   modifier: Modifier = Modifier,
   allTagsState: AllTagsState,
+  maxRows: Int,
   gapSize: Dp = 8.dp,
   additionalTag: @Composable () -> Unit = {},
   onTagSelected: (TagState) -> Unit = {},
@@ -46,29 +51,62 @@ fun AllTags(
   height: Dp = 32.dp,
   iconSize: Dp = AssistChipDefaults.IconSize
 ) {
-  Box(modifier) {
-    FlowRow(
-      horizontalGap = gapSize,
-      verticalGap = gapSize,
-      alignment = Alignment.Start,
-    ) {
-      allTagsState.tagStates.forEach { tag ->
-        TagChip(
-          tag,
-          onTagSelected,
-          style,
-          height,
-          iconSize
-        )
+
+  if (maxRows == 1) {
+    Box(modifier) {
+      FlowRow(
+        horizontalGap = gapSize,
+        verticalGap = gapSize,
+        alignment = Alignment.Start,
+      ) {
+        allTagsState.tagStates.forEach { tag ->
+          TagChip(
+            tagState = tag,
+            onTagSelected = onTagSelected,
+            style = style,
+            height = height,
+            iconSize = iconSize
+          )
+        }
+        additionalTag()
       }
-      additionalTag()
+    }
+  } else {
+    val partitioned = allTagsState.tagStates.partitionInto(maxRows)
+
+    Box(modifier) {
+      Column(
+        modifier = Modifier.horizontalScroll(rememberScrollState())
+      ) {
+        partitioned.forEach { tagsRow ->
+          Row(
+            modifier = Modifier
+              .padding(bottom = gapSize)
+          ) {
+            tagsRow.forEach { tag ->
+              TagChip(
+                modifier = Modifier.padding(end = gapSize),
+                tag,
+                onTagSelected,
+                style,
+                height,
+                iconSize
+              )
+            }
+          }
+        }
+        additionalTag()
+      }
     }
   }
 }
 
+private const val MAX_TAG_ROWS = 3
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TagChip(
+  modifier: Modifier = Modifier,
   tagState: TagState,
   onTagSelected: (TagState) -> Unit = {},
   style: TextStyle = MaterialTheme.typography.titleSmall,
@@ -87,9 +125,11 @@ fun TagChip(
     Gray
   ).applySelectedStyle(tagState.selected)
 
-  Box {
+  Box(modifier = modifier) {
     AssistChip(
-      modifier = Modifier.padding(0.dp).height(height),
+      modifier = Modifier
+        .padding(0.dp)
+        .height(height),
       label = {
         Text(
           text = tag.name.orEmpty(),
@@ -174,7 +214,8 @@ fun TagChipPreview() {
   Column(Modifier.width(320.dp)) {
     AllTags(
       modifier = Modifier.padding(4.dp),
-      allTagsState = AllTagsState.fromTags(tags)
+      allTagsState = AllTagsState.fromTags(tags),
+      maxRows = 2
     )
 
     AllTags(
@@ -186,7 +227,8 @@ fun TagChipPreview() {
             clickable = true
           )
         }
-      )
+      ),
+      maxRows = 2
     )
   }
 }

@@ -117,6 +117,7 @@ fun CustomInfoWindow(place: Place) {
     AllTags(
       modifier = Modifier.padding(top = 4.dp),
       allTagsState = AllTagsState.fromPlace(place),
+      maxRows = 1,
       gapSize = 4.dp,
       style = MaterialTheme.typography.labelMedium,
       height = 24.dp,
