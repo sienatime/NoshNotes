@@ -6,8 +6,8 @@ import com.siendy.noshnotes.data.models.LatLong
 class ConvertPlaceUseCase {
   operator fun invoke(
     googlePlace: Place
-  ): com.siendy.noshnotes.data.models.Place {
-    return com.siendy.noshnotes.data.models.Place(
+  ): com.siendy.noshnotes.data.models.UIPlace {
+    return com.siendy.noshnotes.data.models.UIPlace(
       remoteId = googlePlace.id,
       name = googlePlace.name,
       latLong = LatLong(

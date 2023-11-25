@@ -9,7 +9,7 @@ import com.google.android.libraries.places.api.net.FetchPhotoResponse
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchPlaceResponse
 import com.google.android.libraries.places.api.net.PlacesClient
-import com.siendy.noshnotes.data.models.Place
+import com.siendy.noshnotes.data.models.UIPlace
 import com.siendy.noshnotes.domain.ConvertPlaceUseCase
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -21,7 +21,7 @@ class GooglePlacesDataSource @Inject constructor(
   private val convertPlaceUseCase: ConvertPlaceUseCase
 ) {
 
-  suspend fun getPlaceById(googleMapsId: String): Place {
+  suspend fun getPlaceById(googleMapsId: String): UIPlace {
     val googlePlace = getPlace(googleMapsId)
 
     return convertPlaceUseCase(googlePlace)

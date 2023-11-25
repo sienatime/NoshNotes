@@ -26,7 +26,7 @@ data class FirebasePlace(
   }
 
   companion object {
-    fun fromPlace(place: Place): FirebasePlace {
+    fun fromUIPlace(place: UIPlace): FirebasePlace {
       return FirebasePlace(
         uid = place.uid,
         remoteId = place.remoteId,

@@ -2,7 +2,7 @@ package com.siendy.noshnotes.data.models
 
 import com.google.android.libraries.places.api.model.PhotoMetadata
 
-data class Place(
+data class UIPlace(
   var uid: String? = null,
   val remoteId: String? = null,
   val name: String? = null,

@@ -6,8 +6,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.siendy.noshnotes.data.models.FirebasePlace
-import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.data.models.Tag
+import com.siendy.noshnotes.data.models.UIPlace
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
@@ -102,14 +102,14 @@ class FirebaseRealTimeDatabaseDataSource {
     }
   }
 
-  fun updatePlace(place: Place, originalTags: List<String>) {
+  override fun updatePlace(place: UIPlace, originalTags: List<String>) {
     val key = if (place.uid != null) {
       place.uid
     } else {
       databaseReference.child(placeReference).push().key
     }
 
-    val firebasePlace = FirebasePlace.fromPlace(place.copy(uid = key))
+    val firebasePlace = FirebasePlace.fromUIPlace(place.copy(uid = key))
 
     val childUpdates = mutableMapOf<String, Any?>(
       "/$placeReference/$key" to firebasePlace.toMap()

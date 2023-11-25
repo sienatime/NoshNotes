@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.libraries.places.api.model.PhotoMetadata
 import com.siendy.noshnotes.data.models.PhotoWithAttribution
-import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.data.models.Tag
+import com.siendy.noshnotes.data.models.UIPlace
 import com.siendy.noshnotes.data.repositories.PlacesRepository
 import com.siendy.noshnotes.data.repositories.TagsRepository
 import com.siendy.noshnotes.ui.components.AllTagsState
@@ -79,7 +79,7 @@ class PlaceViewModel @Inject constructor(
   }
 
   fun addPlace(
-    place: Place,
+    place: UIPlace,
     newTags: List<Tag>,
     note: String,
     originalTags: List<String>

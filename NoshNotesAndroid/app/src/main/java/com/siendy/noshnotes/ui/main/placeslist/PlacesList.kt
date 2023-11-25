@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.siendy.noshnotes.R.string
-import com.siendy.noshnotes.data.models.Place
+import com.siendy.noshnotes.data.models.UIPlace
 import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.components.AllTagsState
 import com.siendy.noshnotes.ui.components.FullScreenLoading
@@ -65,7 +65,7 @@ fun PlacesList(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlaceRow(
-  place: Place,
+  place: UIPlace,
   rootNavController: NavHostController? = null,
   mainViewModel: MainViewModel? = null
 ) {

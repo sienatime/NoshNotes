@@ -1,7 +1,7 @@
 package com.siendy.noshnotes.ui.components
 
-import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.data.models.Tag
+import com.siendy.noshnotes.data.models.UIPlace
 
 data class AllTagsState(
   val tagStates: List<TagState>
@@ -37,7 +37,7 @@ data class AllTagsState(
   }
 
   companion object {
-    fun fromPlace(place: Place): AllTagsState {
+    fun fromPlace(place: UIPlace): AllTagsState {
       return fromTags(place.tags)
     }
 

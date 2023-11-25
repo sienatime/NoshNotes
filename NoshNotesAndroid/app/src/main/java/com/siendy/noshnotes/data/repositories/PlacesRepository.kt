@@ -5,7 +5,7 @@ import com.siendy.noshnotes.data.datasources.FirebaseRealTimeDatabaseDataSource
 import com.siendy.noshnotes.data.datasources.GooglePlacesDataSource
 import com.siendy.noshnotes.data.models.FirebasePlace
 import com.siendy.noshnotes.data.models.PhotoWithAttribution
-import com.siendy.noshnotes.data.models.Place
+import com.siendy.noshnotes.data.models.UIPlace
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -24,11 +24,11 @@ class PlacesRepository @Inject constructor(
     return databaseDataSource.getPlaces()
   }
 
-  fun updatePlace(place: Place, originalTags: List<String>) {
+  fun updatePlace(place: UIPlace, originalTags: List<String>) {
     databaseDataSource.updatePlace(place, originalTags)
   }
 
-  suspend fun getPlaceByRemoteId(remoteId: String?): Place? {
+  suspend fun getPlaceByRemoteId(remoteId: String?): UIPlace? {
     return remoteId?.let { googleMapsId ->
       googlePlacesDataSource.getPlaceById(googleMapsId)
     }
@@ -36,7 +36,7 @@ class PlacesRepository @Inject constructor(
 
   suspend fun getPlaceById(
     placeId: String?
-  ): Place? {
+  ): UIPlace? {
     return placeId?.let { id ->
       databaseDataSource.getPlace(id)
     }?.first()?.let {
@@ -46,7 +46,7 @@ class PlacesRepository @Inject constructor(
 
   suspend fun getPlacesByTagIds(
     tagIds: List<String>
-  ): Flow<List<Place>> {
+  ): Flow<List<UIPlace>> {
     val tagsSet = tagIds.toSet()
 
     val places = if (tagsSet.isEmpty()) {

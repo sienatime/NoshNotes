@@ -1,11 +1,11 @@
 package com.siendy.noshnotes.ui.previews
 
 import com.siendy.noshnotes.data.models.LatLong
-import com.siendy.noshnotes.data.models.Place
 import com.siendy.noshnotes.data.models.Tag
+import com.siendy.noshnotes.data.models.UIPlace
 
 object PreviewData {
-  val previewPlace = Place(
+  val previewPlace = UIPlace(
     remoteId = "ChIJDwOJGqu5woAR3tTmF6s8bfE",
     name = "Sonoratown",
     latLong = LatLong(34.0539254, -118.3553033),

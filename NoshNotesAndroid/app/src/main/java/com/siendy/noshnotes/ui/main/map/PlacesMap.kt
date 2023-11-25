@@ -22,7 +22,7 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.MarkerInfoWindow
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
-import com.siendy.noshnotes.data.models.Place
+import com.siendy.noshnotes.data.models.UIPlace
 import com.siendy.noshnotes.ui.UIConstants
 import com.siendy.noshnotes.ui.components.AllTags
 import com.siendy.noshnotes.ui.components.AllTagsState
@@ -67,7 +67,7 @@ fun PlacesMap(
 }
 
 @Composable
-private fun mapMarkers(places: List<Place>): CameraPosition {
+private fun mapMarkers(places: List<UIPlace>): CameraPosition {
   val boundsBuilder = LatLngBounds.Builder()
 
   places.forEach { place ->
@@ -91,7 +91,7 @@ private fun mapMarkers(places: List<Place>): CameraPosition {
 }
 
 @Composable
-fun CustomInfoWindow(place: Place) {
+fun CustomInfoWindow(place: UIPlace) {
   Column(
     Modifier
       .background(MaterialTheme.colorScheme.surface)
@@ -133,7 +133,7 @@ fun CustomInfoWindow(place: Place) {
   }
 }
 
-private fun placeToLatLng(place: Place): LatLng? {
+private fun placeToLatLng(place: UIPlace): LatLng? {
   val lat = place.latLong?.latitude
   val long = place.latLong?.longitude
 
