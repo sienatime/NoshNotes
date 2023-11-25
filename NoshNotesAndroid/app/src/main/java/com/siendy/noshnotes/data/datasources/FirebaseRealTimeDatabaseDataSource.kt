@@ -5,6 +5,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.siendy.noshnotes.data.models.DBPlace
 import com.siendy.noshnotes.data.models.FirebasePlace
 import com.siendy.noshnotes.data.models.Tag
 import com.siendy.noshnotes.data.models.UIPlace
@@ -13,7 +14,7 @@ import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-class FirebaseRealTimeDatabaseDataSource {
+class FirebaseRealTimeDatabaseDataSource : NoshNotesDataStoreInterface {
   private val url = "https://nosh-notes-default-rtdb.firebaseio.com/"
   private val tagReference = "tags"
   private val placeReference = "places"
@@ -27,7 +28,7 @@ class FirebaseRealTimeDatabaseDataSource {
   }
 
   // https://medium.com/swlh/how-to-use-firebase-realtime-database-with-kotlin-coroutine-flow-946fe4cf2cd9
-  fun getTags(): Flow<List<Tag>> = callbackFlow {
+  override fun getTags(): Flow<List<Tag>> = callbackFlow {
     val tagsListener = object : ValueEventListener {
       override fun onCancelled(error: DatabaseError) {
         this@callbackFlow.trySendBlocking(emptyList())
@@ -49,7 +50,7 @@ class FirebaseRealTimeDatabaseDataSource {
     }
   }
 
-  fun getPlaces(): Flow<List<FirebasePlace>> = callbackFlow {
+  override fun getPlaces(): Flow<List<DBPlace>> = callbackFlow {
     val placesListener = object : ValueEventListener {
       override fun onCancelled(error: DatabaseError) {
         this@callbackFlow.trySendBlocking(emptyList())
@@ -59,7 +60,11 @@ class FirebaseRealTimeDatabaseDataSource {
         val items = dataSnapshot.children.map { childDataSnapshot ->
           childDataSnapshot.getValue(FirebasePlace::class.java)
         }.reversed()
-        this@callbackFlow.trySendBlocking(items.filterNotNull())
+        this@callbackFlow.trySendBlocking(
+          items.filterNotNull().map {
+            it.toDBPlace()
+          }
+        )
       }
     }
     database.getReference(placeReference)
@@ -71,7 +76,7 @@ class FirebaseRealTimeDatabaseDataSource {
     }
   }
 
-  fun getPlace(id: String): Flow<FirebasePlace?> = callbackFlow {
+  override fun getPlace(id: String): Flow<DBPlace?> = callbackFlow {
     val placesListener = object : ValueEventListener {
       override fun onCancelled(error: DatabaseError) {
         this@callbackFlow.trySendBlocking(null)
@@ -79,7 +84,7 @@ class FirebaseRealTimeDatabaseDataSource {
 
       override fun onDataChange(dataSnapshot: DataSnapshot) {
         val item = dataSnapshot.getValue(FirebasePlace::class.java)
-        this@callbackFlow.trySendBlocking(item)
+        this@callbackFlow.trySendBlocking(item?.toDBPlace())
       }
     }
     database.getReference("$placeReference/$id")
@@ -91,7 +96,7 @@ class FirebaseRealTimeDatabaseDataSource {
     }
   }
 
-  fun addTag(tag: Tag) {
+  override fun addTag(tag: Tag) {
     databaseReference.child(tagReference).push().key?.let { key ->
 
       val childUpdates = hashMapOf<String, Any>(
@@ -129,15 +134,15 @@ class FirebaseRealTimeDatabaseDataSource {
     databaseReference.updateChildren(childUpdates)
   }
 
-  suspend fun deletePlace(placeId: String) {
-    getPlace(placeId).collect { firebasePlace ->
-      val key = firebasePlace?.uid ?: return@collect
+  override suspend fun deletePlace(placeId: String) {
+    getPlace(placeId).collect { dbPlace ->
+      val key = dbPlace?.uid ?: return@collect
 
       val childUpdates = mutableMapOf<String, Any?>(
         "/$placeReference/$key" to null
       )
 
-      firebasePlace.tagIds().forEach { tagId ->
+      dbPlace.tagIds.forEach { tagId ->
         childUpdates["/$tagReference/$tagId/$placeReference/$key"] = null
       }
 

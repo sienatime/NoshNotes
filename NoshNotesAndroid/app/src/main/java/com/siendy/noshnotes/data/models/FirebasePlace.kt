@@ -15,14 +15,19 @@ data class FirebasePlace(
     )
   }
 
-  fun tagIds(): Set<String> = tags.keys
-
-  fun hasAllTags(tagsSet: Set<String>): Boolean {
-    return tagIds().containsAll(tagsSet)
-  }
+  private fun tagIds(): Set<String> = tags.keys
 
   fun hasTag(tagId: String): Boolean {
     return tagIds().contains(tagId)
+  }
+
+  fun toDBPlace(): DBPlace {
+    return DBPlace(
+      uid = uid,
+      remoteId = remoteId,
+      note = note,
+      tagIds = tags.keys.toList()
+    )
   }
 
   companion object {

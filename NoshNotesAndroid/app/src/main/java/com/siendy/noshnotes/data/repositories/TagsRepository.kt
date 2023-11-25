@@ -1,12 +1,12 @@
 package com.siendy.noshnotes.data.repositories
 
-import com.siendy.noshnotes.data.datasources.FirebaseRealTimeDatabaseDataSource
+import com.siendy.noshnotes.data.datasources.NoshNotesDataStoreInterface
 import com.siendy.noshnotes.data.models.Tag
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class TagsRepository @Inject constructor(
-  private val databaseDataSource: FirebaseRealTimeDatabaseDataSource
+  private val databaseDataSource: NoshNotesDataStoreInterface
 ) {
 
   private lateinit var tagsCache: Map<String, Tag>

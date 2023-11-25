@@ -1,9 +1,9 @@
 package com.siendy.noshnotes.data.repositories
 
 import com.google.android.libraries.places.api.model.PhotoMetadata
-import com.siendy.noshnotes.data.datasources.FirebaseRealTimeDatabaseDataSource
 import com.siendy.noshnotes.data.datasources.GooglePlacesDataSource
-import com.siendy.noshnotes.data.models.FirebasePlace
+import com.siendy.noshnotes.data.datasources.NoshNotesDataStoreInterface
+import com.siendy.noshnotes.data.models.DBPlace
 import com.siendy.noshnotes.data.models.PhotoWithAttribution
 import com.siendy.noshnotes.data.models.UIPlace
 import kotlinx.coroutines.async
@@ -16,11 +16,11 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class PlacesRepository @Inject constructor(
-  private val databaseDataSource: FirebaseRealTimeDatabaseDataSource,
+  private val databaseDataSource: NoshNotesDataStoreInterface,
   private val googlePlacesDataSource: GooglePlacesDataSource,
   private val tagsRepository: TagsRepository
 ) {
-  private fun getPlaces(): Flow<List<FirebasePlace>> {
+  private fun getPlaces(): Flow<List<DBPlace>> {
     return databaseDataSource.getPlaces()
   }
 
@@ -40,7 +40,7 @@ class PlacesRepository @Inject constructor(
     return placeId?.let { id ->
       databaseDataSource.getPlace(id)
     }?.first()?.let {
-      getPlaceForFirebasePlace(it)
+      getUIPlaceForDBPlace(it)
     }
   }
 
@@ -53,8 +53,8 @@ class PlacesRepository @Inject constructor(
       flowOf(emptyList())
     } else {
       getPlaces().map {
-        it.filter { firebasePlace ->
-          firebasePlace.hasAllTags(tagsSet) && firebasePlace.remoteId != null
+        it.filter { dbPlace ->
+          dbPlace.hasAllTags(tagsSet) && dbPlace.remoteId != null
         }
       }
     }
@@ -63,7 +63,7 @@ class PlacesRepository @Inject constructor(
       coroutineScope {
         it.map {
           async {
-            getPlaceForFirebasePlace(it)
+            getUIPlaceForDBPlace(it)
           }
         }.awaitAll()
       }
@@ -79,14 +79,14 @@ class PlacesRepository @Inject constructor(
     }
   }
 
-  private suspend fun getPlaceForFirebasePlace(
-    firebasePlace: FirebasePlace
-  ): Place {
-    val placeWithGoogle = googlePlacesDataSource.getPlaceById(firebasePlace.remoteId!!)
+  private suspend fun getUIPlaceForDBPlace(
+    dbPlace: DBPlace
+  ): UIPlace {
+    val placeWithGoogle = googlePlacesDataSource.getPlaceById(dbPlace.remoteId!!)
     return placeWithGoogle.copy(
-      uid = firebasePlace.uid,
-      note = firebasePlace.note,
-      tags = firebasePlace.tags.keys.mapNotNull { tagId ->
+      uid = dbPlace.uid,
+      note = dbPlace.note,
+      tags = dbPlace.tagIds.mapNotNull { tagId ->
         tagsRepository.getCachedTag(tagId)
       }
     )

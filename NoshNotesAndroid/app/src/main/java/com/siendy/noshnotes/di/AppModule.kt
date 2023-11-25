@@ -5,6 +5,7 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.siendy.noshnotes.data.datasources.FirebaseRealTimeDatabaseDataSource
 import com.siendy.noshnotes.data.datasources.GooglePlacesDataSource
+import com.siendy.noshnotes.data.datasources.NoshNotesDataStoreInterface
 import com.siendy.noshnotes.data.repositories.TagsRepository
 import com.siendy.noshnotes.domain.ConvertPlaceUseCase
 import dagger.Module
@@ -20,7 +21,7 @@ object AppModule {
 
   @Singleton
   @Provides
-  fun provideTagsRepository(databaseDataSource: FirebaseRealTimeDatabaseDataSource): TagsRepository {
+  fun provideTagsRepository(databaseDataSource: NoshNotesDataStoreInterface): TagsRepository {
     return TagsRepository(databaseDataSource)
   }
 
@@ -32,7 +33,7 @@ object AppModule {
 
   @Singleton
   @Provides
-  fun provideFirebaseRealtimeDatabaseDataSource(): FirebaseRealTimeDatabaseDataSource {
+  fun provideNoshNotesDataSource(): NoshNotesDataStoreInterface {
     return FirebaseRealTimeDatabaseDataSource()
   }
 
