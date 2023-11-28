@@ -6,6 +6,7 @@ plugins {
   id 'org.jmailen.kotlinter'
   id 'kotlin-kapt'
   id 'com.google.dagger.hilt.android'
+  id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
 android {
@@ -80,6 +81,15 @@ dependencies {
   implementation platform('com.google.firebase:firebase-bom:31.1.1')
   implementation 'com.google.firebase:firebase-database'
   implementation 'com.google.firebase:firebase-common-ktx:20.4.2'
+
+  // supabase (ktor & kotlinx serialization)
+  def ktor_version = "2.3.6"
+  implementation("io.ktor:ktor-client-core:$ktor_version")
+  implementation("io.ktor:ktor-client-okhttp:$ktor_version")
+  implementation("io.ktor:ktor-client-resources:$ktor_version")
+  implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+  implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+  implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1'
 
   implementation "io.coil-kt:coil-compose:2.2.2"
 

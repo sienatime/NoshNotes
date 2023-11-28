@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface NoshNotesDataStoreInterface {
   fun getTags(): Flow<List<Tag>>
   fun getPlaces(): Flow<List<DBPlace>>
+  fun getPlacesForTags(tagIds: List<String>): Flow<List<DBPlace>>
   fun getPlace(id: String): Flow<DBPlace?>
   fun addTag(tag: Tag)
   fun updatePlace(place: UIPlace, originalTags: List<String>)

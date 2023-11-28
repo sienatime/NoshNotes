@@ -13,6 +13,8 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 
 class FirebaseRealTimeDatabaseDataSource : NoshNotesDataStoreInterface {
   private val url = "https://nosh-notes-default-rtdb.firebaseio.com/"
@@ -73,6 +75,20 @@ class FirebaseRealTimeDatabaseDataSource : NoshNotesDataStoreInterface {
     awaitClose {
       database.getReference(placeReference)
         .removeEventListener(placesListener)
+    }
+  }
+
+  override fun getPlacesForTags(tagIds: List<String>): Flow<List<DBPlace>> {
+    val tagsSet = tagIds.toSet()
+
+    return if (tagsSet.isEmpty()) {
+      flowOf(emptyList())
+    } else {
+      getPlaces().map {
+        it.filter { dbPlace ->
+          dbPlace.hasAllTags(tagsSet) && dbPlace.remoteId != null
+        }
+      }
     }
   }
 

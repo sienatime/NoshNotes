@@ -3,9 +3,9 @@ package com.siendy.noshnotes.di
 import android.content.Context
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
-import com.siendy.noshnotes.data.datasources.FirebaseRealTimeDatabaseDataSource
 import com.siendy.noshnotes.data.datasources.GooglePlacesDataSource
 import com.siendy.noshnotes.data.datasources.NoshNotesDataStoreInterface
+import com.siendy.noshnotes.data.datasources.SupabaseDataStore
 import com.siendy.noshnotes.data.repositories.TagsRepository
 import com.siendy.noshnotes.domain.ConvertPlaceUseCase
 import dagger.Module
@@ -34,7 +34,7 @@ object AppModule {
   @Singleton
   @Provides
   fun provideNoshNotesDataSource(): NoshNotesDataStoreInterface {
-    return FirebaseRealTimeDatabaseDataSource()
+    return SupabaseDataStore()
   }
 
   @Singleton
